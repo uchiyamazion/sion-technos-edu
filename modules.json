@@ -12,9 +12,9 @@
     "id": "absorption-cycle",
     "title": "冷凍サイクル（吸収式）",
     "category": "冷凍サイクル",
-    "status": "coming-soon",
+    "status": "published",
     "levels": ["初級", "中級", "上級"],
-    "description": "再生器・吸収器・冷媒／吸収液の2液サイクルなど、圧縮式とは異なる駆動原理を扱う教材です。",
+    "description": "再生器・吸収器・冷媒／吸収液の2液サイクルなど、圧縮式とは異なる駆動原理と、晶析・不凝縮ガスなど現場のトラブル対応を扱います。",
     "path": "absorption-cycle/index.html"
   },
   {

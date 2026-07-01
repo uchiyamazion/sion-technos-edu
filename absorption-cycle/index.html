@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>吸収式冷凍機のしくみ ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  /* このページ固有のレイアウト。共通トークンは shared/design-tokens.css を参照 */
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:600px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .stage{
+    max-width:1180px; margin:40px auto 0; padding:0 24px;
+    display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;
+  }
+  @media (max-width:920px){.stage{grid-template-columns:1fr;}}
+
+  #cycle-svg{width:100%; height:auto; display:block;}
+  .node-box{fill:var(--bg-panel-2); stroke:var(--line); stroke-width:1.5; transition:stroke .3s ease, fill .3s ease;}
+  .node-group{cursor:pointer;}
+  .node-group:hover .node-box, .node-group.active .node-box{stroke:var(--accent); fill:#1a2f52;}
+  .node-label{font-family:var(--font-display); font-weight:700; fill:var(--text-1); font-size:14.5px;}
+  .node-sub{font-family:var(--font-mono); fill:var(--text-3); font-size:9.5px; letter-spacing:0.04em;}
+  .pipe{fill:none; stroke-width:9; stroke-linecap:round;}
+  .particle{filter:drop-shadow(0 0 4px currentColor);}
+  .state-label{font-family:var(--font-mono); font-size:9.5px; fill:var(--text-2);}
+  .loop-caption{font-family:var(--font-mono); font-size:10px; fill:var(--text-3); letter-spacing:0.04em;}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:21px;}
+  .info-body{color:var(--text-2); font-size:14.5px; line-height:1.85; margin-bottom:18px;}
+
+  /* concentration bar (溶液濃度の可視化。p-h線図の代わり) */
+  .conc-row{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .conc-label{font-family:var(--font-mono); font-size:11px; color:var(--text-3); width:88px; flex-shrink:0;}
+  .conc-track{flex:1; height:10px; border-radius:6px; background:var(--bg-panel-2); border:1px solid var(--line); overflow:hidden;}
+  .conc-fill{height:100%; border-radius:6px;}
+  .conc-value{font-family:var(--font-mono); font-size:11px; color:var(--text-2); width:44px; text-align:right; flex-shrink:0;}
+
+  .compare-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;
+  }
+  .compare-box{background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;}
+  .compare-box .compare-label{font-family:var(--font-mono); font-size:10px; color:var(--text-3); margin-bottom:4px;}
+  .compare-box .compare-value{font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--text-1);}
+
+  .field-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+
+  .quiz-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">ABSORPTION REFRIGERATION CYCLE</div>
+  <h1 class="title sion-title">吸収式冷凍機の<br>しくみ</h1>
+  <p class="lede">吸収式冷凍機は、電気ではなく「熱」で駆動する冷凍機です。冷媒（水）と吸収液（臭化リチウム水溶液）という2つの液体が循環し、再生器・凝縮器・蒸発器・吸収器の4つを巡ります。圧縮式との違いを比べながら見てみましょう。</p>
+</header>
+
+<div class="stage">
+  <!-- CYCLE DIAGRAM -->
+  <div class="sion-panel">
+    <div class="sion-panel-title">CYCLE DIAGRAM ― 冷媒と吸収液の循環</div>
+    <svg id="cycle-svg" viewBox="0 0 560 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gradVapor" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f43f5e"/>
+          <stop offset="100%" stop-color="#fb923c"/>
+        </linearGradient>
+        <linearGradient id="gradLiquidCold" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#38bdf8"/>
+          <stop offset="100%" stop-color="#5eead4"/>
+        </linearGradient>
+        <linearGradient id="gradAbsorbed" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#5eead4"/>
+          <stop offset="100%" stop-color="#38bdf8"/>
+        </linearGradient>
+        <linearGradient id="gradSolutionUp" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#a78bfa"/>
+          <stop offset="100%" stop-color="#a78bfa"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ===== refrigerant loop (outer square) ===== -->
+      <!-- top: generator -> condenser (refrigerant vapor, hot) -->
+      <path class="pipe" stroke="url(#gradVapor)" d="M 420,120 L 140,120"/>
+      <!-- left: condenser -> evaporator (refrigerant liquid, cold, via orifice) -->
+      <path class="pipe" stroke="url(#gradLiquidCold)" d="M 100,160 L 100,440"/>
+      <!-- bottom: evaporator -> absorber (refrigerant vapor absorbed) -->
+      <path class="pipe" stroke="url(#gradAbsorbed)" d="M 140,480 L 420,480"/>
+
+      <!-- ===== solution loop (right side, two parallel lines) ===== -->
+      <!-- absorber -> generator: dilute solution (pumped up) -->
+      <path class="pipe" stroke="#a78bfa" stroke-width="7" opacity="0.85" d="M 445,440 L 445,160"/>
+      <!-- generator -> absorber: concentrated solution (returns) -->
+      <path class="pipe" stroke="#c4b5fd" stroke-width="7" opacity="0.55" d="M 475,160 L 475,440"/>
+
+      <g id="particles-gen-cond"></g>
+      <g id="particles-cond-evap"></g>
+      <g id="particles-evap-abs"></g>
+      <g id="particles-abs-gen"></g>
+      <g id="particles-gen-abs"></g>
+
+      <!-- labels -->
+      <text class="state-label" x="280" y="105" text-anchor="middle">冷媒蒸気（高温）</text>
+      <text class="state-label" x="90" y="300" transform="rotate(-90 90 300)" text-anchor="middle">冷媒 液（低圧・低温）</text>
+      <text class="state-label" x="280" y="505" text-anchor="middle">冷媒蒸気（吸収される）</text>
+      <text class="loop-caption" x="500" y="300" transform="rotate(90 500 300)" text-anchor="middle">吸収液（希 → 濃）の循環</text>
+
+      <!-- Nodes: TL condenser / TR generator / BL evaporator / BR absorber -->
+      <g class="node-group" data-node="condenser" onclick="selectNode('condenser')">
+        <rect class="node-box" x="40" y="80" width="120" height="80" rx="14"/>
+        <text class="node-label" x="100" y="115" text-anchor="middle">凝縮器</text>
+        <text class="node-sub" x="100" y="134" text-anchor="middle">CONDENSER</text>
+      </g>
+
+      <g class="node-group" data-node="generator" onclick="selectNode('generator')">
+        <rect class="node-box" x="400" y="80" width="120" height="80" rx="14"/>
+        <text class="node-label" x="460" y="115" text-anchor="middle">再生器</text>
+        <text class="node-sub" x="460" y="134" text-anchor="middle">GENERATOR</text>
+      </g>
+
+      <g class="node-group" data-node="evaporator" onclick="selectNode('evaporator')">
+        <rect class="node-box" x="40" y="440" width="120" height="80" rx="14"/>
+        <text class="node-label" x="100" y="475" text-anchor="middle">蒸発器</text>
+        <text class="node-sub" x="100" y="494" text-anchor="middle">EVAPORATOR</text>
+      </g>
+
+      <g class="node-group" data-node="absorber" onclick="selectNode('absorber')">
+        <rect class="node-box" x="400" y="440" width="120" height="80" rx="14"/>
+        <text class="node-label" x="460" y="475" text-anchor="middle">吸収器</text>
+        <text class="node-sub" x="460" y="494" text-anchor="middle">ABSORBER</text>
+      </g>
+
+      <!-- center caption -->
+      <text x="280" y="300" text-anchor="middle" font-family="Zen Kaku Gothic New" font-weight="700" font-size="13" fill="#9db0c9">圧縮機の代わりに「熱」で駆動する</text>
+      <text x="280" y="320" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="#5c718f">冷媒（水）と吸収液（LiBr水溶液）の2液サイクル</text>
+      <!-- fuel/heat input arrow to generator -->
+      <path d="M 460,60 L 460,78" stroke="var(--warm)" stroke-width="3" marker-end="url(#arrowWarm)" />
+      <text x="460" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fb923c">熱源（ガス・廃熱）</text>
+      <defs>
+        <marker id="arrowWarm" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#fb923c"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- INFO / CONCENTRATION PANEL -->
+  <div>
+    <div class="sion-panel" style="margin-bottom:24px;">
+      <div class="sion-panel-title">COMPONENT ― 機器の説明</div>
+      <div class="info-head">
+        <span class="info-num" id="info-num">01</span>
+        <span class="info-title" id="info-title">凝縮器</span>
+      </div>
+      <div class="info-body" id="info-body"></div>
+      <div class="compare-row">
+        <div class="compare-box">
+          <div class="compare-label">駆動方式</div>
+          <div class="compare-value" id="info-drive">熱</div>
+        </div>
+        <div class="compare-box">
+          <div class="compare-label">圧縮式での対応</div>
+          <div class="compare-value" id="info-analog">凝縮器</div>
+        </div>
+      </div>
+      <div class="sion-hint"><span class="dot"></span>図の機器をクリックすると切り替わります</div>
+    </div>
+
+    <div class="sion-panel">
+      <div class="sion-panel-title">SOLUTION CONCENTRATION ― 吸収液の濃度変化</div>
+      <div class="conc-row">
+        <span class="conc-label">吸収器 出口</span>
+        <span class="conc-track"><span class="conc-fill" style="width:58%; background:#a78bfa;"></span></span>
+        <span class="conc-value">希 58%</span>
+      </div>
+      <div class="conc-row">
+        <span class="conc-label">再生器 出口</span>
+        <span class="conc-track"><span class="conc-fill" style="width:64%; background:#c4b5fd;"></span></span>
+        <span class="conc-value">濃 64%</span>
+      </div>
+      <div class="sion-hint" style="margin-top:2px;">
+        <span class="dot" style="background:#a78bfa;"></span>
+        再生器で加熱されると水（冷媒）が蒸気として抜け、吸収液は「濃く」なります。吸収器で冷媒蒸気を吸収すると再び「薄く」なります。数値は一般的な水/臭化リチウム式の目安です。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
+    <p class="field-intro">吸収式冷凍機は、大型ビルの空調や工場の廃熱利用でよく使われる技術です。圧縮式との違いや、現場で押さえておきたいポイントを解説します。</p>
+
+    <div class="sion-acc-item" id="acc-diff">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-diff')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">基礎知識</span>
+          <span class="sion-acc-title">圧縮式との違い<small>WHY ABSORPTION ― なぜ熱で冷やせるのか</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>駆動源の違い</h4>
+          <p>圧縮式は電気で圧縮機（コンプレッサー）を動かして冷媒を圧縮しますが、吸収式は圧縮機を使わず、再生器を都市ガス・重油・工場の廃熱・地域熱源などの「熱」で加熱することで冷媒を追い出します。電力消費が非常に少なく、代わりに熱源が必要という特徴があります。</p>
+          <h4>共通する原理</h4>
+          <p>どちらも「冷媒が低圧下で蒸発するときに周囲から熱を奪う」という基本原理は同じです。違うのは、蒸発した冷媒をどうやって元の高圧の液体に戻すか（圧縮式＝機械的に圧縮／吸収式＝吸収液に吸収させてから熱で追い出す）という部分です。</p>
+          <h4>向いている現場</h4>
+          <ul>
+            <li>工場やプラントで廃熱・排ガス熱が豊富にある現場</li>
+            <li>電力契約容量を増やせない、または電気料金が高い地域</li>
+            <li>大型ビルの地域冷暖房（DHC）システム</li>
+          </ul>
+          <div class="sion-acc-note">関連知識：電気を「熱」に置き換えて冷房することから、ガスコージェネレーションシステムと組み合わせて使われることも多い技術です。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-pair">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-pair')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">材料</span>
+          <span class="sion-acc-title">冷媒と吸収液の組み合わせ<small>WORKING PAIR ― 代表的な2つの組み合わせ</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>水 ／ 臭化リチウム（LiBr）</h4>
+          <p>業務用・大型の吸収式冷凍機で最も広く使われる組み合わせです。水が冷媒、臭化リチウム水溶液が吸収液になります。0℃以下の冷凍には使えません（水が凍結するため）が、空調用途の冷水（7℃前後）を作るには最適で、毒性がなく扱いやすいのが特徴です。</p>
+          <h4>アンモニア ／ 水</h4>
+          <p>アンモニアが冷媒、水が吸収液になる組み合わせです。0℃以下の冷凍・冷蔵にも対応できるため、工業用の低温冷凍や一部の家庭用冷蔵庫（電源不要のガス式冷蔵庫）などに使われます。ただしアンモニアには毒性・可燃性があるため、取り扱いには注意が必要です。</p>
+          <div class="sion-acc-note">豆知識：水/LiBr式は真空に近い低圧（数mmHg〜数十mmHg程度）で運転されるため、装置内に空気が侵入すると性能が大きく落ちます。これが下の「不凝縮ガス」の話につながります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-hex">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-hex')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">省エネ設計</span>
+          <span class="sion-acc-title">溶液熱交換器の役割<small>SOLUTION HEAT EXCHANGER ― 熱をムダにしない工夫</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>何のためにあるか</h4>
+          <p>吸収器から再生器へ送られる「希溶液（低温）」と、再生器から吸収器へ戻る「濃溶液（高温）」は、そのまま循環させると熱をムダに捨てることになります。そこで両者を熱交換させ、これから加熱される希溶液を濃溶液の余熱で温め、逆に濃溶液は吸収器に入る前にある程度冷ましておきます。</p>
+          <h4>効果</h4>
+          <ul>
+            <li>再生器で必要な加熱量（＝燃料・熱源の消費量）を減らせる</li>
+            <li>吸収器での冷却負荷も減らせる</li>
+            <li>結果として、機器全体の熱効率（COP）が大きく向上する</li>
+          </ul>
+          <div class="sion-acc-note">図の右辺にある2本の吸収液ラインの間に、実際にはこの熱交換器が挟まっています。今回のサイクル図では簡略化して省いています。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-trouble">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-trouble')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">保守</span>
+          <span class="sion-acc-title">現場でよくあるトラブル<small>MAINTENANCE ― 晶析・不凝縮ガス</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>晶析（けっしょう）トラブル</h4>
+          <p>臭化リチウム水溶液は、濃度が高くなりすぎたり温度が下がりすぎたりすると、溶けきれなくなった塩が結晶化して配管内に析出することがあります。これを「晶析」と呼び、配管の詰まりや流量低下の原因になります。冷却水温度の急低下や、停電による溶液循環の停止時に起きやすいトラブルです。</p>
+          <h4>不凝縮ガスの侵入</h4>
+          <p>装置内部は大気圧よりかなり低い真空に近い状態で運転されるため、配管の継ぎ目やパッキンのわずかな隙間から空気（不凝縮ガス）が侵入することがあります。空気が混入すると熱交換効率が落ち、能力低下につながります。このため定期的に「真空引き（抽気）」を行い、装置内の不凝縮ガスを抜く保守作業が必要です。</p>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>停電などで溶液ポンプが急停止すると、吸収器内の溶液が停滞して濃度が偏り、晶析が起きやすくなります。復電時は取扱説明書の手順に従って徐々に立ち上げることが重要です。</span>
+          </div>
+          <div class="sion-acc-note">関連知識：真空引きの基本的な考え方は、圧縮式教材で扱った「真空ポンプ・真空引きの意味」と共通しています。あわせて確認してみてください。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">4つの機器の名前と役割</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">圧縮式との違い・溶液の濃度変化</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">溶液熱交換器・現場トラブル</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">ABSORPTION REFRIGERATION CYCLE ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= COMPONENT INFO ======================= */
+const componentInfo = {
+  condenser:{
+    num:'01', title:'凝縮器', drive:'冷却水', analog:'圧縮式の凝縮器と同じ役割',
+    body:'再生器で吸収液から追い出された高温の冷媒蒸気（水蒸気）を、冷却水で冷やして液体の水に戻します。役割そのものは圧縮式の凝縮器と同じで、冷媒が高温の気体から液体に変わる場所です。'
+  },
+  generator:{
+    num:'02', title:'再生器', drive:'ガス・廃熱', analog:'圧縮式の圧縮機に相当（駆動源が違う）',
+    body:'吸収器から送られてきた希薄な吸収液（冷媒をたくさん吸い込んだ状態）を、ガスや廃熱などの「熱」で加熱します。加熱すると冷媒（水）だけが蒸気になって抜けていき、吸収液は再び濃い状態に戻ります。圧縮式でいう圧縮機と同じ「サイクルを回す動力源」の役割を、電気ではなく熱で果たしています。'
+  },
+  evaporator:{
+    num:'03', title:'蒸発器', drive:'低圧環境', analog:'圧縮式の蒸発器と同じ役割',
+    body:'凝縮器で液体に戻った冷媒（水）が、真空に近い低圧環境の中で蒸発します。水は常圧では100℃で沸騰しますが、圧力を大きく下げると数℃程度でも蒸発するようになります。この蒸発時に周囲（冷水配管）から熱を奪うことで、冷房用の冷水が作られます。ここは圧縮式の蒸発器とまったく同じ原理です。'
+  },
+  absorber:{
+    num:'04', title:'吸収器', drive:'冷却水', analog:'圧縮式には無い、吸収式特有の機器',
+    body:'蒸発器で発生した冷媒蒸気を、吸収液（臭化リチウム水溶液）が化学的に吸い込みます。吸収液が冷媒蒸気を吸収することで、蒸発器側の圧力を低く保ち続けることができます。吸収の際に熱が発生するため、冷却水で冷やしながら吸収させます。ここは圧縮式には存在しない、吸収式ならではの機器です。'
+  }
+};
+
+let currentNode = 'condenser';
+
+function selectNode(node){
+  currentNode = node;
+  document.querySelectorAll('.node-group').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = componentInfo[node];
+  document.getElementById('info-num').textContent = d.num;
+  document.getElementById('info-title').textContent = d.title;
+  document.getElementById('info-body').textContent = d.body;
+  document.getElementById('info-drive').textContent = d.drive;
+  document.getElementById('info-analog').textContent = d.analog;
+}
+
+/* ======================= PARTICLES ======================= */
+const pipePathMap = {
+  'gen-cond': 'M 420,120 L 140,120',
+  'cond-evap': 'M 100,160 L 100,440',
+  'evap-abs': 'M 140,480 L 420,480',
+  'abs-gen': 'M 445,440 L 445,160',
+  'gen-abs': 'M 475,160 L 475,440'
+};
+const pipeColors = {
+  'gen-cond':'#f43f5e',
+  'cond-evap':'#5eead4',
+  'evap-abs':'#38bdf8',
+  'abs-gen':'#a78bfa',
+  'gen-abs':'#c4b5fd'
+};
+const pipeCounts = {'gen-cond':4,'cond-evap':4,'evap-abs':4,'abs-gen':3,'gen-abs':3};
+
+function parseLine(d){
+  const nums = d.match(/-?\d+(\.\d+)?/g).map(Number);
+  return {x1:nums[0], y1:nums[1], x2:nums[2], y2:nums[3]};
+}
+function pointAt(d, t){
+  const {x1,y1,x2,y2} = parseLine(d);
+  return {x: x1+(x2-x1)*t, y: y1+(y2-y1)*t};
+}
+
+let particleState = [];
+function initParticles(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  particleState = [];
+  Object.keys(pipePathMap).forEach(id=>{
+    const container = document.getElementById('particles-'+id);
+    if(!container) return;
+    container.innerHTML = '';
+    const n = pipeCounts[id];
+    for(let i=0;i<n;i++){
+      const circle = document.createElementNS(svgNS,'circle');
+      circle.setAttribute('r', 4.5);
+      circle.setAttribute('class','particle');
+      circle.setAttribute('fill', pipeColors[id]);
+      circle.style.color = pipeColors[id];
+      container.appendChild(circle);
+      particleState.push({pipeId:id, el:circle, t:i/n, speed:0.0026});
+    }
+  });
+}
+function animateParticles(){
+  particleState.forEach(p=>{
+    p.t += p.speed;
+    if(p.t > 1) p.t -= 1;
+    const pt = pointAt(pipePathMap[p.pipeId], p.t);
+    p.el.setAttribute('cx', pt.x);
+    p.el.setAttribute('cy', pt.y);
+  });
+  requestAnimationFrame(animateParticles);
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'吸収式冷凍機は、圧縮機の代わりに何を使って冷媒を循環させますか？',
+      options:['磁力','熱','振動','光'],
+      correct:1,
+      explain:'正解は「熱」です。再生器をガスや廃熱で加熱することで、圧縮機を使わずに冷媒を循環させることができます。'
+    },
+    {
+      q:'吸収式冷凍機で、冷媒として一般的に使われる物質は何ですか？',
+      options:['フロン','水','石油','窒素'],
+      correct:1,
+      explain:'正解は水です。業務用の吸収式冷凍機では「水」を冷媒、「臭化リチウム水溶液」を吸収液とする組み合わせが最も広く使われています。'
+    },
+    {
+      q:'蒸発器で冷媒が蒸発するとき、周囲から何が奪われますか？',
+      options:['圧力','熱','電気','光'],
+      correct:1,
+      explain:'正解は熱です。冷媒が低圧下で蒸発するときに周囲から熱を奪う、という原理は圧縮式と同じです。この熱の移動を利用して冷水を作ります。'
+    },
+    {
+      q:'蒸発器で発生した冷媒蒸気を吸い込むのは、どの機器ですか？',
+      options:['凝縮器','再生器','吸収器','送風機'],
+      correct:2,
+      explain:'正解は吸収器です。吸収液（臭化リチウム水溶液）が冷媒蒸気を化学的に吸い込むことで、蒸発器側の低圧を保ち続けます。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'吸収式冷凍機が、圧縮式に比べて電力消費が少ないのはなぜですか？',
+      options:['冷媒の量が少ないため','圧縮機を使わず熱でサイクルを回すため','機器のサイズが小さいため','冷却水を使わないため'],
+      correct:1,
+      explain:'正解は「圧縮機を使わず熱でサイクルを回すため」です。電気で動かす圧縮機の代わりに、再生器を熱源で加熱することでサイクルを駆動します。'
+    },
+    {
+      q:'再生器で吸収液を加熱すると、吸収液の濃度はどう変化しますか？',
+      options:['薄くなる（濃度が下がる）','濃くなる（濃度が上がる）','変化しない','固体になる'],
+      correct:1,
+      explain:'正解は「濃くなる」です。加熱によって冷媒（水）だけが蒸気として抜けていくため、残った吸収液は濃度が高くなります。'
+    },
+    {
+      q:'吸収器で吸収液が冷媒蒸気を吸収すると、吸収液の濃度はどう変化しますか？',
+      options:['薄くなる（濃度が下がる）','濃くなる（濃度が上がる）','変化しない','蒸発する'],
+      correct:0,
+      explain:'正解は「薄くなる」です。冷媒（水）を吸い込むことで吸収液中の水分量が増え、相対的に臭化リチウムの濃度が下がります。'
+    },
+    {
+      q:'水／臭化リチウム式の吸収式冷凍機が、0℃以下の冷凍には使えないのはなぜですか？',
+      options:['吸収液が凍結するため','冷媒（水）が凍結してしまうため','圧力が上がりすぎるため','コストが高すぎるため'],
+      correct:1,
+      explain:'正解は「冷媒（水）が凍結してしまうため」です。冷媒に水を使う以上、0℃以下には冷やせません。0℃以下が必要な用途には、冷媒にアンモニアを使う方式が使われます。'
+    },
+    {
+      q:'吸収式冷凍機が向いているのはどのような現場ですか？',
+      options:['電力が非常に安く、熱源が乏しい現場','工場の廃熱やガスなど熱源が豊富にある現場','冷凍温度をマイナス30℃以下にしたい現場','設置スペースが極端に狭い現場'],
+      correct:1,
+      explain:'正解は「工場の廃熱やガスなど熱源が豊富にある現場」です。電気の代わりに熱を使うため、廃熱やガスなどの熱源をうまく活用できる現場でメリットが大きくなります。'
+    }
+  ],
+  advanced:[
+    {
+      q:'溶液熱交換器の主な役割は何ですか？',
+      options:['吸収液の濃度を一定に保つ','希溶液と濃溶液の間で熱をやり取りし、熱効率を高める','冷媒を殺菌する','吸収液の色を変える'],
+      correct:1,
+      explain:'正解は「希溶液と濃溶液の間で熱をやり取りし、熱効率を高める」です。再生器に向かう低温の希溶液を、再生器から戻る高温の濃溶液の余熱で温めることで、再生器で必要な加熱量を減らせます。'
+    },
+    {
+      q:'臭化リチウム水溶液の「晶析（けっしょう）」トラブルとは、どのような現象ですか？',
+      options:['溶液が沸騰しすぎる現象','濃度や温度の条件次第で塩が結晶化し析出する現象','冷媒が凍結する現象','配管が錆びる現象'],
+      correct:1,
+      explain:'正解は「濃度や温度の条件次第で塩が結晶化し析出する現象」です。濃度が高くなりすぎたり、温度が下がりすぎたりすると、溶けきれなくなった臭化リチウムが結晶化し、配管の詰まりを引き起こすことがあります。'
+    },
+    {
+      q:'停電などで溶液ポンプが急停止したとき、特に注意すべきトラブルは何ですか？',
+      options:['冷媒の色が変わる','溶液が停滞し濃度が偏ることで晶析が起きやすくなる','再生器が過熱して爆発する','吸収器の音が大きくなる'],
+      correct:1,
+      explain:'正解は「溶液が停滞し濃度が偏ることで晶析が起きやすくなる」です。復電時は取扱説明書の手順に従って徐々に立ち上げる必要があります。'
+    },
+    {
+      q:'装置内部への「不凝縮ガス（空気）」の侵入は、どのような不具合につながりますか？',
+      options:['冷媒が着色する','熱交換効率が落ち、能力が低下する','吸収液が凍結する','騒音が大きくなる'],
+      correct:1,
+      explain:'正解は「熱交換効率が落ち、能力が低下する」です。装置内部は真空に近い低圧で運転されているため、わずかな空気の侵入でも性能に大きく影響します。定期的な真空引き（抽気）で対処します。'
+    },
+    {
+      q:'アンモニア／水を作動媒体とする吸収式冷凍機が、水／臭化リチウム式に対して有利な点は何ですか？',
+      options:['毒性がなく安全性が高い','0℃以下の冷凍・冷蔵にも対応できる','設置コストが常に安い','冷却水が不要になる'],
+      correct:1,
+      explain:'正解は「0℃以下の冷凍・冷蔵にも対応できる」です。冷媒にアンモニアを使うため、水を冷媒とする方式では対応できない低温領域でも使用できます。ただしアンモニアには毒性・可燃性があるため取り扱いに注意が必要です。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  selectNode('condenser');
+  initParticles();
+  animateParticles();
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>
