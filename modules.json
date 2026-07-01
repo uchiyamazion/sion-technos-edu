@@ -32,7 +32,16 @@
     "category": "空調システム",
     "status": "published",
     "levels": ["初級", "中級", "上級"],
-    "description": "パッケージエアコンとビル用マルチ(VRF)の違い、室内機の形状、馬力表記の意味など、業務用エアコン特有の知識をまとめました。",
+    "description": "パッケージエアコンとビル用マルチ(VRF)の違い、室内機の形状、馬力表記の意味、冷媒不足・オーバーチャージなどの故障診断をまとめました。",
     "path": "commercial-ac-basics/index.html"
+  },
+  {
+    "id": "construction-reference",
+    "title": "工事早見表（電線・銅管・ダクト）",
+    "category": "工事",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "電線の太さと許容電流、冷媒配管（銅管）のサイズ、ダクトの静圧など、現場でよく使う早見表と、その正しい使い方をまとめました。",
+    "path": "construction-reference/index.html"
   }
 ]

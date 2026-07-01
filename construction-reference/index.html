@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工事早見表 ― 電線・銅管・ダクト ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:600px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .section{max-width:1180px; margin:32px auto 0; padding:0 24px;}
+
+  .ref-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .ref-table th, .ref-table td{
+    padding:9px 8px; text-align:center; border-bottom:1px solid var(--line);
+    font-family:var(--font-mono);
+  }
+  .ref-table th{color:var(--text-3); font-weight:500; font-size:10.5px; letter-spacing:0.02em;}
+  .ref-table td{color:var(--text-1);}
+  .ref-table td.ref-col{color:var(--accent); font-weight:700;}
+  .ref-table td.left{text-align:left;}
+  .table-scroll{overflow-x:auto;}
+
+  .caution-box{
+    display:flex; gap:10px; align-items:flex-start;
+    background:#f43f5e14; border:1px solid #f43f5e40; border-radius:12px;
+    padding:14px 16px; margin-top:16px; font-size:12.5px; color:#fda4af; line-height:1.8;
+  }
+  .caution-box .warn-icon{font-family:var(--font-mono); font-weight:700; color:var(--hot); flex-shrink:0;}
+
+  /* ---------- duct static pressure gauge ---------- */
+  .sp-row{display:flex; align-items:center; gap:14px; margin-bottom:16px;}
+  .sp-slider{flex:1; accent-color:var(--accent);}
+  .sp-value{font-family:var(--font-mono); font-size:15px; color:var(--accent); width:90px; text-align:right; flex-shrink:0;}
+  #sp-svg{width:100%; height:auto; display:block; margin-bottom:14px;}
+
+  .field-panel{margin-top:24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+  .quiz-panel{margin-top:24px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">CONSTRUCTION QUICK REFERENCE</div>
+  <h1 class="title sion-title">工事早見表<br>電線・銅管・ダクト</h1>
+  <p class="lede">現場でよく使う「電線の許容電流」「冷媒配管（銅管）のサイズ」「ダクトの静圧」の目安をまとめました。実際の設計・施工では、内線規程やメーカーの技術資料での最終確認が必要です。</p>
+</header>
+
+<!-- ELECTRICAL WIRE TABLE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">ELECTRICAL WIRE ― 電線の太さと許容電流の早見表</div>
+    <p class="field-intro">単線・より線を、周囲温度30℃・単独配線（他の電線と束ねない）の条件で気中に施設した場合の、一般的によく参照される許容電流の目安です。実際の設計では電線の本数（同一管内の電線数による低減）や周囲温度、施設方法に応じた補正が必要です。</p>
+    <div class="table-scroll">
+      <table class="ref-table">
+        <thead><tr><th>単線の太さ</th><th>より線の断面積</th><th>許容電流の目安</th><th>主な用途イメージ</th></tr></thead>
+        <tbody>
+          <tr><td class="ref-col">1.6mm</td><td>2mm²</td><td>27A</td><td class="left">照明・小型コンセント回路</td></tr>
+          <tr><td class="ref-col">2.0mm</td><td>3.5mm²</td><td>35A</td><td class="left">一般コンセント回路</td></tr>
+          <tr><td class="ref-col">2.6mm</td><td>5.5mm²</td><td>48A</td><td class="left">エアコン等の専用回路</td></tr>
+          <tr><td class="ref-col">3.2mm</td><td>8mm²</td><td>62A</td><td class="left">業務用エアコン(小〜中容量)</td></tr>
+          <tr><td class="ref-col">―</td><td>14mm²</td><td>88A</td><td class="left">業務用エアコン(中容量)・動力回路</td></tr>
+          <tr><td class="ref-col">―</td><td>22mm²</td><td>115A</td><td class="left">業務用エアコン(大容量)・動力幹線</td></tr>
+          <tr><td class="ref-col">―</td><td>38mm²</td><td>162A</td><td class="left">動力幹線・大型設備</td></tr>
+          <tr><td class="ref-col">―</td><td>60mm²</td><td>217A</td><td class="left">大型設備・幹線</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caution-box">
+      <span class="warn-icon">!</span>
+      <span>この数値は「単独配線・周囲温度30℃」を前提とした一般的な目安です。電線管に複数本まとめて収める場合は、本数に応じた電流減少係数（低減率）を掛けて許容電流を下げる必要があります。実際の選定は必ず内線規程（JEAC 8001）や電気設備技術基準・メーカー資料で確認してください。</span>
+    </div>
+  </div>
+</div>
+
+<!-- COPPER PIPE TABLE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">COPPER PIPE ― 冷媒配管（銅管）サイズの早見表</div>
+    <p class="field-intro">冷媒配管の銅管サイズは、現場で「○分（ぶ）」というインチ由来の呼び方がよく使われます。以下は呼び径・インチ表記・外径（mm）の対応表です。</p>
+    <div class="table-scroll">
+      <table class="ref-table">
+        <thead><tr><th>呼び径（分）</th><th>インチ表記</th><th>外径</th><th>現場での用途イメージ</th></tr></thead>
+        <tbody>
+          <tr><td class="ref-col">2分</td><td>1/4"</td><td>6.35mm</td><td class="left">小容量機の液管</td></tr>
+          <tr><td class="ref-col">3分</td><td>3/8"</td><td>9.52mm</td><td class="left">液管（小〜中容量）</td></tr>
+          <tr><td class="ref-col">4分</td><td>1/2"</td><td>12.70mm</td><td class="left">ガス管（小容量）／液管（中容量）</td></tr>
+          <tr><td class="ref-col">5分</td><td>5/8"</td><td>15.88mm</td><td class="left">ガス管（中容量）</td></tr>
+          <tr><td class="ref-col">6分</td><td>3/4"</td><td>19.05mm</td><td class="left">ガス管（中〜大容量）</td></tr>
+          <tr><td class="ref-col">7分</td><td>7/8"</td><td>22.20mm</td><td class="left">ガス管（大容量）</td></tr>
+          <tr><td class="ref-col">8分</td><td>1"</td><td>25.40mm</td><td class="left">ガス管（大容量・幹線）</td></tr>
+          <tr><td class="ref-col">9分</td><td>1-1/8"</td><td>28.58mm</td><td class="left">ガス管（大容量・幹線）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caution-box">
+      <span class="warn-icon">!</span>
+      <span>実際に使用する銅管サイズ（液管・ガス管それぞれ）は、機種の能力・配管長さ・高低差によってメーカーが指定する仕様が異なります。必ず据付説明書に記載された配管サイズ表に従ってください。</span>
+    </div>
+  </div>
+</div>
+
+<!-- DUCT STATIC PRESSURE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">DUCT STATIC PRESSURE ― ダクトの静圧の基礎</div>
+    <p class="field-intro">静圧とは、送風機（ファン）がダクトの中の空気抵抗に打ち勝って風を送り出す力のことです。ダクトが長くなったり、曲がりや分岐、フィルターが増えたりするほど抵抗が大きくなり、必要な静圧も高くなります。</p>
+
+    <svg id="sp-svg" viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="65" x2="580" y2="65" stroke="#22375c" stroke-width="1"/>
+      <!-- fan box -->
+      <rect x="20" y="40" width="70" height="50" rx="10" fill="#16294a" stroke="#22375c" stroke-width="1.5"/>
+      <text x="55" y="70" text-anchor="middle" font-family="Zen Kaku Gothic New" font-weight="700" font-size="12" fill="#edf2f7">送風機</text>
+      <!-- duct run with resistance elements -->
+      <path id="sp-duct" d="M 90,65 L 560,65" stroke="#38bdf8" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <g id="sp-particles"></g>
+      <text x="325" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#5c718f">ダクトが長い・曲がりや分岐が多い・フィルターがある ＝ 抵抗（静圧）が大きくなる</text>
+    </svg>
+
+    <div class="sp-row">
+      <input type="range" id="sp-slider" class="sp-slider" min="0" max="100" value="30" oninput="updateStaticPressure(this.value)">
+      <span class="sp-value" id="sp-value">30 Pa</span>
+    </div>
+    <div class="sion-stat-row">
+      <div class="sion-stat">
+        <div class="sion-stat-label">目安の運転状態</div>
+        <div class="sion-stat-value cool" id="sp-status">標準的なダクト</div>
+      </div>
+      <div class="sion-stat">
+        <div class="sion-stat-label">代表的な機種区分</div>
+        <div class="sion-stat-value warm" id="sp-type">標準静圧タイプ</div>
+      </div>
+    </div>
+
+    <div class="table-scroll" style="margin-top:16px;">
+      <table class="ref-table">
+        <thead><tr><th>機種区分</th><th>設計静圧の目安</th><th>向いているダクト計画</th></tr></thead>
+        <tbody>
+          <tr><td class="ref-col">標準静圧タイプ</td><td>30〜50Pa程度</td><td class="left">分岐が少ない、短いダクト</td></tr>
+          <tr><td class="ref-col">高静圧タイプ</td><td>100〜150Pa程度</td><td class="left">長いダクト・多数の分岐・複数の吹出口</td></tr>
+          <tr><td class="ref-col">超高静圧タイプ</td><td>150Pa以上</td><td class="left">大空間・厨房排気などの高抵抗系統</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caution-box">
+      <span class="warn-icon">!</span>
+      <span>ここでの数値は一般的な傾向を示す目安です。実際のダクト設計では、ダクトの長さ・断面寸法・曲がりの数・フィルターの種類などから必要静圧を計算し、それに見合う機種（送風機）を選定します。正確な計算方法はSHASE（空気調和・衛生工学会）規格等を参照してください。</span>
+    </div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="section field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 早見表の使い方・現場の注意点</div>
+    <p class="field-intro">早見表の数値をそのまま鵜呑みにせず、現場でどう使うべきかを解説します。</p>
+
+    <div class="sion-acc-item" id="acc-wire">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-wire')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">電気</span>
+          <span class="sion-acc-title">電線サイズ選定の考え方<small>WIRE SIZING ― 許容電流だけでは決まらない</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>許容電流だけで選ぶと失敗する理由</h4>
+          <p>電線サイズは、単純に「機器の定格電流より許容電流が大きいか」だけで決めることはできません。配線が長くなるほど電圧降下が大きくなり、機器の性能低下や誤動作の原因になります。長い幹線ではあえて1サイズ太い電線を選ぶことがあるのはこのためです。</p>
+          <h4>複数本を束ねるときの低減率</h4>
+          <p>1本の電線管（コンジット）に複数本の電線をまとめて通す場合、電線同士の発熱が逃げにくくなるため、本数に応じて許容電流を下げて考える必要があります（電流減少係数）。早見表の数値は「単独配線」の場合の目安であることを必ず覚えておいてください。</p>
+          <div class="sion-acc-note">関連知識：業務用エアコンの電源（三相200Vなど）については「業務用エアコンの基礎知識」教材でも触れています。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-pipe">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-pipe')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">配管</span>
+          <span class="sion-acc-title">銅管サイズと「分（ぶ）」表記<small>PIPE SIZING ― なぜインチ由来の呼び方をするのか</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>「分」という単位の由来</h4>
+          <p>冷媒配管の銅管は、もともとインチ規格（アメリカ由来）で作られてきた歴史があり、現場では「1インチ＝8分」という考え方で「○分」という呼び方が定着しています。たとえば1/2インチは「4分」、3/4インチは「6分」と呼ばれます。</p>
+          <h4>液管とガス管でサイズが違う理由</h4>
+          <p>同じ冷凍サイクルの中でも、液管（凝縮器〜膨張弁）を流れる冷媒は液体で密度が高く、ガス管（蒸発器〜圧縮機）を流れる冷媒は気体で体積が大きくなります。同じ質量の冷媒を流すにも、ガス管の方が液管より太い配管が必要になるのはこのためです。</p>
+          <h4>配管が細すぎる・太すぎるとどうなるか</h4>
+          <ul>
+            <li>細すぎる：配管内の抵抗（圧力損失）が大きくなり、能力低下や圧縮機への負担増につながる</li>
+            <li>太すぎる：冷媒とともに循環する冷凍機油の流速が足りず、油が配管内に滞留してしまう（油戻り不良）</li>
+          </ul>
+          <div class="sion-acc-note">関連知識：配管の長さ・高低差の制約については、ビル用マルチ（VRF）システムを扱う「業務用エアコンの基礎知識」教材でも触れています。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-duct">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-duct')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">ダクト</span>
+          <span class="sion-acc-title">静圧が不足すると何が起きるか<small>WHY STATIC PRESSURE MATTERS</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>静圧不足の症状</h4>
+          <p>機種選定時に想定した静圧より、実際のダクト系統の抵抗が大きい場合、設計した風量を送り出せなくなります。結果として、末端の吹出口ほど風量が弱くなる、部屋ごとの温度ムラが大きくなる、といった不具合につながります。</p>
+          <h4>逆に静圧が高すぎる場合</h4>
+          <p>必要以上に高静圧な機種を選んでしまうと、余分な抵抗がないぶん風量が過剰になり、風切り音や振動が大きくなることがあります。ダンパー（風量調整機構）で絞って使うこともできますが、その分ファンの消費電力にムダが生じます。</p>
+          <h4>ダクト計画で静圧に影響する要素</h4>
+          <ul>
+            <li>ダクトの全長（長いほど抵抗が増える）</li>
+            <li>曲がり・分岐の数（直角に曲げるほど抵抗が大きい）</li>
+            <li>断面のサイズ（細いダクトほど同じ風量で抵抗が増える）</li>
+            <li>フィルターや吹出口グリルの種類（目の細かいフィルターほど抵抗が大きい）</li>
+          </ul>
+          <div class="sion-acc-note">豆知識：静圧の単位にはPa（パスカル）のほか、現場では古い慣習でmmAq（ミリ水柱）が使われることもあります。おおよそ1mmAq ≒ 9.8Paです。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">早見表の基本的な読み方</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">選定のときに気をつけるポイント</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">現場での応用・トラブルの原因</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">CONSTRUCTION QUICK REFERENCE ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= DUCT PARTICLES ======================= */
+let spParticles = [];
+function initSpParticles(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const container = document.getElementById('sp-particles');
+  container.innerHTML = '';
+  spParticles = [];
+  for(let i=0;i<6;i++){
+    const c = document.createElementNS(svgNS,'circle');
+    c.setAttribute('r', 4);
+    c.setAttribute('fill', '#5eead4');
+    c.setAttribute('class','particle');
+    container.appendChild(c);
+    spParticles.push({el:c, t:i/6});
+  }
+}
+function animateSp(){
+  spParticles.forEach(p=>{
+    p.t += 0.0024;
+    if(p.t>1) p.t -= 1;
+    const x = 90 + (560-90) * p.t;
+    p.el.setAttribute('cx', x);
+    p.el.setAttribute('cy', 65);
+  });
+  requestAnimationFrame(animateSp);
+}
+
+/* ======================= STATIC PRESSURE SLIDER ======================= */
+function updateStaticPressure(val){
+  val = Number(val);
+  // map slider 0-100 to Pa 0-200 for display purposes
+  const pa = Math.round(val * 2);
+  document.getElementById('sp-value').textContent = pa + ' Pa';
+
+  let status, type;
+  if(pa < 60){
+    status = '標準的なダクト';
+    type = '標準静圧タイプ';
+  } else if(pa < 150){
+    status = '長め・分岐の多いダクト';
+    type = '高静圧タイプ';
+  } else {
+    status = '高抵抗な系統（厨房排気等）';
+    type = '超高静圧タイプ';
+  }
+  document.getElementById('sp-status').textContent = status;
+  document.getElementById('sp-type').textContent = type;
+
+  // duct color intensifies with resistance
+  const duct = document.getElementById('sp-duct');
+  const color = pa < 60 ? '#38bdf8' : (pa < 150 ? '#fb923c' : '#f43f5e');
+  duct.setAttribute('stroke', color);
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'電線の許容電流早見表で、より線8mm²のおおよその許容電流はどれですか？',
+      options:['27A','48A','62A','115A'],
+      correct:2,
+      explain:'正解は62Aです。単線3.2mmとほぼ同じ許容電流の目安として、より線8mm²が対応します（単独配線・周囲温度30℃の場合の目安）。'
+    },
+    {
+      q:'冷媒配管の銅管で「4分（ぶ）」と呼ばれるのは、インチ表記で何インチですか？',
+      options:['1/4インチ','1/2インチ','3/4インチ','1インチ'],
+      correct:1,
+      explain:'正解は1/2インチです。「1インチ＝8分」という考え方から、1/2インチは4分と呼ばれます。'
+    },
+    {
+      q:'ダクトの「静圧」とは、どのような力のことですか？',
+      options:['室内の温度差','送風機がダクト内の空気抵抗に打ち勝って風を送り出す力','冷媒の圧力','電線に流れる電流の大きさ'],
+      correct:1,
+      explain:'正解は「送風機がダクト内の空気抵抗に打ち勝って風を送り出す力」です。ダクトが長く複雑になるほど、必要な静圧は高くなります。'
+    },
+    {
+      q:'一般的に、冷媒配管の「ガス管」と「液管」では、どちらの方が配管が太くなりますか？',
+      options:['ガス管の方が太い','液管の方が太い','常に同じ太さ','機種によってまったくルールがない'],
+      correct:0,
+      explain:'正解はガス管です。気体の冷媒は液体より体積が大きいため、同じ質量の冷媒を流すにもガス管の方が太い配管が必要になります。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'電線を1本の電線管に複数本まとめて通す場合、許容電流の考え方はどうなりますか？',
+      options:['本数に関係なく早見表の数値をそのまま使える','本数に応じた電流減少係数を掛けて許容電流を下げる必要がある','本数が多いほど許容電流は増える','電線管の色によって変わる'],
+      correct:1,
+      explain:'正解は「本数に応じた電流減少係数を掛けて許容電流を下げる必要がある」です。電線同士の発熱が逃げにくくなるため、早見表の数値（単独配線の場合の目安）をそのまま使うことはできません。'
+    },
+    {
+      q:'配線が長くなる幹線で、あえて1サイズ太い電線を選ぶことがあるのはなぜですか？',
+      options:['見た目を良くするため','電圧降下による性能低下や誤動作を防ぐため','値段が安いため','工事がしやすいため'],
+      correct:1,
+      explain:'正解は「電圧降下による性能低下や誤動作を防ぐため」です。配線が長くなるほど電圧降下が大きくなるため、許容電流に余裕があっても太い電線を選ぶことがあります。'
+    },
+    {
+      q:'冷媒配管が細すぎる場合、どのような不具合が起きやすくなりますか？',
+      options:['冷凍機油が滞留しやすくなる','配管内の圧力損失が大きくなり、能力低下や圧縮機への負担増につながる','配管が凍結しなくなる','電気代が必ず安くなる'],
+      correct:1,
+      explain:'正解は「配管内の圧力損失が大きくなり、能力低下や圧縮機への負担増につながる」です。逆に配管が太すぎると、冷凍機油の流速不足による油戻り不良のリスクがあります。'
+    },
+    {
+      q:'高静圧タイプの送風機・室内機が向いているのは、どのようなダクト計画ですか？',
+      options:['分岐が少なく短いダクト','長いダクトや多数の分岐、複数の吹出口があるダクト計画','ダクトを使わない直吹き出しの部屋','屋外のみに設置する場合'],
+      correct:1,
+      explain:'正解は「長いダクトや多数の分岐、複数の吹出口があるダクト計画」です。抵抗が大きい系統には、それに見合った静圧の機種を選ぶ必要があります。'
+    },
+    {
+      q:'必要以上に高静圧な機種を選んでダンパーで絞って使う場合、どのようなデメリットがありますか？',
+      options:['風がまったく出なくなる','ファンの消費電力にムダが生じる','冷媒が漏れやすくなる','電線が細くなる'],
+      correct:1,
+      explain:'正解は「ファンの消費電力にムダが生じる」です。過剰な静圧をダンパーで絞って調整すること自体は可能ですが、エネルギー効率の面では不利になります。'
+    }
+  ],
+  advanced:[
+    {
+      q:'電線サイズの選定において、許容電流だけで決めてはいけない理由として正しいものはどれですか？',
+      options:['許容電流は常に一定の安全率を含んでいるため考慮不要','配線長さによる電圧降下や、束ね方による電流減少係数も考慮する必要があるため','電線の色によって性能が変わるため','許容電流の概念自体が古い基準だから'],
+      correct:1,
+      explain:'正解は「配線長さによる電圧降下や、束ね方による電流減少係数も考慮する必要があるため」です。早見表の数値はあくまで単独配線時の目安であり、実際の設計では複数の要素を組み合わせて検討します。'
+    },
+    {
+      q:'液管とガス管でサイズが異なる理由を、密度・体積の観点から正しく説明しているものはどれですか？',
+      options:['液体は気体より体積が大きいため、液管の方が太くなる','気体は液体より体積が大きいため、同じ質量を流すにはガス管の方が太くなる','液体と気体で密度に差はないため、サイズは常に同じになる','配管サイズは密度や体積と無関係に決まる'],
+      correct:1,
+      explain:'正解は「気体は液体より体積が大きいため、同じ質量を流すにはガス管の方が太くなる」です。気体の冷媒は液体に比べて体積が大きいため、同じ質量の冷媒を流すにもより太い配管が必要になります。'
+    },
+    {
+      q:'ダクトの静圧が実際の系統抵抗より不足していた場合、どのような不具合が起きやすくなりますか？',
+      options:['すべての吹出口で均一に風量が増える','末端の吹出口ほど風量が弱くなり、部屋ごとの温度ムラが大きくなる','冷媒が漏れる','電線の許容電流が変化する'],
+      correct:1,
+      explain:'正解は「末端の吹出口ほど風量が弱くなり、部屋ごとの温度ムラが大きくなる」です。設計した風量を送り出せなくなることが主な不具合として現れます。'
+    },
+    {
+      q:'静圧の単位として、Pa（パスカル）のほかに現場の慣習で使われることがある単位はどれですか？',
+      options:['mmAq（ミリ水柱）','kWh','dB（デシベル）','rpm'],
+      correct:0,
+      explain:'正解はmmAq（ミリ水柱）です。おおよそ1mmAq ≒ 9.8Paという換算関係があり、古い慣習として現場で使われることがあります。'
+    },
+    {
+      q:'早見表に記載されている電線の許容電流やダクトの設計静圧の数値を実務で使う際、最も適切な姿勢はどれですか？',
+      options:['早見表の数値を最終的な設計値としてそのまま採用する','一般的な目安として理解しつつ、実際の設計・施工では内線規程やメーカー資料・計算による最終確認を行う','早見表は現場では一切使わない','数値は毎回変わるため覚える必要はない'],
+      correct:1,
+      explain:'正解は「一般的な目安として理解しつつ、実際の設計・施工では内線規程やメーカー資料・計算による最終確認を行う」です。早見表は全体像をつかむための学習用の目安であり、実務の最終判断には正式な基準・資料の確認が欠かせません。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  initSpParticles();
+  animateSp();
+  updateStaticPressure(30);
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>
