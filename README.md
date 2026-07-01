@@ -20,6 +20,8 @@ sion-technos-edu/
 │   └── index.html              ← 電気回路・インバーター教材
 ├── commercial-ac-basics/
 │   └── index.html              ← 業務用エアコンの基礎知識教材
+├── ghp-gas-engine/
+│   └── index.html              ← GHP(ガスヒートポンプ)のしくみ教材
 ├── construction-reference/
 │   └── index.html              ← 工事早見表（電線・銅管・ダクト）教材
 └── README.md

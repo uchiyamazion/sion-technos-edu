@@ -36,6 +36,15 @@
     "path": "commercial-ac-basics/index.html"
   },
   {
+    "id": "ghp-gas-engine",
+    "title": "GHP（ガスヒートポンプ）のしくみ",
+    "category": "空調システム",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "ガスエンジンが圧縮機を駆動する仕組みと、排熱を暖房・霜取りに再利用する排熱回収の考え方、エンジン特有の保守項目を扱います。",
+    "path": "ghp-gas-engine/index.html"
+  },
+  {
     "id": "construction-reference",
     "title": "工事早見表（電線・銅管・ダクト）",
     "category": "工事",
