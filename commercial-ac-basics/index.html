@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務用エアコンの基礎知識 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:600px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .section{max-width:1180px; margin:40px auto 0; padding:0 24px;}
+
+  /* ---------- classification tree ---------- */
+  #tree-svg{width:100%; height:auto; display:block;}
+  .tree-box{fill:var(--bg-panel-2); stroke:var(--line); stroke-width:1.5; cursor:pointer; transition:stroke .3s ease, fill .3s ease;}
+  .tree-node:hover .tree-box, .tree-node.active .tree-box{stroke:var(--accent); fill:#1a2f52;}
+  .tree-label{font-family:var(--font-display); font-weight:700; fill:var(--text-1); font-size:14px; pointer-events:none;}
+  .tree-sub{font-family:var(--font-mono); fill:var(--text-3); font-size:9.5px; pointer-events:none;}
+  .tree-line{stroke:var(--line); stroke-width:1.5; fill:none;}
+
+  .stage2{
+    margin-top:24px;
+    display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;
+  }
+  @media (max-width:920px){.stage2{grid-template-columns:1fr;}}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:21px;}
+  .info-body{color:var(--text-2); font-size:14.5px; line-height:1.85; margin-bottom:14px;}
+
+  /* ---------- indoor unit shape gallery ---------- */
+  .shape-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:16px;}
+  @media (max-width:640px){.shape-grid{grid-template-columns:repeat(3,1fr);}}
+  .shape-item{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:10px 6px; text-align:center; cursor:pointer; transition:border-color .2s ease;
+  }
+  .shape-item:hover, .shape-item.active{border-color:var(--accent);}
+  .shape-item svg{width:100%; height:36px; display:block; margin-bottom:6px;}
+  .shape-item .shape-name{font-family:var(--font-mono); font-size:9.5px; color:var(--text-2); line-height:1.3;}
+
+  /* ---------- HP/kW table ---------- */
+  .hp-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .hp-table th, .hp-table td{
+    padding:8px 10px; text-align:center; border-bottom:1px solid var(--line);
+    font-family:var(--font-mono);
+  }
+  .hp-table th{color:var(--text-3); font-weight:500; font-size:10.5px; letter-spacing:0.03em;}
+  .hp-table td{color:var(--text-1);}
+  .hp-table td.hp-col{color:var(--accent); font-weight:700;}
+
+  .field-panel{margin-top:24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+  .quiz-panel{margin-top:24px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">COMMERCIAL AIR CONDITIONING</div>
+  <h1 class="title sion-title">業務用エアコンの<br>基礎知識</h1>
+  <p class="lede">オフィス・店舗・工場で使われる業務用エアコンは、家庭用とは仕組みも選び方も少し違います。機種の種類、室内機の形状、能力の表し方（馬力表記）まで、現場で必要な基礎知識をまとめました。</p>
+</header>
+
+<!-- CLASSIFICATION TREE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">SYSTEM TYPES ― 業務用エアコンの種類</div>
+    <svg id="tree-svg" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- connecting lines -->
+      <path class="tree-line" d="M 450,80 L 450,110 L 220,110 L 220,140"/>
+      <path class="tree-line" d="M 450,80 L 450,110 L 680,110 L 680,140"/>
+
+      <!-- root -->
+      <g class="tree-node active" data-node="root" onclick="selectNode('root')">
+        <rect class="tree-box" x="360" y="20" width="180" height="60" rx="14"/>
+        <text class="tree-label" x="450" y="45" text-anchor="middle">業務用エアコン</text>
+        <text class="tree-sub" x="450" y="63" text-anchor="middle">COMMERCIAL A/C</text>
+      </g>
+
+      <!-- child 1: package -->
+      <g class="tree-node" data-node="package" onclick="selectNode('package')">
+        <rect class="tree-box" x="120" y="140" width="200" height="65" rx="14"/>
+        <text class="tree-label" x="220" y="167" text-anchor="middle">パッケージエアコン</text>
+        <text class="tree-sub" x="220" y="185" text-anchor="middle">1対1で個別設置</text>
+      </g>
+
+      <!-- child 2: VRF multi -->
+      <g class="tree-node" data-node="vrf" onclick="selectNode('vrf')">
+        <rect class="tree-box" x="580" y="140" width="200" height="65" rx="14"/>
+        <text class="tree-label" x="680" y="167" text-anchor="middle">ビル用マルチ（VRF）</text>
+        <text class="tree-sub" x="680" y="185" text-anchor="middle">1台の室外機で複数台制御</text>
+      </g>
+    </svg>
+    <div class="sion-hint"><span class="dot"></span>図のボックスをクリックすると、右側の説明が切り替わります</div>
+  </div>
+</div>
+
+<div class="section stage2">
+  <div class="sion-panel">
+    <div class="sion-panel-title">SYSTEM ― 方式の説明</div>
+    <div class="info-head">
+      <span class="info-num" id="info-num">00</span>
+      <span class="info-title" id="info-title">業務用エアコン</span>
+    </div>
+    <div class="info-body" id="info-body"></div>
+    <div class="sion-stat-row">
+      <div class="sion-stat">
+        <div class="sion-stat-label">電源</div>
+        <div class="sion-stat-value cool" id="info-power">単相/三相200V</div>
+      </div>
+      <div class="sion-stat">
+        <div class="sion-stat-label">主な用途</div>
+        <div class="sion-stat-value warm" id="info-usage">店舗・オフィス</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sion-panel">
+    <div class="sion-panel-title">INDOOR UNIT ― 室内機の形状バリエーション</div>
+    <div class="shape-grid" id="shape-grid">
+      <div class="shape-item active" data-shape="cassette" onclick="selectShape('cassette')">
+        <svg viewBox="0 0 60 36"><rect x="8" y="8" width="44" height="20" rx="3" fill="none" stroke="#5eead4" stroke-width="2"/><line x1="14" y1="28" x2="14" y2="32" stroke="#5eead4" stroke-width="2"/><line x1="46" y1="28" x2="46" y2="32" stroke="#5eead4" stroke-width="2"/></svg>
+        <div class="shape-name">天井カセット形</div>
+      </div>
+      <div class="shape-item" data-shape="duct" onclick="selectShape('duct')">
+        <svg viewBox="0 0 60 36"><rect x="6" y="14" width="48" height="10" rx="2" fill="none" stroke="#38bdf8" stroke-width="2"/><line x1="0" y1="19" x2="6" y2="19" stroke="#38bdf8" stroke-width="2"/><line x1="54" y1="19" x2="60" y2="19" stroke="#38bdf8" stroke-width="2"/></svg>
+        <div class="shape-name">天井埋込<br>ダクト形</div>
+      </div>
+      <div class="shape-item" data-shape="ceiling" onclick="selectShape('ceiling')">
+        <svg viewBox="0 0 60 36"><rect x="10" y="6" width="40" height="14" rx="2" fill="none" stroke="#fb923c" stroke-width="2"/><line x1="18" y1="20" x2="18" y2="30" stroke="#fb923c" stroke-width="1.5"/><line x1="42" y1="20" x2="42" y2="30" stroke="#fb923c" stroke-width="1.5"/></svg>
+        <div class="shape-name">天井吊形</div>
+      </div>
+      <div class="shape-item" data-shape="wall" onclick="selectShape('wall')">
+        <svg viewBox="0 0 60 36"><rect x="12" y="10" width="36" height="12" rx="3" fill="none" stroke="#a78bfa" stroke-width="2"/><line x1="6" y1="34" x2="54" y2="34" stroke="#a78bfa" stroke-width="1"/></svg>
+        <div class="shape-name">壁掛形</div>
+      </div>
+      <div class="shape-item" data-shape="floor" onclick="selectShape('floor')">
+        <svg viewBox="0 0 60 36"><rect x="18" y="4" width="24" height="28" rx="3" fill="none" stroke="#f43f5e" stroke-width="2"/><line x1="10" y1="32" x2="50" y2="32" stroke="#f43f5e" stroke-width="1"/></svg>
+        <div class="shape-name">床置形</div>
+      </div>
+    </div>
+    <div class="info-body" id="shape-body" style="margin-bottom:0;"></div>
+  </div>
+</div>
+
+<!-- HP / kW TABLE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">CAPACITY ― 能力表示「馬力」の早見表</div>
+    <p class="field-intro">業務用エアコンの能力は、家庭用の「畳数」ではなく「馬力（HP・馬力数）」で表されることが一般的です。以下はおおまかな目安の換算表です（メーカー・機種により多少異なります）。</p>
+    <table class="hp-table">
+      <thead><tr><th>馬力表記</th><th>冷房能力の目安</th><th>おおよその対応面積目安</th></tr></thead>
+      <tbody>
+        <tr><td class="hp-col">1馬力</td><td>約2.8kW</td><td>10〜13㎡程度</td></tr>
+        <tr><td class="hp-col">1.5馬力</td><td>約4.0kW</td><td>13〜17㎡程度</td></tr>
+        <tr><td class="hp-col">2馬力</td><td>約5.6kW</td><td>18〜26㎡程度</td></tr>
+        <tr><td class="hp-col">2.5馬力</td><td>約7.1kW</td><td>26〜33㎡程度</td></tr>
+        <tr><td class="hp-col">3馬力</td><td>約8.0kW</td><td>33〜40㎡程度</td></tr>
+        <tr><td class="hp-col">4馬力</td><td>約11.2kW</td><td>40〜53㎡程度</td></tr>
+        <tr><td class="hp-col">5馬力</td><td>約14.0kW</td><td>53〜66㎡程度</td></tr>
+        <tr><td class="hp-col">6馬力</td><td>約15.5kW</td><td>66〜80㎡程度</td></tr>
+        <tr><td class="hp-col">8馬力</td><td>約22.4kW</td><td>80〜100㎡程度</td></tr>
+        <tr><td class="hp-col">10馬力</td><td>約28.0kW</td><td>100㎡〜程度</td></tr>
+      </tbody>
+    </table>
+    <div class="sion-hint" style="margin-top:14px;">
+      <span class="dot" style="background:#fb923c;"></span>
+      対応面積はあくまで目安です。天井高・断熱性能・日射・発熱機器の有無などで必要能力は大きく変わるため、実際の選定には熱負荷計算が必要です。
+    </div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="section field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
+    <p class="field-intro">業務用エアコンを扱ううえで押さえておきたい、家庭用との違いやシステムの考え方を解説します。</p>
+
+    <div class="sion-acc-item" id="acc-diff">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-diff')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">基礎知識</span>
+          <span class="sion-acc-title">家庭用と業務用の主な違い<small>WHAT'S DIFFERENT ― 電源・能力・耐用年数</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>電源</h4>
+          <p>家庭用は単相100Vまたは200Vが中心ですが、業務用は能力が大きくなるにつれて三相200Vを使う機種が増えます。三相電源は工事の際に専用の分電盤・配線が必要になるため、設置前の電気容量の確認が欠かせません。</p>
+          <h4>能力と対象空間</h4>
+          <p>家庭用は「畳数」で表示されることが多いのに対し、業務用は「馬力」で能力を表すのが一般的です。オフィスや店舗、工場など、家庭用よりもはるかに広い空間・大きな熱負荷に対応する設計になっています。</p>
+          <h4>連続運転・耐用性</h4>
+          <p>業務用は営業時間中ずっと連続運転されることを前提に設計されており、部品の耐久性や保守のしやすさ（フィルター清掃のアクセス性など）が家庭用より重視されています。</p>
+          <div class="sion-acc-note">共通点：冷凍サイクルの基本原理（圧縮機・凝縮器・膨張弁・蒸発器）自体は家庭用と同じです。詳しくは「冷凍サイクル（圧縮式）」教材を参照してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-vrf">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-vrf')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">システム</span>
+          <span class="sion-acc-title">ビル用マルチ（VRF）の考え方<small>VRF SYSTEM ― 1台の室外機で複数台を制御</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>基本の仕組み</h4>
+          <p>VRF（Variable Refrigerant Flow：可変冷媒流量）システムは、1台の室外機に対して複数台の室内機を接続し、それぞれの室内機の負荷に応じて冷媒の流量を個別にコントロールする方式です。部屋ごとに設定温度や運転・停止を独立して制御できるのが最大の特徴です。</p>
+          <h4>同時運転率という考え方</h4>
+          <p>すべての室内機が同時にフル稼働することは実際には少ないため、室外機の能力は「接続する室内機の合計能力の何割まで対応するか（同時運転率）」を考慮して選定されます。これにより、必要以上に大きな室外機を設置せずに済み、コストと設置スペースを抑えられます。</p>
+          <h4>冷媒配管の制約</h4>
+          <p>VRFシステムでは、室外機から各室内機までの配管長さや、室外機と室内機の高低差に上限が定められています。ビルの規模が大きくなるほど配管ルートの設計が重要になり、これを超えると冷媒の油戻りが悪くなったり、能力が低下したりする原因になります。</p>
+          <div class="sion-acc-note">豆知識：ガスを燃料とするエンジンで圧縮機を駆動する「GHP（ガスヒートポンプ）」という方式もあり、電力契約容量を抑えたい大規模施設で採用されることがあります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-select">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-select')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">選定</span>
+          <span class="sion-acc-title">馬力表記を使うときの注意点<small>SELECTION ― 号数・馬力はあくまで目安</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>「馬力」は正式な能力単位ではない</h4>
+          <p>実は「馬力」は正式なエネルギー単位ではなく、業界で慣習的に使われている表示方法です。実際の冷房能力はkW（キロワット）で表され、メーカーが「おおよそ何馬力相当」として案内しています。同じ「2馬力」でもメーカーや機種によって実際のkW値は微妙に異なることがあります。</p>
+          <h4>正しい能力選定の考え方</h4>
+          <p>対応面積の目安表はあくまで参考値です。実際の現場では、部屋の天井高、窓の大きさや向き（日射の影響）、断熱性能、室内の発熱機器（厨房機器やOA機器など）や人員数を踏まえた「熱負荷計算」を行い、必要な能力を算出するのが正しい手順です。目安表だけで選定すると、能力不足や過剰能力（初期費用・ランニングコストのムダ）につながることがあります。</p>
+          <div class="sion-acc-note">関連知識：能力を作り出す原理（圧縮機の回転数と能力の関係）は、電気回路・インバーター教材の「周波数と回転数の関係」で扱っています。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">機種の種類と家庭用との違い</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">馬力表記・室内機の形状</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">VRFシステム・能力選定の考え方</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">COMMERCIAL AIR CONDITIONING EDUCATION ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= SYSTEM INFO ======================= */
+const systemInfo = {
+  root:{
+    num:'00', title:'業務用エアコン', power:'単相/三相200V', usage:'店舗・オフィス・工場',
+    body:'オフィス・店舗・工場など、家庭用よりも広い空間や大きな熱負荷に対応するために設計されたエアコンの総称です。大きく分けて「パッケージエアコン（個別設置）」と「ビル用マルチ（VRF・1台の室外機で複数台の室内機を制御）」の2方式があります。'
+  },
+  package:{
+    num:'01', title:'パッケージエアコン', power:'単相/三相200V', usage:'小〜中規模の店舗・事務所',
+    body:'1台の室外機に対して、基本的に1台の室内機を接続する方式です。家庭用エアコンの延長線上にありながら、より大きな能力を持つ機種がラインナップされています。比較的小〜中規模の店舗やテナント、事務所でよく使われます。設置コストを抑えやすく、故障時も対象範囲が限定されるのがメリットです。'
+  },
+  vrf:{
+    num:'02', title:'ビル用マルチ（VRF）', power:'三相200V', usage:'中〜大規模ビル・複数フロア',
+    body:'1台の室外機に、複数台（機種によっては数十台）の室内機を接続できる方式です。部屋ごとに独立して温度設定・運転ができるため、フロアやテナントごとに使用状況が異なる中〜大規模ビルに向いています。冷媒配管の設計（許容長さ・高低差）が重要になる、やや専門性の高いシステムです。'
+  }
+};
+
+function selectNode(node){
+  document.querySelectorAll('.tree-node').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = systemInfo[node];
+  document.getElementById('info-num').textContent = d.num;
+  document.getElementById('info-title').textContent = d.title;
+  document.getElementById('info-body').textContent = d.body;
+  document.getElementById('info-power').textContent = d.power;
+  document.getElementById('info-usage').textContent = d.usage;
+}
+
+/* ======================= INDOOR UNIT SHAPES ======================= */
+const shapeInfo = {
+  cassette:'天井に埋め込み、天井面と同じ高さで4方向（または1〜2方向）に風を送るタイプです。室内の見た目がすっきりし、オフィスや店舗で最も多く採用される形状です。',
+  duct:'天井裏に本体を隠し、ダクトを通じて別の場所（複数の吹出口）に風を送るタイプです。室内に機器がまったく見えないため、デザイン性を重視する店舗や、複数の小部屋に1台で対応したい場合に使われます。',
+  ceiling:'天井から吊り下げるように設置するタイプです。天井裏にスペースがなく埋め込みができない工場やガレージ、店舗のバックヤードなどでよく使われます。',
+  wall:'家庭用エアコンと同じように壁の高い位置に設置するタイプです。小規模な事務所や店舗の増設用として使われることが多い形状です。',
+  floor:'床置きで設置するタイプです。天井裏の工事が難しい建物や、業務用の中でも比較的低い天井高の場所、既存設備の更新などで採用されます。'
+};
+
+function selectShape(shape){
+  document.querySelectorAll('.shape-item').forEach(el=>el.classList.toggle('active', el.dataset.shape===shape));
+  document.getElementById('shape-body').textContent = shapeInfo[shape];
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'業務用エアコンの方式は、大きく分けて「パッケージエアコン」と、もう一つは何ですか？',
+      options:['セントラルエアコン','ビル用マルチ(VRF)','ウィンドウエアコン','扇風機システム'],
+      correct:1,
+      explain:'正解はビル用マルチ(VRF)です。1台の室外機に複数台の室内機を接続し、部屋ごとに個別制御できる方式です。'
+    },
+    {
+      q:'業務用エアコンの電源として、能力が大きくなるほど多く使われるのはどれですか？',
+      options:['単相100V','三相200V','乾電池','ソーラー電源'],
+      correct:1,
+      explain:'正解は三相200Vです。業務用は家庭用より大きな能力が必要なため、能力が大きくなるにつれて三相200V電源を使う機種が増えます。'
+    },
+    {
+      q:'業務用エアコンの能力表示として、一般的に使われる単位はどれですか？',
+      options:['畳数','馬力','リットル','デシベル'],
+      correct:1,
+      explain:'正解は馬力です。家庭用が「畳数」で表示されることが多いのに対し、業務用は「馬力（○馬力）」で能力を表すのが一般的です。'
+    },
+    {
+      q:'天井に埋め込み、天井面と同じ高さで風を送るタイプの室内機を何と呼びますか？',
+      options:['床置形','壁掛形','天井カセット形','天井吊形'],
+      correct:2,
+      explain:'正解は天井カセット形です。オフィスや店舗で最も多く採用される室内機の形状で、天井の見た目がすっきりするのが特徴です。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'「馬力」という単位について正しい説明はどれですか？',
+      options:['国際的に定められた正式なエネルギー単位である','業界で慣習的に使われている表示方法で、実際の能力はkWで表される','馬の力そのものを直接測定した値である','すべてのメーカーで完全に統一された値である'],
+      correct:1,
+      explain:'正解は「業界で慣習的に使われている表示方法で、実際の能力はkWで表される」です。同じ「○馬力」表記でも、メーカーや機種によって実際のkW値は微妙に異なることがあります。'
+    },
+    {
+      q:'天井裏に本体を隠し、ダクトを通じて複数の吹出口に風を送るタイプの室内機を何と呼びますか？',
+      options:['天井カセット形','天井埋込ダクト形','壁掛形','床置形'],
+      correct:1,
+      explain:'正解は天井埋込ダクト形です。室内に機器が見えないため、デザイン性を重視する店舗などで使われます。'
+    },
+    {
+      q:'パッケージエアコンとビル用マルチ(VRF)の基本的な違いは何ですか？',
+      options:['冷媒の色が違う','1台の室外機に接続する室内機の台数が違う','電気を使うかガスを使うかの違い','冷房専用か暖房専用かの違い'],
+      correct:1,
+      explain:'正解は「1台の室外機に接続する室内機の台数が違う」です。パッケージは基本1対1、VRFは1台の室外機で複数台の室内機を制御します。'
+    },
+    {
+      q:'業務用エアコンが家庭用より重視される設計上のポイントとして正しいものはどれですか？',
+      options:['デザインの華やかさ','連続運転を前提とした耐久性やメンテナンス性','価格の安さのみ','リモコンの多機能さのみ'],
+      correct:1,
+      explain:'正解は「連続運転を前提とした耐久性やメンテナンス性」です。業務用は営業時間中ずっと運転されることを想定して設計されています。'
+    },
+    {
+      q:'天井裏のスペースがなく埋め込みができない工場やガレージなどで使われることが多い室内機の形状はどれですか？',
+      options:['天井カセット形','天井吊形','天井埋込ダクト形','壁掛形'],
+      correct:1,
+      explain:'正解は天井吊形です。天井から吊り下げて設置するため、天井裏への埋め込みができない現場でよく採用されます。'
+    }
+  ],
+  advanced:[
+    {
+      q:'VRFシステムにおける「同時運転率」とは、どのような考え方ですか？',
+      options:['すべての室内機が常に同時に停止する前提の設計','接続する室内機が同時にフル稼働する割合を考慮した室外機の能力設計','冷媒の流れる速度のこと','室内機の色を揃える設計ルール'],
+      correct:1,
+      explain:'正解は「接続する室内機が同時にフル稼働する割合を考慮した室外機の能力設計」です。すべての室内機が同時にフル稼働することは少ないため、これを考慮して室外機の能力を選定し、コストとスペースを抑えます。'
+    },
+    {
+      q:'VRFシステムで、冷媒配管の許容長さや高低差を超えるとどのような問題が起きやすくなりますか？',
+      options:['室内機のデザインが崩れる','冷媒の油戻りが悪くなり、能力が低下する','電気代が必ず安くなる','リモコンの反応が良くなる'],
+      correct:1,
+      explain:'正解は「冷媒の油戻りが悪くなり、能力が低下する」です。配管ルートの設計はVRFシステムの性能を左右する重要な要素です。'
+    },
+    {
+      q:'ガスを燃料とするエンジンで圧縮機を駆動する方式を何と呼びますか？',
+      options:['EHP(電気ヒートポンプ)','GHP(ガスヒートポンプ)','VRF','セントラル方式'],
+      correct:1,
+      explain:'正解はGHP(ガスヒートポンプ)です。電力契約容量を抑えたい大規模施設などで採用されることがあります。一般的な電気駆動の方式はEHP(電気ヒートポンプ)と呼ばれます。'
+    },
+    {
+      q:'能力目安表だけを見て機種を選定した場合、どのような問題が起きる可能性がありますか？',
+      options:['必ず能力が過剰になる','天井高・断熱性能・発熱機器などの条件次第で能力不足や過剰能力になりうる','必ず能力不足になる','問題は起きない'],
+      correct:1,
+      explain:'正解は「天井高・断熱性能・発熱機器などの条件次第で能力不足や過剰能力になりうる」です。正しい選定には、目安表だけでなく熱負荷計算を行うことが重要です。'
+    },
+    {
+      q:'業務用エアコンの正しい能力選定のために、本来行うべき計算は何ですか？',
+      options:['馬力の平均値の計算','熱負荷計算','冷媒の色の計算','リモコンのボタン数の計算'],
+      correct:1,
+      explain:'正解は熱負荷計算です。部屋の天井高、窓の大きさや向き、断熱性能、室内の発熱機器や人員数などを踏まえて必要な能力を算出します。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  selectNode('root');
+  selectShape('cassette');
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>

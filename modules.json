@@ -25,5 +25,14 @@
     "levels": ["初級", "中級", "上級"],
     "description": "交流・直流の基礎からPWM制御の仕組み、力率改善やノイズ対策、インバーター基板の故障診断など現場の実務まで扱います。",
     "path": "inverter-circuit/index.html"
+  },
+  {
+    "id": "commercial-ac-basics",
+    "title": "業務用エアコンの基礎知識",
+    "category": "空調システム",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "パッケージエアコンとビル用マルチ(VRF)の違い、室内機の形状、馬力表記の意味など、業務用エアコン特有の知識をまとめました。",
+    "path": "commercial-ac-basics/index.html"
   }
 ]

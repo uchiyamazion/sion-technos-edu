@@ -15,9 +15,11 @@ sion-technos-edu/
 ├── compression-cycle/
 │   └── index.html              ← 冷凍サイクル（圧縮式）教材
 ├── absorption-cycle/
-│   └── index.html              ← 冷凍サイクル（吸収式）教材（準備中）
+│   └── index.html              ← 冷凍サイクル（吸収式）教材
 ├── inverter-circuit/
-│   └── index.html              ← 電気回路・インバーター教材（準備中）
+│   └── index.html              ← 電気回路・インバーター教材
+├── commercial-ac-basics/
+│   └── index.html              ← 業務用エアコンの基礎知識教材
 └── README.md
 ```
 
