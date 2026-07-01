@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水冷チラー・空冷チラーのしくみ ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:600px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .section{max-width:1180px; margin:32px auto 0; padding:0 24px;}
+
+  #tree-svg{width:100%; height:auto; display:block;}
+  .tree-box{fill:var(--bg-panel-2); stroke:var(--line); stroke-width:1.5; cursor:pointer; transition:stroke .3s ease, fill .3s ease;}
+  .tree-node:hover .tree-box, .tree-node.active .tree-box{stroke:var(--accent); fill:#1a2f52;}
+  .tree-label{font-family:var(--font-display); font-weight:700; fill:var(--text-1); font-size:14px; pointer-events:none;}
+  .tree-sub{font-family:var(--font-mono); fill:var(--text-3); font-size:9.5px; pointer-events:none;}
+  .tree-line{stroke:var(--line); stroke-width:1.5; fill:none;}
+
+  .stage2{
+    margin-top:24px;
+    display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;
+  }
+  @media (max-width:920px){.stage2{grid-template-columns:1fr;}}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:21px;}
+  .info-body{color:var(--text-2); font-size:14.5px; line-height:1.85; margin-bottom:14px;}
+
+  .compare-table{width:100%; border-collapse:collapse; font-size:12px;}
+  .compare-table th, .compare-table td{
+    padding:9px 8px; text-align:left; border-bottom:1px solid var(--line);
+    font-family:var(--font-mono);
+  }
+  .compare-table th{color:var(--text-3); font-weight:500; font-size:10px; letter-spacing:0.02em;}
+  .compare-table td{color:var(--text-2);}
+  .compare-table td.item{color:var(--text-1); font-family:var(--font-display); font-weight:700; font-size:12.5px;}
+  .compare-table th.air-col{color:var(--warm);}
+  .compare-table th.water-col{color:var(--accent);}
+
+  /* cooling tower diagram */
+  #tower-svg{width:100%; height:auto; display:block;}
+  .particle{filter:drop-shadow(0 0 3px currentColor);}
+  .tower-label{font-family:var(--font-mono); font-size:9.5px; fill:var(--text-3);}
+
+  .field-panel{margin-top:24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+  .quiz-panel{margin-top:24px;}
+
+  .roadmap-note{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--bg-panel-2); border:1px dashed var(--line); border-radius:12px;
+    padding:14px 16px; margin-top:16px; font-size:12.5px; color:var(--text-3); line-height:1.8;
+  }
+  .roadmap-note .dot-icon{width:6px;height:6px;border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:6px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">CHILLER SYSTEMS</div>
+  <h1 class="title sion-title">水冷チラー・<br>空冷チラーのしくみ</h1>
+  <p class="lede">チラーは、冷やした水（冷水）を作り、それをビル全体や工場のラインに送って冷房・冷却に使う設備です。放熱の方法によって「空冷チラー」と「水冷チラー」に分かれます。それぞれの仕組みと使い分けを見てみましょう。</p>
+</header>
+
+<!-- CLASSIFICATION TREE -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">CHILLER TYPES ― チラーの種類</div>
+    <svg id="tree-svg" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+      <path class="tree-line" d="M 450,80 L 450,110 L 220,110 L 220,140"/>
+      <path class="tree-line" d="M 450,80 L 450,110 L 680,110 L 680,140"/>
+
+      <g class="tree-node active" data-node="root" onclick="selectNode('root')">
+        <rect class="tree-box" x="360" y="20" width="180" height="60" rx="14"/>
+        <text class="tree-label" x="450" y="45" text-anchor="middle">チラー（冷凍機）</text>
+        <text class="tree-sub" x="450" y="63" text-anchor="middle">CHILLER</text>
+      </g>
+
+      <g class="tree-node" data-node="aircooled" onclick="selectNode('aircooled')">
+        <rect class="tree-box" x="120" y="140" width="200" height="65" rx="14"/>
+        <text class="tree-label" x="220" y="167" text-anchor="middle">空冷チラー</text>
+        <text class="tree-sub" x="220" y="185" text-anchor="middle">外気に直接放熱</text>
+      </g>
+
+      <g class="tree-node" data-node="watercooled" onclick="selectNode('watercooled')">
+        <rect class="tree-box" x="580" y="140" width="200" height="65" rx="14"/>
+        <text class="tree-label" x="680" y="167" text-anchor="middle">水冷チラー</text>
+        <text class="tree-sub" x="680" y="185" text-anchor="middle">冷却水＋冷却塔で放熱</text>
+      </g>
+    </svg>
+    <div class="sion-hint"><span class="dot"></span>図のボックスをクリックすると、右側の説明が切り替わります</div>
+  </div>
+</div>
+
+<div class="section stage2">
+  <div class="sion-panel">
+    <div class="sion-panel-title">TYPE ― 方式の説明</div>
+    <div class="info-head">
+      <span class="info-num" id="info-num">00</span>
+      <span class="info-title" id="info-title">チラー（冷凍機）</span>
+    </div>
+    <div class="info-body" id="info-body"></div>
+    <div class="sion-stat-row">
+      <div class="sion-stat">
+        <div class="sion-stat-label">放熱方法</div>
+        <div class="sion-stat-value warm" id="info-heat">外気・冷却水</div>
+      </div>
+      <div class="sion-stat">
+        <div class="sion-stat-label">主な設置場所</div>
+        <div class="sion-stat-value cool" id="info-place">屋上・機械室</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sion-panel">
+    <div class="sion-panel-title">AIR-COOLED vs WATER-COOLED ― 比較</div>
+    <table class="compare-table">
+      <thead><tr><th style="width:34%;">項目</th><th class="air-col">空冷チラー</th><th class="water-col">水冷チラー</th></tr></thead>
+      <tbody>
+        <tr><td class="item">放熱方法</td><td>凝縮器で外気に直接放熱</td><td>冷却水＋冷却塔で放熱</td></tr>
+        <tr><td class="item">設置スペース</td><td>屋外に単独設置しやすい</td><td>機械室＋屋上の冷却塔が必要</td></tr>
+        <tr><td class="item">運転効率</td><td>外気温の影響を受けやすい</td><td>一般的に高効率で安定</td></tr>
+        <tr><td class="item">水処理・水質管理</td><td>基本的に不要</td><td>冷却水の水質管理が必要</td></tr>
+        <tr><td class="item">主な用途規模</td><td>中小規模のビル・工場</td><td>大規模ビル・大規模プラント</td></tr>
+      </tbody>
+    </table>
+    <div class="sion-hint" style="margin-top:12px;">
+      <span class="dot" style="background:#fb923c;"></span>
+      設置スペース・規模・メンテナンス体制によって、どちらが向いているかが変わります。
+    </div>
+  </div>
+</div>
+
+<!-- COOLING TOWER DIAGRAM -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">COOLING TOWER ― 冷却塔（クーリングタワー）の仕組み</div>
+    <p class="field-intro">水冷チラーの心臓部とも言えるのが冷却塔です。チラーの凝縮器で温められた冷却水を、外気と直接触れさせて冷やし、再びチラーに戻します。</p>
+    <svg id="tower-svg" viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- chiller box -->
+      <rect x="40" y="130" width="140" height="70" rx="12" fill="#16294a" stroke="#22375c" stroke-width="1.5"/>
+      <text x="110" y="160" text-anchor="middle" font-family="Zen Kaku Gothic New" font-weight="700" font-size="13" fill="#edf2f7">チラー</text>
+      <text x="110" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="#5c718f">CHILLER</text>
+
+      <!-- cooling tower box -->
+      <rect x="520" y="40" width="140" height="110" rx="12" fill="#16294a" stroke="#22375c" stroke-width="1.5"/>
+      <text x="590" y="90" text-anchor="middle" font-family="Zen Kaku Gothic New" font-weight="700" font-size="13" fill="#edf2f7">冷却塔</text>
+      <text x="590" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="#5c718f">COOLING TOWER</text>
+      <!-- fan symbol on top -->
+      <circle cx="590" cy="55" r="10" fill="none" stroke="#9db0c9" stroke-width="1.5"/>
+      <line x1="583" y1="48" x2="597" y2="62" stroke="#9db0c9" stroke-width="1.2"/>
+      <line x1="597" y1="48" x2="583" y2="62" stroke="#9db0c9" stroke-width="1.2"/>
+
+      <!-- hot water pipe: chiller -> tower -->
+      <path d="M 180,150 L 520,150" stroke="#f43f5e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <g id="particles-hot"></g>
+      <text class="tower-label" x="350" y="140" text-anchor="middle">温まった冷却水（往き）</text>
+
+      <!-- cold water pipe: tower -> chiller -->
+      <path d="M 520,180 L 180,180" stroke="#38bdf8" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <g id="particles-cold"></g>
+      <text class="tower-label" x="350" y="200" text-anchor="middle">冷やされた冷却水（戻り）</text>
+
+      <!-- evaporation arrows from tower top -->
+      <path d="M 560,40 L 555,15" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <path d="M 590,40 L 590,10" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <path d="M 620,40 L 625,15" stroke="#5eead4" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <text class="tower-label" x="590" y="18" text-anchor="middle" fill="#5eead4">蒸発潜熱で放熱</text>
+    </svg>
+    <div class="sion-hint" style="margin-top:4px;">
+      <span class="dot" style="background:#5eead4;"></span>
+      冷却塔は、水の一部をわざと蒸発させることで残りの水から熱を奪う「蒸発潜熱」という原理を利用しています。汗が蒸発するときに体温を奪うのと同じ仕組みです。
+    </div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="section field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
+    <p class="field-intro">チラーを扱ううえで押さえておきたい、選定の考え方と冷却塔特有の保守知識を解説します。</p>
+
+    <div class="sion-acc-item" id="acc-choose">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-choose')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">選定</span>
+          <span class="sion-acc-title">空冷と水冷、どう選ぶか<small>SELECTION ― スペース・効率・メンテナンス性のバランス</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>空冷チラーが向いているケース</h4>
+          <p>屋外に単独で設置でき、冷却塔用の給排水設備が不要なため、比較的コンパクトに導入できます。中小規模のビルや工場、水利用に制約がある立地（水道料金が高い、排水設備の増設が難しいなど）で選ばれることが多い方式です。</p>
+          <h4>水冷チラーが向いているケース</h4>
+          <p>凝縮温度を外気温より低い「冷却水温度」で管理できるため、一般的に空冷よりも効率が高く、大容量の設備に向いています。大規模ビルの地域冷暖房や、24時間安定した冷却が求められる工場・データセンターなどで多く採用されます。ただし冷却塔の設置スペースと、後述する水質管理の手間が必要になります。</p>
+          <div class="sion-acc-note">共通点：どちらの方式も、冷媒が圧縮機・凝縮器・膨張弁・蒸発器を巡る基本原理は同じです。詳しくは「冷凍サイクル（圧縮式）」教材を参照してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-tower-maint">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-tower-maint')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">保守</span>
+          <span class="sion-acc-title">冷却塔の水質管理<small>WATER TREATMENT ― スケール・レジオネラ対策</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>スケール（水垢）の付着</h4>
+          <p>冷却水中のミネラル分は、水が蒸発を繰り返すことで濃縮され、配管内壁や熱交換器にスケール（水垢）として付着しやすくなります。スケールが厚くなると熱交換効率が落ち、チラーの能力低下や消費電力の増加につながります。定期的な水質検査と、必要に応じた薬剤処理（スケール防止剤の投入）やブロー（一部の水を排出して濃縮を防ぐ操作）が欠かせません。</p>
+          <h4>レジオネラ属菌対策</h4>
+          <p>冷却塔は、水と外気が直接触れ合い、水しぶき（エアロゾル）が発生しやすい構造のため、レジオネラ属菌が繁殖しやすい環境になりがちです。放置すると、飛散したエアロゾルを吸い込むことで健康被害につながる恐れがあります。このため法令に基づき、冷却塔の定期清掃・水質検査・適切な薬剤管理（殺菌処理）が義務付けられています。</p>
+          <h4>白煙（湯気）について</h4>
+          <p>冬場など外気温が低い時期に、冷却塔から白い煙のようなものが立ち上るのを見ることがあります。これは蒸発した水蒸気が外気で急激に冷やされて再び水滴（霧）になったもので、火災の煙とは異なります。ただし周辺への視界不良などの配慮から、設置場所には注意が必要です。</p>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>冷却塔の保守を怠ると、能力低下だけでなく衛生上のリスクにも直結します。水冷チラーを導入する際は、冷却塔の定期清掃・水質管理の体制もあわせて計画することが重要です。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-control">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-control')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">制御</span>
+          <span class="sion-acc-title">チラーの負荷制御<small>CAPACITY CONTROL ― 台数制御とインバーター制御</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>台数制御という考え方</h4>
+          <p>大規模施設では、1台の大きなチラーではなく、複数台の中型チラーを設置し、その日の負荷（必要な冷却量）に応じて稼働台数を増減させる「台数制御」がよく使われます。負荷が小さいときは一部のチラーを停止させることで、全体の運転効率を高く保てます。</p>
+          <h4>インバーター制御による部分負荷効率の改善</h4>
+          <p>インバーター搭載のチラーは、圧縮機の回転数を連続的に変えられるため、必要な冷却能力に応じてきめ細かく出力を調整できます。エアコンの教材で扱った「インバーターによる省エネ」と同じ考え方が、大型のチラーにも応用されています。</p>
+          <div class="sion-acc-note">関連知識：インバーターが回転数を変える仕組みそのものは「電気回路・インバーター」教材で詳しく扱っています。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">チラーの基本と2つの方式</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">冷却塔の仕組みと選定の考え方</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">水質管理・負荷制御</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">CHILLER SYSTEMS EDUCATION ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= TYPE INFO ======================= */
+const typeInfo = {
+  root:{
+    num:'00', heat:'外気・冷却水', place:'屋上・機械室',
+    title:'チラー（冷凍機）',
+    body:'冷やした水（冷水）を作り、配管を通じてビル各所の空調機や工場のラインに送る設備です。家庭用・業務用エアコンが「冷えた空気」を直接送るのに対し、チラーは「冷えた水」を送るのが特徴で、複数の建物・フロアに冷房を届けるのに適しています。放熱方法の違いにより「空冷チラー」と「水冷チラー」の2方式に分かれます。'
+  },
+  aircooled:{
+    num:'01', heat:'外気に直接放熱', place:'屋上・屋外置き',
+    title:'空冷チラー',
+    body:'凝縮器のファンで外気を直接当てて放熱する方式です。冷却水や冷却塔が不要なため設置がシンプルで、屋外に単独で設置しやすいのが特徴です。ただし外気温の影響を受けやすく、猛暑日には効率が下がる傾向があります。中小規模のビルや工場でよく使われます。'
+  },
+  watercooled:{
+    num:'02', heat:'冷却水＋冷却塔', place:'機械室＋屋上（冷却塔）',
+    title:'水冷チラー',
+    body:'凝縮器を冷却水で冷やし、その冷却水を冷却塔（クーリングタワー）で外気に放熱させる方式です。冷却水の温度は外気の湿球温度に近づけられるため、一般的に空冷より効率よく安定した運転ができます。大規模ビルや大容量が必要なプラントでよく採用されますが、冷却塔の設置スペースと水質管理の手間が必要です。'
+  }
+};
+
+function selectNode(node){
+  document.querySelectorAll('.tree-node').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = typeInfo[node];
+  document.getElementById('info-num').textContent = d.num;
+  document.getElementById('info-title').textContent = d.title;
+  document.getElementById('info-body').textContent = d.body;
+  document.getElementById('info-heat').textContent = d.heat;
+  document.getElementById('info-place').textContent = d.place;
+}
+
+/* ======================= COOLING TOWER PARTICLES ======================= */
+let towerParticles = [];
+function initTowerParticles(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  towerParticles = [];
+  const configs = [
+    {containerId:'particles-hot', color:'#f43f5e', y:150, x1:180, x2:520, count:4},
+    {containerId:'particles-cold', color:'#38bdf8', y:180, x1:520, x2:180, count:4}
+  ];
+  configs.forEach(cfg=>{
+    const container = document.getElementById(cfg.containerId);
+    container.innerHTML = '';
+    for(let i=0;i<cfg.count;i++){
+      const c = document.createElementNS(svgNS,'circle');
+      c.setAttribute('r', 4.5);
+      c.setAttribute('fill', cfg.color);
+      c.setAttribute('class','particle');
+      c.style.color = cfg.color;
+      container.appendChild(c);
+      towerParticles.push({el:c, t:i/cfg.count, y:cfg.y, x1:cfg.x1, x2:cfg.x2, speed:0.0025});
+    }
+  });
+}
+function animateTower(){
+  towerParticles.forEach(p=>{
+    p.t += p.speed;
+    if(p.t>1) p.t -= 1;
+    const x = p.x1 + (p.x2-p.x1)*p.t;
+    p.el.setAttribute('cx', x);
+    p.el.setAttribute('cy', p.y);
+  });
+  requestAnimationFrame(animateTower);
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'チラーは、何を作ってビル各所や工場のラインに送る設備ですか？',
+      options:['冷えた空気','冷えた水','冷えた冷媒ガス','冷えた油'],
+      correct:1,
+      explain:'正解は冷えた水（冷水）です。エアコンが「冷えた空気」を直接送るのに対し、チラーは「冷えた水」を作って配管で各所に送ります。'
+    },
+    {
+      q:'チラーは放熱方法の違いによって、大きく2つの方式に分かれます。空冷チラーと、もう一つは何ですか？',
+      options:['ガス冷チラー','水冷チラー','油冷チラー','太陽冷チラー'],
+      correct:1,
+      explain:'正解は水冷チラーです。空冷チラーは外気に直接放熱し、水冷チラーは冷却水と冷却塔を使って放熱します。'
+    },
+    {
+      q:'水冷チラーで、冷却水を外気に放熱させるための設備を何と呼びますか？',
+      options:['冷却塔（クーリングタワー）','送風機','膨張弁','蒸発器'],
+      correct:0,
+      explain:'正解は冷却塔（クーリングタワー）です。チラーの凝縮器で温められた冷却水を外気と直接触れさせて冷やします。'
+    },
+    {
+      q:'空冷チラーが、水冷チラーと比べて設置しやすい理由は何ですか？',
+      options:['冷媒を使わないため','冷却塔や給排水設備が不要なため','電気を使わないため','必ず小型だから'],
+      correct:1,
+      explain:'正解は「冷却塔や給排水設備が不要なため」です。凝縮器のファンで外気に直接放熱するため、水冷チラーに比べてシンプルに設置できます。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'冷却塔が水を冷やすときに利用している主な原理は何ですか？',
+      options:['蒸発潜熱','電磁誘導','摩擦熱','光合成'],
+      correct:0,
+      explain:'正解は蒸発潜熱です。水の一部をわざと蒸発させることで、残りの水から熱を奪います。汗が蒸発するときに体温を奪うのと同じ原理です。'
+    },
+    {
+      q:'一般的に、水冷チラーが空冷チラーより効率が良いとされる理由は何ですか？',
+      options:['冷媒の量が多いため','冷却水温度を外気温より低く管理しやすいため','電気を使わないため','設置面積が大きいため'],
+      correct:1,
+      explain:'正解は「冷却水温度を外気温より低く管理しやすいため」です。冷却塔を使うことで、外気の湿球温度に近い温度まで冷却水を冷やせるため、凝縮温度を低く保ちやすくなります。'
+    },
+    {
+      q:'空冷チラーが向いているとされる状況はどれですか？',
+      options:['24時間安定した超大容量の冷却が必要な工場','水利用に制約があり、比較的コンパクトに導入したい中小規模の施設','必ず水質管理を徹底したい大規模ビル','冷却塔の設置スペースが十分にある大規模プラント'],
+      correct:1,
+      explain:'正解は「水利用に制約があり、比較的コンパクトに導入したい中小規模の施設」です。冷却塔や水質管理が不要な点が、水利用に制約がある立地でのメリットになります。'
+    },
+    {
+      q:'冷却水中のミネラル分が濃縮されて配管内壁や熱交換器に付着する現象を何と呼びますか？',
+      options:['凍結','スケール','ノッキング','液バック'],
+      correct:1,
+      explain:'正解はスケールです。スケールが厚くなると熱交換効率が落ち、チラーの能力低下や消費電力の増加につながります。'
+    },
+    {
+      q:'冷却塔から冬場などに立ち上る白い煙のようなものは、主に何が原因ですか？',
+      options:['火災による煙','蒸発した水蒸気が外気で冷やされて水滴になったもの','冷媒の漏れ','電気系統の異常'],
+      correct:1,
+      explain:'正解は「蒸発した水蒸気が外気で冷やされて水滴になったもの」です。火災の煙とは異なりますが、周辺への視界不良などへの配慮は必要です。'
+    }
+  ],
+  advanced:[
+    {
+      q:'冷却塔でレジオネラ属菌対策が特に重要とされる理由は何ですか？',
+      options:['菌が冷媒を腐食させるため','水しぶき(エアロゾル)が発生しやすく、繁殖・飛散による健康被害のリスクがあるため','菌がスケールの主成分だから','菌が電気系統を故障させるため'],
+      correct:1,
+      explain:'正解は「水しぶき(エアロゾル)が発生しやすく、繁殖・飛散による健康被害のリスクがあるため」です。冷却塔は水と外気が直接触れ合う構造のため、法令に基づく定期清掃・水質検査・薬剤管理が義務付けられています。'
+    },
+    {
+      q:'冷却水の濃縮を防ぐために、水の一部を意図的に排出する操作を何と呼びますか？',
+      options:['ブロー','ノッキング','霜取り','液バック'],
+      correct:0,
+      explain:'正解はブローです。冷却塔では水の蒸発が繰り返されるためミネラル分が濃縮されやすく、一部の水を排出(ブロー)して濃縮を防ぐ操作が行われます。'
+    },
+    {
+      q:'大規模施設で、複数台の中型チラーを設置し、負荷に応じて稼働台数を増減させる制御方式を何と呼びますか？',
+      options:['台数制御','単数制御','固定制御','逆転制御'],
+      correct:0,
+      explain:'正解は台数制御です。負荷が小さいときは一部のチラーを停止させることで、全体の運転効率を高く保てます。'
+    },
+    {
+      q:'インバーター搭載のチラーが部分負荷時の効率改善に役立つ理由は何ですか？',
+      options:['冷媒の種類が変わるため','圧縮機の回転数を連続的に変え、必要な能力にきめ細かく合わせられるため','冷却塔が不要になるため','水質管理が不要になるため'],
+      correct:1,
+      explain:'正解は「圧縮機の回転数を連続的に変え、必要な能力にきめ細かく合わせられるため」です。エアコンにおけるインバーター制御と同じ考え方が、大型のチラーにも応用されています。'
+    },
+    {
+      q:'スケールの付着を防ぐための現場での対応として適切なものはどれですか？',
+      options:['冷却水を一切交換しない','定期的な水質検査と、必要に応じた薬剤処理やブロー','冷却塔のファンを常に停止する','チラーの運転を24時間止めない'],
+      correct:1,
+      explain:'正解は「定期的な水質検査と、必要に応じた薬剤処理やブロー」です。水質管理を怠ると、熱交換効率の低下や能力低下、消費電力増加につながります。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  selectNode('root');
+  initTowerParticles();
+  animateTower();
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>

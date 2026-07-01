@@ -45,6 +45,15 @@
     "path": "ghp-gas-engine/index.html"
   },
   {
+    "id": "chiller-systems",
+    "title": "水冷チラー・空冷チラーのしくみ",
+    "category": "空調システム",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "空冷チラーと水冷チラーの違い、冷却塔(クーリングタワー)の仕組み、水質管理(スケール・レジオネラ対策)、台数制御など大型設備特有の知識を扱います。",
+    "path": "chiller-systems/index.html"
+  },
+  {
     "id": "construction-reference",
     "title": "工事早見表（電線・銅管・ダクト）",
     "category": "工事",
