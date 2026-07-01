@@ -21,9 +21,9 @@
     "id": "inverter-circuit",
     "title": "電気回路・インバーター",
     "category": "電気",
-    "status": "coming-soon",
+    "status": "published",
     "levels": ["初級", "中級", "上級"],
-    "description": "交流・直流の基礎からPWM制御の仕組み、力率改善やインバーター基板の故障診断など現場の実務まで扱います。",
+    "description": "交流・直流の基礎からPWM制御の仕組み、力率改善やノイズ対策、インバーター基板の故障診断など現場の実務まで扱います。",
     "path": "inverter-circuit/index.html"
   }
 ]
