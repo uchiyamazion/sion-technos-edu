@@ -60,6 +60,28 @@
   .hp-table td{color:var(--text-1);}
   .hp-table td.hp-col{color:var(--accent); font-weight:700;}
 
+  /* ---------- diagnosis quick-reference table ---------- */
+  .diag-table{width:100%; border-collapse:collapse; font-size:12px;}
+  .diag-table th, .diag-table td{
+    padding:9px 8px; text-align:center; border-bottom:1px solid var(--line);
+    font-family:var(--font-mono);
+  }
+  .diag-table th{color:var(--text-3); font-weight:500; font-size:10px; letter-spacing:0.02em;}
+  .diag-table td{color:var(--text-2);}
+  .diag-table td.diag-symptom{
+    text-align:left; color:var(--text-1); font-family:var(--font-display); font-weight:700; font-size:12.5px;
+  }
+  .diag-badge{
+    display:inline-flex; align-items:center; gap:3px;
+    font-family:var(--font-mono); font-weight:700; font-size:11.5px;
+    padding:3px 8px; border-radius:100px;
+  }
+  .diag-badge.up{background:#f43f5e22; color:var(--hot);}
+  .diag-badge.up-strong{background:#f43f5e33; color:var(--hot);}
+  .diag-badge.down{background:#38bdf822; color:var(--accent);}
+  .diag-badge.down-strong{background:#38bdf833; color:var(--accent);}
+  .diag-badge.normal{background:var(--bg-panel-2); color:var(--text-3); border:1px solid var(--line);}
+
   .field-panel{margin-top:24px;}
   .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
   .quiz-panel{margin-top:24px;}
@@ -187,11 +209,57 @@
   </div>
 </div>
 
+<!-- REFRIGERANT CHARGE DIAGNOSIS -->
+<div class="section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">DIAGNOSIS ― 冷媒量トラブルの早見表</div>
+    <p class="field-intro">「効きが悪い」というトラブルの多くは、冷媒量の過不足が原因です。圧力計・電流値・機器の様子から、ガス欠（冷媒不足）とオーバーチャージ（冷媒過充填）を見分けるポイントをまとめました。</p>
+    <table class="diag-table">
+      <thead><tr><th style="text-align:left;">症状</th><th>低圧側</th><th>高圧側</th><th>圧縮機電流</th><th>その他の特徴</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="diag-symptom">冷媒不足<br><span style="font-family:var(--font-mono); font-weight:400; font-size:10.5px; color:var(--text-3);">(ガス欠)</span></td>
+          <td><span class="diag-badge down-strong">↓↓ 低い</span></td>
+          <td><span class="diag-badge down">↓ 低め</span></td>
+          <td><span class="diag-badge down">↓ 低め</span></td>
+          <td>吹出温度が下がりきらない／サイトグラスに気泡／蒸発器に霜が付きにくい</td>
+        </tr>
+        <tr>
+          <td class="diag-symptom">冷媒過充填<br><span style="font-family:var(--font-mono); font-weight:400; font-size:10.5px; color:var(--text-3);">(オーバーチャージ)</span></td>
+          <td><span class="diag-badge up">↑ 高め</span></td>
+          <td><span class="diag-badge up-strong">↑↑ 高い</span></td>
+          <td><span class="diag-badge up">↑ 高め</span></td>
+          <td>液管が異常に冷たい／圧縮機の運転音が大きい／液バックのリスク</td>
+        </tr>
+        <tr>
+          <td class="diag-symptom">不凝縮ガス混入<br><span style="font-family:var(--font-mono); font-weight:400; font-size:10.5px; color:var(--text-3);">(空気混入)</span></td>
+          <td><span class="diag-badge normal">ほぼ正常</span></td>
+          <td><span class="diag-badge up">↑ 高め</span></td>
+          <td><span class="diag-badge normal">ほぼ正常</span></td>
+          <td>運転停止後も高圧側の圧力が下がりにくい</td>
+        </tr>
+        <tr>
+          <td class="diag-symptom">膨張弁・フィルター詰まり</td>
+          <td><span class="diag-badge down-strong">↓↓ 低い</span></td>
+          <td><span class="diag-badge normal">正常〜低め</span></td>
+          <td><span class="diag-badge normal">ほぼ正常</span></td>
+          <td>蒸発器の一部だけ着霜（部分的な凍結）／詰まり箇所の配管に温度差</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sion-hint" style="margin-top:14px;">
+      <span class="dot" style="background:#f43f5e;"></span>
+      この表はあくまで一般的な傾向の目安です。実際の診断では複数の兆候を組み合わせて判断し、最終的にはゲージマニホールドでの正確な圧力測定と、メーカーの規定値との比較が必要です。
+    </div>
+  </div>
+</div>
+
 <!-- FIELD KNOWLEDGE -->
 <div class="section field-panel">
   <div class="sion-panel">
     <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
     <p class="field-intro">業務用エアコンを扱ううえで押さえておきたい、家庭用との違いやシステムの考え方を解説します。</p>
+
 
     <div class="sion-acc-item" id="acc-diff">
       <div class="sion-acc-head" onclick="sionToggleAcc('acc-diff')">
@@ -231,6 +299,68 @@
           <h4>冷媒配管の制約</h4>
           <p>VRFシステムでは、室外機から各室内機までの配管長さや、室外機と室内機の高低差に上限が定められています。ビルの規模が大きくなるほど配管ルートの設計が重要になり、これを超えると冷媒の油戻りが悪くなったり、能力が低下したりする原因になります。</p>
           <div class="sion-acc-note">豆知識：ガスを燃料とするエンジンで圧縮機を駆動する「GHP（ガスヒートポンプ）」という方式もあり、電力契約容量を抑えたい大規模施設で採用されることがあります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-undercharge">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-undercharge')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">故障診断</span>
+          <span class="sion-acc-title">冷媒不足（ガス欠）の症状<small>UNDERCHARGE ― 効きが弱い時の代表的な原因</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>なぜ効きが悪くなるのか</h4>
+          <p>冷媒が不足すると、蒸発器の中を流れる冷媒の量そのものが減ってしまい、十分な熱交換ができなくなります。その結果、室内機から出る風の温度が下がりきらず、「エアコンが効かない」という症状として現れます。冷媒漏れ（配管の接続部やフレア加工部からの微小な漏れなど）が主な原因です。</p>
+          <h4>現場で確認できる兆候</h4>
+          <ul>
+            <li>低圧側の圧力がメーカー規定値より明らかに低い</li>
+            <li>サイトグラス（冷媒の状態をのぞける窓）に気泡が見える</li>
+            <li>蒸発器（室内機の熱交換器）に霜が付きにくい、または部分的にしか付かない</li>
+            <li>圧縮機の吸込ガス温度が異常に高くなる（過熱度＝スーパーヒートが大きくなる）</li>
+            <li>圧縮機の電流値が定格より低めになる</li>
+          </ul>
+          <h4>過熱度（スーパーヒート）という考え方</h4>
+          <p>過熱度とは、蒸発器出口の冷媒ガス温度が、その圧力に対応する飽和温度（冷媒が完全に蒸発しきる温度）よりどれだけ高いかを示す値です。冷媒が不足していると蒸発器の中で早い段階で蒸発しきってしまい、その後も配管内で温められ続けるため、過熱度が異常に大きくなる傾向があります。この値を確認することが、ガス欠診断の重要な手がかりになります。</p>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>冷媒不足のまま運転を続けると、圧縮機が十分に冷却されず過熱・焼損につながることがあります。ガス欠の兆候が見られたら、漏れ箇所を特定して修理し、正しい量まで再充填することが必要です（漏れを直さずに追加充填するだけでは再発します）。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-overcharge">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-overcharge')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">故障診断</span>
+          <span class="sion-acc-title">冷媒過充填（オーバーチャージ）の症状<small>OVERCHARGE ― 入れすぎによるトラブル</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>なぜ問題になるのか</h4>
+          <p>冷媒を規定量より多く充填してしまうと、凝縮器の中に液体の冷媒が溜まりすぎ、本来ガスを冷やして液体にするための伝熱面積が不足します。その結果、高圧側の圧力が異常に高くなり、圧縮機に大きな負荷がかかります。「新設時に過充填してしまう」「漏れ診断を誤って追加しすぎる」といったケースで起こりやすいトラブルです。</p>
+          <h4>現場で確認できる兆候</h4>
+          <ul>
+            <li>高圧側の圧力がメーカー規定値より明らかに高い</li>
+            <li>圧縮機の電流値が定格より高めになる</li>
+            <li>液管（凝縮器から膨張弁に向かう配管）が異常に冷たく、過冷却度（サブクール）が大きくなりすぎる</li>
+            <li>圧縮機の運転音や振動が大きくなる</li>
+          </ul>
+          <h4>過冷却度（サブクール）という考え方</h4>
+          <p>過冷却度とは、凝縮器出口の液冷媒温度が、その圧力に対応する飽和温度（凝縮が完了する温度）よりどれだけ低いかを示す値です。冷媒が過充填されていると、凝縮器の中に余分な液冷媒が滞留するため、出口での過冷却度が異常に大きくなる傾向があります。</p>
+          <h4>液バック（液戻り）のリスク</h4>
+          <p>冷媒が過剰な状態が続くと、蒸発しきらない液体の冷媒が圧縮機まで戻ってしまう「液バック」が起きることがあります。圧縮機は本来ガスだけを圧縮する設計になっているため、液体が混じって吸い込まれると圧縮機内部を傷める原因になり、最悪の場合は圧縮機の破損につながります。</p>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>「効きが悪いから」といって安易に冷媒を追加するのは危険です。まずは正確な圧力測定と過熱度・過冷却度の確認を行い、原因がガス欠なのか、それとも別の不具合（フィルター詰まり等）なのかを見極めてから対処することが重要です。</span>
+          </div>
+          <div class="sion-acc-note">関連知識：真空引きが不十分なまま冷媒を充填すると、不凝縮ガス（空気）が残ったまま運転することになり、オーバーチャージと似た「高圧側の圧力が高い」という症状が出ることがあります。真空引きの基礎は「冷凍サイクル（圧縮式）」教材で扱っています。</div>
         </div>
       </div>
     </div>
@@ -430,6 +560,24 @@ const quizLevels = {
       options:['馬力の平均値の計算','熱負荷計算','冷媒の色の計算','リモコンのボタン数の計算'],
       correct:1,
       explain:'正解は熱負荷計算です。部屋の天井高、窓の大きさや向き、断熱性能、室内の発熱機器や人員数などを踏まえて必要な能力を算出します。'
+    },
+    {
+      q:'冷媒不足（ガス欠）が起きているとき、低圧側の圧力と過熱度（スーパーヒート）はどう変化しますか？',
+      options:['低圧は低くなり、過熱度は大きくなる','低圧は高くなり、過熱度は小さくなる','どちらも変化しない','低圧は低くなり、過熱度も小さくなる'],
+      correct:0,
+      explain:'正解は「低圧は低くなり、過熱度は大きくなる」です。冷媒が不足すると蒸発器内で早く蒸発しきってしまい、その後も配管内で温められ続けるため過熱度が大きくなります。'
+    },
+    {
+      q:'冷媒過充填（オーバーチャージ）で特に注意すべき、圧縮機に対するリスクは何ですか？',
+      options:['圧縮機の回転数が上がりすぎる','液体の冷媒が圧縮機に戻る「液バック」による内部損傷','圧縮機が凍結する','圧縮機の色が変わる'],
+      correct:1,
+      explain:'正解は「液体の冷媒が圧縮機に戻る液バックによる内部損傷」です。圧縮機はガスのみを圧縮する設計のため、液体が混入すると内部を傷め、最悪の場合は破損につながります。'
+    },
+    {
+      q:'「効きが悪い」という症状に対して、安易に冷媒を追加する前にまず行うべきことは何ですか？',
+      options:['室内機のフィルターを新品に交換する','正確な圧力測定と過熱度・過冷却度の確認による原因の見極め','リモコンの電池を交換する','とりあえず満タンまで冷媒を入れる'],
+      correct:1,
+      explain:'正解は「正確な圧力測定と過熱度・過冷却度の確認による原因の見極め」です。原因がガス欠なのか、フィルター詰まりなど別の不具合なのかを見極めずに冷媒を追加すると、オーバーチャージなど別のトラブルを招く危険があります。'
     }
   ]
 };
