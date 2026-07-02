@@ -52,6 +52,12 @@
   .field-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
   .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
   .quiz-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+
+  .pwm-diagram-wrap{background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:12px 8px; margin:14px 0 8px;}
+  #pwm-svg{width:100%; height:auto; display:block;}
+  .pwm-legend{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:18px;}
+  .pwm-legend span{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:11px; color:var(--text-3);}
+  .pwm-legend i{width:12px; height:12px; border-radius:3px; display:inline-block;}
 </style>
 </head>
 <body class="sion-reset sion-body">
@@ -201,6 +207,45 @@
       </div>
     </div>
 
+    <div class="sion-acc-item" id="acc-pwm-detail">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-pwm-detail')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">動作理論</span>
+          <span class="sion-acc-title">PWM制御の詳しいしくみ<small>SINE-TRIANGLE PWM ― 直流をどう「交流に見せる」か</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>三相ブリッジ回路 ― 電圧は「作る」のではなく「かける」</h4>
+          <p>インバーター部の実体は、プラス側とマイナス側2本の直流母線に対して、半導体スイッチ（IGBT）を「上アーム3個・下アーム3個」の組み合わせで配置した「三相ブリッジ回路」です。上アームがONならモーター端子にプラス側の直流電圧が、下アームがONならマイナス側の直流電圧が、そのまま印加されます。つまりインバーターは新しい電圧を作り出しているのではなく、すでにある直流電圧のプラス側とマイナス側を高速に切り替えて「かけている」だけ、というのが実体です。</p>
+
+          <h4>三角波比較PWM ― パルス幅で正弦波の形を表現する</h4>
+          <p>では、どうやってなめらかな交流に見せかけるのか。代表的な方式が「三角波比較PWM（正弦波PWM）」です。作り出したい正弦波の指令値と、それより十分高い周波数の三角波（キャリア波）を常に比較し、指令値が三角波を上回っている瞬間は上アームをON、下回っている瞬間は下アームをONにします。この結果、モーター端子には幅の異なる矩形パルスの列が現れます。正弦波の山の部分ではONの時間（パルス幅）が広く、谷の部分では狭くなる、というように、パルス幅の変化そのもので正弦波の形を表現しているのです。</p>
+
+          <div class="pwm-diagram-wrap">
+            <svg id="pwm-svg" viewBox="0 0 500 175" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <div class="pwm-legend">
+            <span><i style="background:#fb923c;"></i>指令値（作りたい正弦波）</span>
+            <span><i style="background:#5c718f;"></i>三角波キャリア</span>
+            <span><i style="background:#38bdf8;"></i>実際のパルス（上アームON＝＋DC印加）</span>
+          </div>
+
+          <h4>なぜ正弦波に見えるのか（モーターのインダクタンス）</h4>
+          <p>モーターのコイルには、電流の急激な変化を嫌う性質（インダクタンス）があります。この性質が、高周波のパルス電圧を平均化するフィルタのように働きます。その結果、モーターにかかる電圧そのものは矩形パルスの列でも、実際にコイルに流れる電流はなめらかな正弦波に近い波形になります。</p>
+
+          <h4>デッドタイム ― 上下アーム短絡を防ぐ安全設計</h4>
+          <p>上アームと下アームを同時にONにしてしまうと、直流母線が短絡（貫通電流）し、半導体スイッチが破損する危険があります。これを防ぐため、上下のスイッチが切り替わる瞬間に、両方とも一瞬OFFになる「デッドタイム」を意図的に設けています。ごく短い時間（マイクロ秒単位）ですが、インバーター制御の安全設計として欠かせない仕組みです。</p>
+
+          <h4>キャリア周波数とモーターの音</h4>
+          <p>三角波キャリアの周波数（＝スイッチング周波数）は、一般に数kHz〜十数kHzに設定されます。この周波数が、室外機から聞こえる「キーン」という高周波音の正体です。キャリア周波数を高くするほど音は聞こえにくくなりますが、スイッチングの回数が増えるためスイッチング損失（発熱）も増える、というトレードオフがあります。</p>
+
+          <div class="sion-acc-note">豆知識：ここで説明した「三角波比較PWM（正弦波PWM／SPWM）」は基本形で、実務ではより直流電圧を無駄なく使える「空間ベクトルPWM（SVPWM）」という発展的な方式も広く使われています。</div>
+        </div>
+      </div>
+    </div>
+
     <div class="sion-acc-item" id="acc-pf">
       <div class="sion-acc-head" onclick="sionToggleAcc('acc-pf')">
         <div class="sion-acc-head-left">
@@ -343,7 +388,7 @@ const stageInfo = {
   },
   inverter:{
     num:'04', title:'インバーター（PWM制御）', type:'DC→AC変換', wave:'PWM矩形波',
-    body:'半導体スイッチ（IGBTなど）を高速でオン・オフさせ、直流から任意の周波数・電圧の疑似的な交流を作り出します。この制御方式をPWM（パルス幅変調）と呼びます。パルスの幅や間隔を細かく調整することで、モーターに送る交流の周波数を自由自在に変えることができます。'
+    body:'半導体スイッチ（IGBTなど）を高速でオン・オフさせ、直流から任意の周波数・電圧の疑似的な交流を作り出します。この制御方式をPWM（パルス幅変調）と呼びます。パルスの幅や間隔を細かく調整することで、モーターに送る交流の周波数を自由自在に変えることができます。実は電圧そのものを作り出しているのではなく、直流のプラス側とマイナス側を高速で切り替えて「かけている」だけ、というのがポイントです。詳しいスイッチングの仕組みは、下の「FIELD KNOWLEDGE」欄で解説しています。'
   },
   motor:{
     num:'05', title:'モーター（圧縮機）', type:'回転運動', wave:'―',
@@ -418,6 +463,59 @@ function updateFreq(hz){
   document.getElementById('rpm-wave').setAttribute('d', d);
 }
 
+/* ======================= PWM DIAGRAM ======================= */
+function buildPWMDiagram(){
+  const svg = document.getElementById('pwm-svg');
+  if(!svg) return;
+  const svgNS = "http://www.w3.org/2000/svg";
+  const marginX = 20, width = 460, x0 = marginX, x1 = marginX + width;
+  const waveMidY = 45, waveAmp = 28;      // sine/triangle overlay area
+  const pulseTop = 100, pulseH = 55;      // pulse train area
+  const carrierPeriods = 14;              // carrier cycles per one sine cycle shown
+  const samples = 600;
+
+  function xAt(t){ return x0 + width * t; }
+  function sineVal(t){ return Math.sin(t * 2 * Math.PI); }
+  function triVal(t){
+    const p = (t * carrierPeriods) % 1;
+    return p < 0.5 ? (4*p - 1) : (3 - 4*p);
+  }
+
+  let sinePts = '', triPts = '';
+  for(let i=0;i<=samples;i++){
+    const t = i/samples;
+    const x = xAt(t).toFixed(1);
+    const ys = (waveMidY - sineVal(t)*waveAmp).toFixed(1);
+    const yt = (waveMidY - triVal(t)*waveAmp).toFixed(1);
+    sinePts += (i===0?'M ':'L ') + x + ',' + ys + ' ';
+    triPts  += (i===0?'M ':'L ') + x + ',' + yt + ' ';
+  }
+
+  // build pulse rects where sineVal > triVal (upper arm ON)
+  let rects = '';
+  let segStart = null;
+  for(let i=0;i<=samples;i++){
+    const t = i/samples;
+    const on = sineVal(t) > triVal(t);
+    if(on && segStart===null) segStart = t;
+    if((!on || i===samples) && segStart!==null){
+      const tEnd = on ? t : t;
+      const xs = xAt(segStart), xe = xAt(tEnd);
+      rects += `<rect x="${xs.toFixed(1)}" y="${pulseTop}" width="${Math.max(1,(xe-xs)).toFixed(1)}" height="${pulseH}" fill="#38bdf8" opacity="0.85"/>`;
+      segStart = null;
+    }
+  }
+
+  svg.innerHTML =
+    `<line x1="${x0}" y1="${waveMidY}" x2="${x1}" y2="${waveMidY}" stroke="#22375c" stroke-width="1"/>` +
+    `<rect x="${x0}" y="${pulseTop}" width="${width}" height="${pulseH}" fill="none" stroke="#22375c" stroke-width="1"/>` +
+    `<path d="${triPts}" fill="none" stroke="#5c718f" stroke-width="1.3"/>` +
+    rects +
+    `<path d="${sinePts}" fill="none" stroke="#fb923c" stroke-width="2.4"/>` +
+    `<text x="${x0}" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#7d8bab">指令値 × キャリア波</text>` +
+    `<text x="${x0}" y="${pulseTop-6}" font-family="'JetBrains Mono', monospace" font-size="10" fill="#7d8bab">実際にモーターへ「かかる」パルス列</text>`;
+}
+
 /* ======================= QUIZ DATA ======================= */
 const quizLevels = {
   beginner:[
@@ -476,6 +574,12 @@ const quizLevels = {
       options:['交流を作り出す','脈流をならして安定した直流にする','モーターを冷却する','周波数を測定する'],
       correct:1,
       explain:'正解は「脈流をならして安定した直流にする」です。コンデンサが電荷を蓄えたり放出したりすることで、電圧の脈動を平滑化します。'
+    },
+    {
+      q:'三角波比較PWM（正弦波PWM）で、モーターにかかる電圧のパルス幅はどのように決まりますか？',
+      options:['常に一定の幅で変化しない','指令値（作りたい正弦波）がキャリアの三角波を上回っている時間の長さで決まる','モーターの温度で決まる','配線の長さで決まる'],
+      correct:1,
+      explain:'正解は「指令値（作りたい正弦波）がキャリアの三角波を上回っている時間の長さで決まる」です。指令値が三角波を上回っている間は上アームがON（パルス幅が広い）、下回っている間は下アームがON（パルス幅が狭い）になり、このパルス幅の変化で正弦波の形を表現します。'
     }
   ],
   advanced:[
@@ -508,6 +612,18 @@ const quizLevels = {
       options:['室温が適切か','平滑コンデンサの残留電荷が放電されているか','リモコンの電池残量','冷媒の色'],
       correct:1,
       explain:'正解は「平滑コンデンサの残留電荷が放電されているか」です。電源を切った後もコンデンサには電荷が残っていることがあり、感電の危険があるため、必ず放電を確認してから作業します。'
+    },
+    {
+      q:'インバーターの三相ブリッジ回路で「デッドタイム」が設けられる目的は何ですか？',
+      options:['スイッチング周波数を上げるため','上アームと下アームが同時にONになって直流母線が短絡するのを防ぐため','モーターの回転数を落とすため','電磁ノイズを増幅するため'],
+      correct:1,
+      explain:'正解は「上アームと下アームが同時にONになって直流母線が短絡するのを防ぐため」です。上下のスイッチが切り替わる瞬間に両方とも一瞬OFFになる空白時間を意図的に設けることで、貫通電流による素子の破損を防いでいます。'
+    },
+    {
+      q:'PWMのキャリア周波数（スイッチング周波数）を高くすると、一般的にどのようなトレードオフが生じますか？',
+      options:['モーター音は聞こえにくくなるが、スイッチング損失（発熱）が増える','モーター音は大きくなるが、消費電力は減る','回転数が上がるが、力率が改善する','冷媒の温度が下がるが、配線が太くなる'],
+      correct:0,
+      explain:'正解は「モーター音は聞こえにくくなるが、スイッチング損失（発熱）が増える」です。キャリア周波数を高くするほど「キーン」という高周波音は聞こえにくくなりますが、スイッチングの回数が増えるため発熱も増加します。'
     }
   ]
 };
@@ -521,6 +637,7 @@ window.addEventListener('load', ()=>{
   initFlowParticles();
   animateFlow();
   updateFreq(60);
+  buildPWMDiagram();
   quiz.start('beginner');
 });
 </script>
