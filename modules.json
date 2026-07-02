@@ -27,6 +27,15 @@
     "path": "inverter-circuit/index.html"
   },
   {
+    "id": "sequence-control",
+    "title": "シーケンス制御の基礎",
+    "category": "電気",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "自己保持回路を実際に動かしながら学ぶシミュレーター付き教材。a接点・b接点など回路図記号の読み方から、自己保持回路のロジック、インターロック回路、接点溶着などの現場トラブルまでを扱います。",
+    "path": "sequence-control/index.html"
+  },
+  {
     "id": "commercial-ac-basics",
     "title": "業務用エアコンの基礎知識",
     "category": "空調システム",

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シーケンス制御の基礎 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:640px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .stage{
+    max-width:1180px; margin:40px auto 0; padding:0 24px;
+    display:grid; grid-template-columns:1.35fr 1fr; gap:24px; align-items:start;
+  }
+  @media (max-width:920px){.stage{grid-template-columns:1fr;}}
+
+  #ladder-svg{width:100%; height:auto; display:block;}
+  .rail{stroke:var(--text-3); stroke-width:3;}
+  .rail-label{font-family:var(--font-mono); font-size:12px; fill:var(--text-3); letter-spacing:0.05em;}
+  .wire{fill:none; stroke:var(--line); stroke-width:5; stroke-linecap:round; transition:stroke .3s ease;}
+  .wire.wire-live{stroke:#5c718f;}
+  .wire.energized{stroke:var(--accent);}
+  .circ-box{fill:var(--bg-panel-2); stroke:var(--line); stroke-width:1.5; transition:stroke .3s ease, fill .3s ease;}
+  .node-group{cursor:pointer;}
+  .node-group:hover .circ-box, .node-group.active .circ-box{stroke:var(--accent); fill:#1a2f52;}
+  .circ-box.energized{stroke:var(--cool); fill:#123d3a;}
+  .node-label{font-family:var(--font-display); font-weight:700; fill:var(--text-1); font-size:13px;}
+  .node-sub{font-family:var(--font-mono); fill:var(--text-3); font-size:9px; letter-spacing:0.03em;}
+  .rung-caption{font-family:var(--font-mono); font-size:10px; fill:var(--text-3); letter-spacing:0.04em;}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:21px;}
+  .info-body{color:var(--text-2); font-size:14.5px; line-height:1.85; margin-bottom:18px;}
+  .compare-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;}
+  .compare-box{background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;}
+  .compare-box .compare-label{font-family:var(--font-mono); font-size:10px; color:var(--text-3); margin-bottom:4px;}
+  .compare-box .compare-value{font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--text-1);}
+
+  /* simulator controls */
+  .sim-controls{display:flex; gap:10px; margin-bottom:16px;}
+  .sim-btn{
+    flex:1; font-family:var(--font-mono); font-size:13px; font-weight:500;
+    padding:14px; border-radius:12px; border:1px solid var(--line);
+    background:var(--bg-panel-2); color:var(--text-1); cursor:pointer; transition:all .2s ease;
+  }
+  .sim-btn:hover{border-color:var(--accent);}
+  .sim-btn.start{border-color:var(--cool); color:var(--cool);}
+  .sim-btn.stop{border-color:var(--hot); color:var(--hot);}
+  .sim-btn:disabled{opacity:0.35; cursor:not-allowed;}
+  .sim-status{
+    display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12.5px;
+    color:var(--text-2); margin-bottom:18px;
+  }
+  .sim-status .status-dot{width:9px; height:9px; border-radius:50%; background:var(--text-3); transition:background .3s ease, box-shadow .3s ease;}
+  .sim-status.running .status-dot{background:var(--cool); box-shadow:0 0 8px var(--cool);}
+  .step-list{display:flex; flex-direction:column; gap:8px;}
+  .step-item{
+    display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--line); background:var(--bg-panel-2); font-size:12.5px; color:var(--text-3); line-height:1.7;
+    transition:all .3s ease;
+  }
+  .step-item .step-num{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3); flex-shrink:0;
+    width:20px; height:20px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step-item.done{border-color:var(--cool); background:var(--cool-dim); color:var(--text-1);}
+  .step-item.done .step-num{border-color:var(--cool); color:var(--cool); background:#0a1628;}
+
+  .field-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+  .symbol-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; margin:10px 0 4px;}
+  .symbol-card{background:var(--bg-panel); border:1px solid var(--line); border-radius:10px; padding:10px; text-align:center;}
+  .symbol-card svg{width:100%; height:36px; display:block; margin-bottom:6px;}
+  .symbol-card .sym-name{font-family:var(--font-display); font-weight:700; font-size:12px; color:var(--text-1);}
+  .symbol-card .sym-sub{font-family:var(--font-mono); font-size:9.5px; color:var(--text-3); margin-top:2px;}
+
+  .quiz-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">SEQUENCE CONTROL BASICS</div>
+  <h1 class="title sion-title">シーケンス制御の<br>基礎</h1>
+  <p class="lede">業務用エアコンや電気設備の制御盤には、必ずと言っていいほど「シーケンス回路（ラダー図）」が使われています。ここでは基本中の基本である「自己保持回路」を実際に動かしながら、回路図記号の読み方とあわせて理解していきましょう。</p>
+</header>
+
+<div class="stage">
+  <!-- LADDER DIAGRAM -->
+  <div class="sion-panel">
+    <div class="sion-panel-title">LADDER DIAGRAM ― 自己保持回路シミュレーター</div>
+    <svg id="ladder-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+      <!-- rails -->
+      <line class="rail" x1="60" y1="30" x2="60" y2="290"/>
+      <line class="rail" x1="500" y1="30" x2="500" y2="290"/>
+      <text class="rail-label" x="60" y="20" text-anchor="middle">L1</text>
+      <text class="rail-label" x="500" y="20" text-anchor="middle">L2(N)</text>
+
+      <!-- ===== rung 1: control circuit ===== -->
+      <text class="rung-caption" x="30" y="60" transform="rotate(-90 30 60)" text-anchor="middle">制御回路</text>
+
+      <path class="wire wire-live" d="M 60,95 L 100,95"/>
+      <g class="node-group" data-node="stopButton" onclick="selectNode('stopButton')">
+        <rect class="circ-box" x="100" y="72" width="90" height="46" rx="10"/>
+        <text class="node-label" x="145" y="93" text-anchor="middle">停止SW</text>
+        <text class="node-sub" x="145" y="107" text-anchor="middle">b接点(NC)</text>
+      </g>
+      <path class="wire wire-live" d="M 190,95 L 230,95"/>
+
+      <!-- split -->
+      <path class="wire wire-branch" id="branch-up-1" d="M 230,95 L 230,72"/>
+      <path class="wire wire-branch" id="branch-down-1" d="M 230,95 L 230,142"/>
+      <path class="wire wire-branch" id="branch-up-2" d="M 230,72 L 260,72"/>
+      <path class="wire wire-branch" id="branch-down-2" d="M 230,142 L 260,142"/>
+
+      <g class="node-group" data-node="startButton" onclick="selectNode('startButton')">
+        <rect class="circ-box" x="260" y="49" width="90" height="46" rx="10"/>
+        <text class="node-label" x="305" y="70" text-anchor="middle">起動SW</text>
+        <text class="node-sub" x="305" y="84" text-anchor="middle">a接点(NO)</text>
+      </g>
+      <g class="node-group" data-node="selfHold" onclick="selectNode('selfHold')">
+        <rect class="circ-box" x="260" y="119" width="90" height="46" rx="10"/>
+        <text class="node-label" x="305" y="140" text-anchor="middle">自己保持接点</text>
+        <text class="node-sub" x="305" y="154" text-anchor="middle">a接点(NO) K連動</text>
+      </g>
+
+      <path class="wire wire-branch" id="branch-up-3" d="M 350,72 L 380,72"/>
+      <path class="wire wire-branch" id="branch-down-3" d="M 350,142 L 380,142"/>
+      <path class="wire wire-branch" id="branch-up-4" d="M 380,72 L 380,95"/>
+      <path class="wire wire-branch" id="branch-down-4" d="M 380,142 L 380,95"/>
+
+      <path class="wire wire-branch" id="to-coil" d="M 380,95 L 400,95"/>
+      <g class="node-group" data-node="coilK" onclick="selectNode('coilK')">
+        <rect class="circ-box" x="400" y="72" width="80" height="46" rx="10"/>
+        <text class="node-label" x="440" y="93" text-anchor="middle">コイル K</text>
+        <text class="node-sub" x="440" y="107" text-anchor="middle">RELAY COIL</text>
+      </g>
+      <path class="wire wire-branch" id="coil-to-rail" d="M 480,95 L 500,95"/>
+
+      <!-- ===== rung 2: main / load circuit ===== -->
+      <text class="rung-caption" x="30" y="215" transform="rotate(-90 30 215)" text-anchor="middle">主回路（負荷）</text>
+
+      <path class="wire" id="wire-main-in" d="M 60,250 L 150,250"/>
+      <g class="node-group" data-node="mainContact" onclick="selectNode('mainContact')">
+        <rect class="circ-box" x="150" y="227" width="110" height="46" rx="10"/>
+        <text class="node-label" x="205" y="248" text-anchor="middle">主接点</text>
+        <text class="node-sub" x="205" y="262" text-anchor="middle">a接点(NO) K連動</text>
+      </g>
+      <path class="wire" id="wire-main-mid" d="M 260,250 L 340,250"/>
+      <g class="node-group" data-node="load" onclick="selectNode('load')">
+        <rect class="circ-box" x="340" y="227" width="110" height="46" rx="10"/>
+        <text class="node-label" x="395" y="248" text-anchor="middle">負荷</text>
+        <text class="node-sub" x="395" y="262" text-anchor="middle">ランプ／モーター等</text>
+      </g>
+      <path class="wire" id="wire-main-out" d="M 450,250 L 500,250"/>
+    </svg>
+    <div class="sion-hint"><span class="dot"></span>図の機器をクリックすると説明が切り替わります。下のボタンで実際に回路を動かしてみましょう。</div>
+  </div>
+
+  <!-- INFO / SIMULATOR PANEL -->
+  <div>
+    <div class="sion-panel" style="margin-bottom:24px;">
+      <div class="sion-panel-title">COMPONENT ― 機器の説明</div>
+      <div class="info-head">
+        <span class="info-num" id="info-num">01</span>
+        <span class="info-title" id="info-title">停止SW</span>
+      </div>
+      <div class="info-body" id="info-body"></div>
+      <div class="compare-row">
+        <div class="compare-box">
+          <div class="compare-label">接点の種類</div>
+          <div class="compare-value" id="info-type">b接点</div>
+        </div>
+        <div class="compare-box">
+          <div class="compare-label">通常時の状態</div>
+          <div class="compare-value" id="info-normal">閉（導通）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-panel">
+      <div class="sion-panel-title">RUN SIMULATOR ― 動作理論を体験</div>
+      <div class="sim-status" id="sim-status"><span class="status-dot"></span><span id="sim-status-text">停止中</span></div>
+      <div class="sim-controls">
+        <button class="sim-btn start" id="btn-start" onclick="pressStart()">▶ 起動SWを押す</button>
+        <button class="sim-btn stop" id="btn-stop" onclick="pressStop()" disabled>■ 停止SWを押す</button>
+      </div>
+      <div class="step-list" id="step-list">
+        <div class="step-item" data-step="1"><span class="step-num">1</span><span>起動SW（a接点）を押すと、コイルKに電流が流れ始める</span></div>
+        <div class="step-item" data-step="2"><span class="step-num">2</span><span>コイルKが動作し、連動する自己保持接点（a接点）が閉じる</span></div>
+        <div class="step-item" data-step="3"><span class="step-num">3</span><span>起動SWから手を離しても、自己保持接点を通って電流が流れ続ける</span></div>
+        <div class="step-item" data-step="4"><span class="step-num">4</span><span>主接点も閉じ、負荷（ランプ等）がON状態を保持し続ける</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
+    <p class="field-intro">制御盤の中を覗くと、必ずシーケンス回路（ラダー図）が使われています。回路図記号の意味と、現場でよく使われる考え方を押さえておきましょう。</p>
+
+    <div class="sion-acc-item" id="acc-symbols">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-symbols')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">基礎知識</span>
+          <span class="sion-acc-title">回路図記号の読み方<small>SYMBOLS ― a接点・b接点からリレーまで</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>a接点とb接点</h4>
+          <p>シーケンス回路の基本は「a接点（メーク接点）」と「b接点（ブレーク接点）」の2種類です。a接点は通常時は開いていて操作すると閉じる（導通する）接点、b接点は通常時は閉じていて操作すると開く（遮断する）接点です。起動ボタンにはa接点、停止ボタンにはb接点が使われるのが基本です。</p>
+          <h4>代表的な図記号</h4>
+          <div class="symbol-grid">
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><line x1="10" y1="20" x2="35" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="65" y1="20" x2="90" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="35" y1="8" x2="55" y2="32" stroke="#9db0c9" stroke-width="2.5"/></svg>
+              <div class="sym-name">a接点</div><div class="sym-sub">NORMALLY OPEN</div>
+            </div>
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><line x1="10" y1="20" x2="35" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="65" y1="20" x2="90" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="35" y1="8" x2="55" y2="32" stroke="#9db0c9" stroke-width="2.5"/><line x1="30" y1="10" x2="60" y2="10" stroke="#9db0c9" stroke-width="2.5"/></svg>
+              <div class="sym-name">b接点</div><div class="sym-sub">NORMALLY CLOSED</div>
+            </div>
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><circle cx="50" cy="20" r="15" fill="none" stroke="#9db0c9" stroke-width="2.5"/><line x1="10" y1="20" x2="35" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="65" y1="20" x2="90" y2="20" stroke="#9db0c9" stroke-width="2.5"/></svg>
+              <div class="sym-name">コイル</div><div class="sym-sub">RELAY / CONTACTOR</div>
+            </div>
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><circle cx="50" cy="20" r="14" fill="none" stroke="#9db0c9" stroke-width="2.5"/><line x1="10" y1="20" x2="36" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="64" y1="20" x2="90" y2="20" stroke="#9db0c9" stroke-width="2.5"/><text x="50" y="25" text-anchor="middle" font-size="14" fill="#9db0c9">T</text></svg>
+              <div class="sym-name">タイマー</div><div class="sym-sub">TIMER</div>
+            </div>
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><line x1="10" y1="20" x2="40" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="60" y1="20" x2="90" y2="20" stroke="#9db0c9" stroke-width="2.5"/><line x1="40" y1="8" x2="60" y2="32" stroke="#fb923c" stroke-width="2.5"/></svg>
+              <div class="sym-name">ヒューズ</div><div class="sym-sub">FUSE</div>
+            </div>
+            <div class="symbol-card">
+              <svg viewBox="0 0 100 40"><path d="M15,20 Q25,5 35,20 Q45,35 55,20 Q65,5 75,20 Q80,20 85,20" fill="none" stroke="#9db0c9" stroke-width="2.5"/></svg>
+              <div class="sym-name">サーマルリレー</div><div class="sym-sub">THERMAL RELAY</div>
+            </div>
+          </div>
+          <div class="sion-acc-note">豆知識：ラダー図は電源ラインを左右（または上下）の2本のレール（L1・L2）として描き、電流が左から右へ、各接点・コイルを経由して流れるものとして読みます。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-selfhold">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-selfhold')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">動作理論</span>
+          <span class="sion-acc-title">自己保持回路のロジック<small>SELF-HOLDING ― AND/ORで考える</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>なぜ自己保持が必要か</h4>
+          <p>押しボタンスイッチの多くは「押している間だけ閉じる」モーメンタリ型です。ボタンから手を離すと接点は自然に開いてしまうため、そのままでは機器を動かし続けられません。そこで、コイルが動作すると同時に閉じる「自己保持接点」を起動ボタンと並列に入れておくことで、ボタンから手を離しても電流経路が保たれ、機器のON状態を維持できます。</p>
+          <h4>直列＝AND、並列＝OR</h4>
+          <p>シーケンス回路は、接点の直列・並列の組み合わせで論理を作ります。停止ボタン（b接点）は起動側の回路全体と<strong>直列</strong>につながっており、これは「停止ボタンが閉じている　かつ　（起動ボタン　または　自己保持接点）が閉じている」というAND／OR条件になっています。停止ボタンを押す（開く）と、他の条件に関係なく回路全体が切れます。</p>
+          <h4>優先順位の考え方</h4>
+          <p>停止ボタン（b接点）を自己保持ループの外側、つまり起動・自己保持の並列回路より電源側に直列で入れるのが基本形です。こうすることで「停止が最優先」という安全な動作になります。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-interlock">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-interlock')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">応用</span>
+          <span class="sion-acc-title">インターロック回路<small>INTERLOCK ― 同時投入を防ぐ仕組み</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>基本的な考え方</h4>
+          <p>インターロックとは、特定の2つ以上の機器が同時に動作しないよう、互いの回路に相手のb接点を直列に入れておく仕組みです。片方のコイルが動作している間は、相手側のb接点が開いているため、もう片方のコイルには電流が流れません。</p>
+          <h4>代表例：正転・逆転の防止</h4>
+          <p>モーターの正転用コンタクタと逆転用コンタクタが同時に投入されると、電源が短絡してしまいます。そこで、正転コイルの回路に逆転コンタクタのb接点を、逆転コイルの回路に正転コンタクタのb接点を、それぞれ直列に組み込み、どちらか一方しか動作できないようにします。</p>
+          <h4>空調設備での例</h4>
+          <p>圧縮機の運転と除霜（デフロスト）ヒーターの通電など、同時に動くと効率が落ちたり故障の原因になる組み合わせにも、同様の考え方でインターロックが組まれることがあります。</p>
+          <div class="sion-acc-note">関連知識：自己保持回路と組み合わせることで、「一方が動作中は他方のスタート操作を受け付けない」という安全設計が実現できます。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-trouble">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-trouble')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">保守</span>
+          <span class="sion-acc-title">現場でよくあるトラブル<small>MAINTENANCE ― 接点溶着・チャタリング</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>接点の溶着</h4>
+          <p>大きな電流やアーク（火花）の影響で、接点同士がくっついて離れなくなることがあります。これを「溶着」と呼びます。自己保持接点や主接点が溶着すると、停止ボタンを押しても機器が止まらないという重大な誤動作につながるため、異常時はまず接点の状態を確認します。</p>
+          <h4>チャタリング</h4>
+          <p>スイッチや接点が閉じる（開く）瞬間、機械的な振動でごく短時間に開閉を繰り返す現象です。信号が瞬間的に不安定になり、誤動作の原因になることがあります。</p>
+          <h4>点検の基本</h4>
+          <ul>
+            <li>コイル両端の抵抗値をテスターで測定し、断線（∞）やショート（異常に低い抵抗）がないか確認する</li>
+            <li>接点の外観を見て、変色・溶着・摩耗がないか確認する</li>
+            <li>配線図（ラダー図）と照らし合わせながら、電源側から順にテスターで導通を追っていく</li>
+          </ul>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>停止ボタンを押しても機器が止まらない場合、自己保持接点や主接点の溶着が疑われます。感電・機械的な事故につながる恐れがあるため、必ず主電源を遮断してから点検してください。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">a接点・b接点・回路図の基本</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">自己保持回路のロジック</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">インターロック・現場トラブル</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">SEQUENCE CONTROL BASICS ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= COMPONENT INFO ======================= */
+const componentInfo = {
+  stopButton:{
+    num:'01', title:'停止SW', type:'b接点', normal:'閉（導通）',
+    body:'常時は接点が閉じており、電流を通しています。押すと接点が開き、回路を強制的に遮断します。起動・自己保持の並列回路全体よりも電源側に直列で入れておくのが基本形で、「停止操作が最優先される」安全な回路になります。'
+  },
+  startButton:{
+    num:'02', title:'起動SW', type:'a接点', normal:'開（遮断）',
+    body:'常時は接点が開いており、電流を通しません。押している間だけ接点が閉じて、コイルKに電流が流れ始めます。押している間しか閉じないモーメンタリ型のスイッチであることがポイントで、これが「自己保持」という仕組みが必要になる理由です。'
+  },
+  selfHold:{
+    num:'03', title:'自己保持接点', type:'a接点（K連動）', normal:'開（遮断）',
+    body:'コイルKが動作すると同時に閉じる補助接点です。起動SWと並列に接続されており、起動SWから手を離しても、この接点を通って電流が流れ続けます。自己保持回路の心臓部にあたる部分です。'
+  },
+  coilK:{
+    num:'04', title:'コイル K', type:'電磁コイル', normal:'非励磁',
+    body:'電流が流れると電磁石になり、機械的に連結された複数の接点（自己保持接点・主接点など）を一斉に切り替えます。電気信号を「機械的な開閉動作」に変換する、リレー・電磁接触器（コンタクタ）の心臓部です。'
+  },
+  mainContact:{
+    num:'05', title:'主接点', type:'a接点（K連動）', normal:'開（遮断）',
+    body:'コイルKの動作と連動して開閉する、電流容量の大きい接点です。制御回路（弱電・小電流）と主回路（強電・大電流）を分離するのがリレーやコンタクタの重要な役割で、この主接点を介して実際のモーターやヒーターなどの負荷を駆動します。'
+  },
+  load:{
+    num:'06', title:'負荷', type:'ランプ／モーター等', normal:'OFF',
+    body:'主接点を通して電力が供給される、実際に動く機器（ランプ、モーター、電磁弁など）です。制御回路側の小さな信号（起動SWを押す）が、主回路側の大きな電力（モーターを回す）を間接的にON/OFFする、という構造がシーケンス制御の基本です。'
+  }
+};
+
+let currentNode = 'stopButton';
+
+function selectNode(node){
+  currentNode = node;
+  document.querySelectorAll('.node-group').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = componentInfo[node];
+  document.getElementById('info-num').textContent = d.num;
+  document.getElementById('info-title').textContent = d.title;
+  document.getElementById('info-body').textContent = d.body;
+  document.getElementById('info-type').textContent = d.type;
+  document.getElementById('info-normal').textContent = d.normal;
+}
+
+/* ======================= RUN SIMULATOR ======================= */
+let circuitRunning = false;
+
+const energizableSelectors = [
+  '#branch-up-2','#branch-down-2','#branch-up-3','#branch-down-3',
+  '#branch-up-4','#branch-down-4','#to-coil','#coil-to-rail',
+  '#wire-main-mid','#wire-main-out'
+];
+const energizableBoxNodes = ['selfHold','coilK','mainContact','load'];
+
+function updateCircuitVisual(){
+  energizableSelectors.forEach(sel=>{
+    const el = document.querySelector(sel);
+    if(el) el.classList.toggle('energized', circuitRunning);
+  });
+  energizableBoxNodes.forEach(node=>{
+    const g = document.querySelector('.node-group[data-node="'+node+'"] .circ-box');
+    if(g) g.classList.toggle('energized', circuitRunning);
+  });
+  // main-in / mainContact wire before the contact is only energized once contact closes,
+  // but the incoming rail-to-contact wire and load-in wire are separate:
+  const mainIn = document.getElementById('wire-main-in');
+  if(mainIn) mainIn.classList.toggle('wire-live', true); // supply always present up to the open contact
+
+  const statusWrap = document.getElementById('sim-status');
+  const statusText = document.getElementById('sim-status-text');
+  statusWrap.classList.toggle('running', circuitRunning);
+  statusText.textContent = circuitRunning ? '運転中（自己保持でON保持）' : '停止中';
+
+  document.querySelectorAll('.step-item').forEach(item=>{
+    item.classList.toggle('done', circuitRunning);
+  });
+
+  document.getElementById('btn-start').disabled = circuitRunning;
+  document.getElementById('btn-stop').disabled = !circuitRunning;
+}
+
+function pressStart(){
+  if(circuitRunning) return;
+  circuitRunning = true;
+  updateCircuitVisual();
+}
+function pressStop(){
+  if(!circuitRunning) return;
+  circuitRunning = false;
+  updateCircuitVisual();
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'ラダー図で「a接点」とは、どのような接点ですか？',
+      options:['常時閉じていて、押すと開く接点','常時開いていて、押すと閉じる接点','常に電流を通さない接点','タイマー専用の接点'],
+      correct:1,
+      explain:'正解は「常時開いていて、押すと閉じる接点」です。a接点（メーク接点）は通常時は電流を通さず、操作すると導通します。起動ボタンなどによく使われます。'
+    },
+    {
+      q:'「b接点」の説明として正しいものはどれですか？',
+      options:['常時開いていて、押すと閉じる','常時閉じていて、押すと開く','常にコイルと連動して切り替わる','タイマーの遅延専用の接点'],
+      correct:1,
+      explain:'正解は「常時閉じていて、押すと開く」です。b接点（ブレーク接点）は通常時は導通しており、操作すると電流を遮断します。停止ボタンなどによく使われます。'
+    },
+    {
+      q:'リレー（電磁継電器）のコイルに電流が流れると何が起きますか？',
+      options:['コイルが発熱してすぐ壊れる','電磁石になり、連動する接点が一斉に切り替わる','電圧が自動的に倍になる','特に何も起きない'],
+      correct:1,
+      explain:'正解は「電磁石になり、連動する接点が一斉に切り替わる」です。これがリレーやコンタクタの基本動作で、電気信号を機械的な開閉動作に変換しています。'
+    },
+    {
+      q:'ラダー図（シーケンス図）を読むときの基本的な考え方として正しいのはどれですか？',
+      options:['電流は右のラインから左のラインへ流れると考える','電源ラインを左右に配置し、電流は左から右へ、各機器を経由して流れると考える','図の色の違いだけで機器の種類を判断する','上から下に向かって電圧が下がっていく図である'],
+      correct:1,
+      explain:'正解は「電源ラインを左右に配置し、電流は左から右へ、各機器を経由して流れると考える」です。ラダー図は電源ラインをレールに見立てて描かれます。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'自己保持回路で、起動SWから手を離してもコイルがONの状態を保ち続けられるのはなぜですか？',
+      options:['起動SW自体が自己保持される特殊なボタンだから','コイルに連動したa接点（自己保持接点）が起動SWと並列に入り、電流の経路を保持するから','停止SWが自動的に閉じるから','コイルの磁力が起動SWを物理的に固定するから'],
+      correct:1,
+      explain:'正解は「コイルに連動したa接点（自己保持接点）が起動SWと並列に入り、電流の経路を保持するから」です。コイルが動作すると同時に自己保持接点が閉じ、起動SWの代わりに電流経路を保ちます。'
+    },
+    {
+      q:'自己保持回路において、起動SW（a接点）と自己保持接点（a接点）は回路上どのようにつながっていますか？',
+      options:['直列に接続されている','並列に接続されている','互いに独立した別回路になっている','停止SWの後段だけに接続されている'],
+      correct:1,
+      explain:'正解は「並列に接続されている」です。どちらか一方が閉じていれば電流が流れる、というOR条件の関係になっています。'
+    },
+    {
+      q:'停止SW（b接点）は、起動SW・自己保持接点の並列回路とどう接続されているのが基本形ですか？',
+      options:['並列回路全体と並列に接続されている','並列回路全体と直列に、かつ電源側に接続されている','使われずに配線だけされている','コイルの後段だけに接続されている'],
+      correct:1,
+      explain:'正解は「並列回路全体と直列に、かつ電源側に接続されている」です。この配置により、停止SWを押せば他の条件に関係なく回路全体が切れる、という安全な動作になります。'
+    },
+    {
+      q:'自己保持回路が使われる代表的な理由は何ですか？',
+      options:['部品コストを下げるため','押している間しか閉じないモーメンタリ型のボタンで、機器のON状態を維持し続けるため','配線の本数を減らすため','電圧を安定させるため'],
+      correct:1,
+      explain:'正解は「押している間しか閉じないモーメンタリ型のボタンで、機器のON状態を維持し続けるため」です。ボタンから手を離しても動作を継続させたい場合に必須の回路です。'
+    },
+    {
+      q:'図の下段（主回路）にある「主接点」は、何によって開閉しますか？',
+      options:['作業者が手動で直接操作する','コイルKと機械的に連動して自動で開閉する','常に閉じたままで変化しない','専用のタイマーのみで動作する'],
+      correct:1,
+      explain:'正解は「コイルKと機械的に連動して自動で開閉する」です。コイルがONになると主接点も自動的に閉じ、ランプやモーターなどの負荷に電力が供給されます。'
+    }
+  ],
+  advanced:[
+    {
+      q:'インターロック回路の目的として正しいものはどれですか？',
+      options:['複数の機器を同時に動かしやすくする','特定の機器同士が同時に動作しないよう、互いのb接点で回路を制限する','供給電圧を上げる','コイルの寿命を延ばす'],
+      correct:1,
+      explain:'正解は「特定の機器同士が同時に動作しないよう、互いのb接点で回路を制限する」です。正転・逆転用コンタクタの同時投入による短絡事故などを防ぐために使われます。'
+    },
+    {
+      q:'業務用空調機の制御回路で、インターロックが使われる例として適切なのはどれですか？',
+      options:['圧縮機の運転と除霜（デフロスト）ヒーターの通電を同時に行わないようにする','室内機ランプの色を変える','冷媒の色を変える','配管の太さを変える'],
+      correct:0,
+      explain:'正解は「圧縮機の運転と除霜（デフロスト）ヒーターの通電を同時に行わないようにする」です。同時運転は効率低下や故障の原因になるため、排他的に動作させる設計がされることがあります。'
+    },
+    {
+      q:'現場で接点の「溶着」が起きると、どのような不具合につながりますか？',
+      options:['接点がくっついたまま離れなくなり、停止SWを押しても機器が止まらなくなることがある','電圧が自動的に下がるだけで実害はない','コイルの音が大きくなるだけで実害はない','配線の色が変わるだけで実害はない'],
+      correct:0,
+      explain:'正解は「接点がくっついたまま離れなくなり、停止SWを押しても機器が止まらなくなることがある」です。大電流やアークにより接点が溶着すると、開くべきタイミングで開かなくなり、重大な誤動作につながります。'
+    },
+    {
+      q:'リレーやコンタクタのコイル部分をテスターで点検するとき、まず確認すべき基本項目は何ですか？',
+      options:['コイルの色','コイルの巻き数を数える','コイル両端の抵抗値（断線・ショートの有無）','コイルの重さ'],
+      correct:2,
+      explain:'正解は「コイル両端の抵抗値（断線・ショートの有無）」です。断線していれば抵抗値は無限大（導通なし）、ショートしていれば異常に低い抵抗値として現れます。'
+    },
+    {
+      q:'シーケンス回路で「チャタリング」と呼ばれる現象はどれですか？',
+      options:['接点が閉じる（開く）瞬間、機械的な振動で開閉を繰り返し、信号が瞬間的に不安定になる現象','配線が過熱して焼ける現象','コイルが磁化しなくなる経年劣化現象','電圧が際限なく上がり続ける現象'],
+      correct:0,
+      explain:'正解は「接点が閉じる（開く）瞬間、機械的な振動で開閉を繰り返し、信号が瞬間的に不安定になる現象」です。誤動作の原因になることがあり、回路やプログラム側での対策が行われることもあります。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  selectNode('stopButton');
+  updateCircuitVisual();
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>
