@@ -36,6 +36,15 @@
     "path": "sequence-control/index.html"
   },
   {
+    "id": "instrumentation-circuit",
+    "title": "計装回路の基礎（信号伝送）",
+    "category": "電気",
+    "status": "published",
+    "levels": ["初級", "中級", "上級"],
+    "description": "電圧信号と電流信号(4-20mAループ)を実際に動かして比較するシミュレーター付き教材。4-20mAが現場標準になっている理由(ライブゼロによる断線検出)、ノイズ対策、2線式/3線式トランスミッタの配線ポイントを扱います。",
+    "path": "instrumentation-circuit/index.html"
+  },
+  {
     "id": "commercial-ac-basics",
     "title": "業務用エアコンの基礎知識",
     "category": "空調システム",

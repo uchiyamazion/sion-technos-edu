@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>計装回路の基礎 ― 信号伝送のしくみ ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:660px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .stage{max-width:1180px; margin:40px auto 0; padding:0 24px;}
+
+  /* ---- loop diagram ---- */
+  #loop-svg{width:100%; height:auto; display:block; max-width:640px; margin:0 auto;}
+  .wire{fill:none; stroke:var(--text-3); stroke-width:5; stroke-linecap:round;}
+  .circ-box{fill:var(--bg-panel-2); stroke:var(--line); stroke-width:1.5; transition:stroke .3s ease, fill .3s ease;}
+  .node-group{cursor:pointer;}
+  .node-group:hover .circ-box, .node-group.active .circ-box{stroke:var(--accent); fill:#1a2f52;}
+  .node-label{font-family:var(--font-display); font-weight:700; fill:var(--text-1); font-size:13px;}
+  .node-sub{font-family:var(--font-mono); fill:var(--text-3); font-size:9px; letter-spacing:0.03em;}
+  .flow-arrow{fill:var(--accent); opacity:0.85;}
+
+  .diagram-row{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;}
+  @media (max-width:920px){.diagram-row{grid-template-columns:1fr;}}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:21px;}
+  .info-body{color:var(--text-2); font-size:14.5px; line-height:1.85; margin-bottom:18px;}
+  .compare-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;}
+  .compare-box{background:var(--bg-panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;}
+  .compare-box .compare-label{font-family:var(--font-mono); font-size:10px; color:var(--text-3); margin-bottom:4px;}
+  .compare-box .compare-value{font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--text-1);}
+
+  /* ---- simulator ---- */
+  .sim-section{max-width:1180px; margin:28px auto 0; padding:0 24px;}
+  .sim-slider-wrap{margin-bottom:20px;}
+  .sim-slider-label{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:12.5px; color:var(--text-2); margin-bottom:10px;}
+  .sim-slider-label strong{color:var(--accent); font-size:16px;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; appearance:none; height:6px; border-radius:100px;
+    background:linear-gradient(90deg, var(--cool), var(--warm)); outline:none; cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%;
+    background:var(--text-1); border:3px solid var(--accent); cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:var(--text-1); border:3px solid var(--accent); cursor:pointer;
+  }
+
+  .sim-toggles{display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;}
+  .sim-toggle-btn{
+    flex:1; min-width:180px; font-family:var(--font-mono); font-size:12.5px; font-weight:500;
+    padding:13px; border-radius:12px; border:1px solid var(--line);
+    background:var(--bg-panel-2); color:var(--text-2); cursor:pointer; transition:all .2s ease;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .sim-toggle-btn:hover{border-color:var(--text-3);}
+  .sim-toggle-btn.on{border-color:var(--warm); color:var(--warm); background:var(--warm-dim);}
+  .sim-toggle-btn.on[data-toggle="break"]{border-color:var(--hot); color:var(--hot); background:#f43f5e18;}
+
+  .signal-cards{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:760px){.signal-cards{grid-template-columns:1fr;}}
+  .signal-card{background:var(--bg-panel); border:1px solid var(--line); border-radius:20px; padding:24px; text-align:center; transition:border-color .3s ease;}
+  .signal-card .sc-label{font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; color:var(--text-3); text-transform:uppercase; margin-bottom:10px;}
+  .signal-card .sc-value{font-family:var(--font-mono); font-weight:700; font-size:44px; line-height:1; margin-bottom:6px; transition:color .3s ease;}
+  .signal-card .sc-value.cool{color:var(--cool);}
+  .signal-card .sc-value.warm{color:var(--warm);}
+  .signal-card .sc-value.hot{color:var(--hot);}
+  .signal-card .sc-unit{font-family:var(--font-mono); font-size:14px; color:var(--text-3); margin-bottom:16px;}
+  .signal-card .sc-status{
+    font-size:12.5px; line-height:1.7; padding:12px 14px; border-radius:10px;
+    background:var(--bg-panel-2); border:1px solid var(--line); color:var(--text-2); text-align:left;
+  }
+  .signal-card .sc-status.status-ok{border-color:var(--cool); color:var(--text-1);}
+  .signal-card .sc-status.status-warn{border-color:var(--warm); color:var(--text-1);}
+  .signal-card .sc-status.status-bad{border-color:var(--hot); color:var(--text-1);}
+
+  .field-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+  .field-intro{color:var(--text-2); font-size:13.5px; line-height:1.85; margin-bottom:20px; max-width:680px;}
+  .quiz-panel{max-width:1180px; margin:24px auto 0; padding:0 24px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:1180px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修・技術協力：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">INSTRUMENTATION SIGNAL BASICS</div>
+  <h1 class="title sion-title">計装回路の基礎<br>― 信号伝送のしくみ</h1>
+  <p class="lede">センサーが測定した値を、離れた場所の受信計器やPLCまで正確に届けるための「信号の伝送方式」を学びます。電圧信号と電流信号（4-20mAループ）を実際に動かして比較しながら、現場で4-20mAが標準になっている理由を体感してください。</p>
+</header>
+
+<div class="stage">
+  <div class="diagram-row">
+    <div class="sion-panel">
+      <div class="sion-panel-title">LOOP DIAGRAM ― 2線式4-20mAループ</div>
+      <svg id="loop-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- power supply -->
+        <g class="node-group" data-node="powerSupply" onclick="selectNode('powerSupply')">
+          <rect class="circ-box" x="230" y="30" width="100" height="50" rx="10"/>
+          <text class="node-label" x="280" y="52" text-anchor="middle">電源</text>
+          <text class="node-sub" x="280" y="66" text-anchor="middle">24V DC</text>
+        </g>
+        <text class="node-sub" x="235" y="26">+</text>
+        <text class="node-sub" x="318" y="26">−</text>
+
+        <!-- top corners -->
+        <path class="wire" d="M 230,55 L 200,55 L 200,80"/>
+        <path class="wire" d="M 330,55 L 360,55 L 360,80"/>
+
+        <!-- left / right rails -->
+        <path class="wire" d="M 200,80 L 80,80 L 80,145"/>
+        <path class="wire" d="M 360,80 L 480,80 L 480,235"/>
+
+        <!-- loop wire node (twisted pair) -->
+        <g class="node-group" data-node="wireNode" onclick="selectNode('wireNode')">
+          <rect class="circ-box" x="35" y="145" width="90" height="50" rx="10"/>
+          <text class="node-label" x="80" y="167" text-anchor="middle">ループ配線</text>
+          <text class="node-sub" x="80" y="181" text-anchor="middle">ツイストペア2線</text>
+        </g>
+        <path class="wire" d="M 80,195 L 80,260 L 150,260"/>
+
+        <!-- transmitter -->
+        <g class="node-group" data-node="transmitterNode" onclick="selectNode('transmitterNode')">
+          <rect class="circ-box" x="150" y="235" width="110" height="50" rx="10"/>
+          <text class="node-label" x="205" y="256" text-anchor="middle">トランスミッタ</text>
+          <text class="node-sub" x="205" y="270" text-anchor="middle">2線式・4-20mA出力</text>
+        </g>
+        <path class="wire" d="M 260,260 L 300,260"/>
+
+        <!-- receiver -->
+        <g class="node-group" data-node="receiverNode" onclick="selectNode('receiverNode')">
+          <rect class="circ-box" x="300" y="235" width="110" height="50" rx="10"/>
+          <text class="node-label" x="355" y="256" text-anchor="middle">受信計器/PLC</text>
+          <text class="node-sub" x="355" y="270" text-anchor="middle">シャント抵抗で電圧化</text>
+        </g>
+        <path class="wire" d="M 410,260 L 480,260 L 480,80"/>
+
+        <polygon class="flow-arrow" points="140,255 152,260 140,265"/>
+        <polygon class="flow-arrow" points="290,255 302,260 290,265"/>
+      </svg>
+      <div class="sion-hint"><span class="dot"></span>図の機器をクリックすると説明が切り替わります。電源・トランスミッタ・受信計器が1本の直列ループでつながっているのがポイントです。</div>
+    </div>
+
+    <div class="sion-panel">
+      <div class="sion-panel-title">COMPONENT ― 機器の説明</div>
+      <div class="info-head">
+        <span class="info-num" id="info-num">01</span>
+        <span class="info-title" id="info-title">電源</span>
+      </div>
+      <div class="info-body" id="info-body"></div>
+      <div class="compare-row">
+        <div class="compare-box">
+          <div class="compare-label">分類</div>
+          <div class="compare-value" id="info-type">ループ電源</div>
+        </div>
+        <div class="compare-box">
+          <div class="compare-label">代表的な値</div>
+          <div class="compare-value" id="info-normal">24V DC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNAL SIMULATOR -->
+<div class="sim-section">
+  <div class="sion-panel">
+    <div class="sion-panel-title">SIGNAL SIMULATOR ― 電圧信号 vs 電流信号を比べてみる</div>
+
+    <div class="sim-slider-wrap">
+      <div class="sim-slider-label">
+        <span>測定値（プロセス値）</span>
+        <span><strong id="sim-value-label">50</strong> %</span>
+      </div>
+      <input type="range" id="sim-slider" min="0" max="100" value="50" oninput="updateSimulator()">
+    </div>
+
+    <div class="sim-toggles">
+      <button class="sim-toggle-btn" id="btn-noise" data-toggle="noise" onclick="toggleNoise()">〜 ノイズを加える</button>
+      <button class="sim-toggle-btn" id="btn-break" data-toggle="break" onclick="toggleBreak()">✂ 配線を断線させる</button>
+    </div>
+
+    <div class="signal-cards">
+      <div class="signal-card" id="card-voltage">
+        <div class="sc-label">電圧信号（0〜5V）</div>
+        <div class="sc-value cool" id="voltage-value">2.50</div>
+        <div class="sc-unit">V</div>
+        <div class="sc-status status-ok" id="voltage-status">正常に測定値を伝えています。</div>
+      </div>
+      <div class="signal-card" id="card-current">
+        <div class="sc-label">電流信号（4〜20mAループ）</div>
+        <div class="sc-value cool" id="current-value">12.00</div>
+        <div class="sc-unit">mA</div>
+        <div class="sc-status status-ok" id="current-status">正常に測定値を伝えています。</div>
+      </div>
+    </div>
+    <div class="sion-hint" style="margin-top:18px;"><span class="dot"></span>スライダーで測定値を動かしたあと、「ノイズを加える」「配線を断線させる」を押して、2つの信号方式の違いを比べてみてください。</div>
+  </div>
+</div>
+
+<!-- FIELD KNOWLEDGE -->
+<div class="field-panel">
+  <div class="sion-panel">
+    <div class="sion-panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
+    <p class="field-intro">なぜ現場の計装回路では4-20mAが標準になっているのか。その理由と、ノイズ対策・配線の基本ルールを押さえておきましょう。</p>
+
+    <div class="sion-acc-item" id="acc-basics">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-basics')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">基礎知識</span>
+          <span class="sion-acc-title">電圧信号と電流信号のしくみ<small>VOLTAGE vs CURRENT SIGNAL</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>電圧信号（0-5V・1-5Vなど）</h4>
+          <p>センサー側の出力電圧を、そのまま配線を通じて受信側に伝える方式です。しくみが単純で扱いやすい一方、配線自体の抵抗による電圧降下や、外部からのノイズの影響を受けやすいという弱点があります。配線が長くなるほど、この影響は大きくなります。</p>
+          <h4>電流信号（4-20mAループ）</h4>
+          <p>電源・トランスミッタ・受信計器（シャント抵抗）を1本の直列ループとしてつなぎ、その中を流れる「電流の大きさ」で測定値を表す方式です。直列回路の性質上、電源側が十分な電圧を確保できている限り、配線抵抗が多少変化してもループを流れる電流の大きさはほとんど変わりません。この性質が、長距離伝送やノイズ耐性の強さにつながっています。</p>
+          <div class="sion-acc-note">受信計器は、電流をシャント抵抗（代表的に250Ω）に通して電圧に変換して読み取ります。250Ωの場合、4mAは1V、20mAは5Vとして扱われます。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-why420">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-why420')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">動作理論</span>
+          <span class="sion-acc-title">なぜ4-20mAが標準なのか<small>LIVE ZERO ― 断線検出のしくみ</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>ライブゼロという考え方</h4>
+          <p>測定値0%を0mAではなく<strong>4mA</strong>に割り当てる設計を「ライブゼロ」と呼びます。こうしておくことで、配線が断線したときの電流（0mA）と、正常な測定値0%のときの電流（4mA）を明確に区別できます。電圧信号で0Vを0%に割り当てる方式では、断線時も0Vになってしまうため、この区別ができません。</p>
+          <h4>電圧降下に強い</h4>
+          <p>直列ループを流れる電流は、途中の配線抵抗が変化してもほぼ一定に保たれます（電源側のコンプライアンス電圧の範囲内であれば）。これは並列的に電圧を伝える方式にはない、電流信号ならではの強みです。</p>
+          <h4>ノイズにも比較的強い</h4>
+          <p>電流ループはインピーダンスが低いため、外来ノイズが電流の大きさに与える影響が電圧信号に比べて小さく済みます。長距離配線が多いプラントや設備の計装回路で標準的に使われているのは、こうした理由からです。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-noise">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-noise')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">応用</span>
+          <span class="sion-acc-title">ノイズ対策の基礎<small>SHIELDING ― ツイストペア線とアース</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>ツイストペア線</h4>
+          <p>2本の電線をより合わせることで、外部からのノイズが2本の線にほぼ均等に（同相で）乗るようにします。受信側で2本の線の差分を取ることで、同相に乗ったノイズ成分を打ち消しやすくなります。</p>
+          <h4>シールド線とアースの取り方</h4>
+          <p>電磁ノイズが特に強い環境では、信号線の周りを金属箔や編組線で覆ったシールド線が使われます。シールドを接地（アース）する際は、両端接地するとシールドとアースの間でループ電流（グラウンドループ）が発生し、かえってノイズの原因になることがあるため、片端接地が基本ルールとされています。</p>
+          <h4>配線ルートの分離</h4>
+          <p>モーターやインバーターなどの動力線と、計装用の信号線を同じ配管・ダクトにまとめて通すと、ノイズが誘導されやすくなります。可能な限り動力線と信号線のルートを分ける、距離を取る、直交させるといった配慮が現場では重要です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" id="acc-wiring">
+      <div class="sion-acc-head" onclick="sionToggleAcc('acc-wiring')">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">保守</span>
+          <span class="sion-acc-title">現場の配線ポイント<small>WIRING ― 2線式/3線式/4線式・トラブル対応</small></span>
+        </div>
+        <span class="sion-acc-chevron">+</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <h4>2線式・3線式・4線式トランスミッタ</h4>
+          <p>2線式は電源供給と信号伝送を同じ2本の配線でまかなう、最も配線がシンプルな方式です。消費電力が大きいトランスミッタや、電源電圧の余裕が少ない現場では、電源用の配線を別に用意する3線式・4線式が使われることもあります。</p>
+          <h4>極性に注意</h4>
+          <p>電流ループには極性（＋／−）があり、配線を逆につなぐと正しく動作しません。現場では端子表示をよく確認してから配線します。</p>
+          <h4>バーンアウト機能</h4>
+          <p>センサーや配線が断線した際に、受信側の指示値を意図的にスケールの上限または下限まで振り切らせることで、異常を分かりやすく知らせる設定です。断線を数値の異常としてだけでなく、パッと見て気づけるようにする実務上の工夫です。</p>
+          <div class="sion-acc-warn">
+            <span class="warn-icon">!</span>
+            <span>受信側の表示が4mA固定のまま動かない場合、断線（0mA）とは別の原因（トランスミッタ自体の故障、測定対象が実際に変化していない等）が考えられます。0mAとの違いを切り分けの手がかりにしてください。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-panel">
+  <div class="sion-quiz-card">
+    <div class="sion-panel-title">CHECK YOUR UNDERSTANDING ― 理解度チェック</div>
+
+    <div class="sion-level-bar" id="level-bar">
+      <button class="sion-level-btn" data-level="beginner" data-level-color="cool" onclick="quiz.start('beginner')">
+        <span class="level-name">初級</span>
+        <span class="level-desc">4-20mAループの基本</span>
+      </button>
+      <button class="sion-level-btn" data-level="intermediate" data-level-color="warm" onclick="quiz.start('intermediate')">
+        <span class="level-name">中級</span>
+        <span class="level-desc">伝送方式の違い・ノイズ対策</span>
+      </button>
+      <button class="sion-level-btn" data-level="advanced" data-level-color="hot" onclick="quiz.start('advanced')">
+        <span class="level-name">上級</span>
+        <span class="level-desc">配線設計・現場トラブル</span>
+      </button>
+    </div>
+
+    <div id="quiz-body">
+      <div class="sion-quiz-q" id="quiz-question">問題を読み込み中…</div>
+      <div class="sion-quiz-options" id="quiz-options"></div>
+      <div class="sion-quiz-explain" id="quiz-explain"></div>
+      <div class="sion-quiz-footer">
+        <div class="sion-quiz-progress" id="quiz-progress">1 / 4</div>
+        <button class="sion-quiz-next" id="quiz-next">次の問題へ →</button>
+      </div>
+    </div>
+
+    <div class="sion-quiz-result" id="quiz-result">
+      <div class="sion-result-score" id="result-score">0<span>/4</span></div>
+      <div class="sion-result-msg" id="result-msg"></div>
+      <div class="sion-result-sub" id="result-sub"></div>
+      <div class="sion-result-breakdown" id="result-breakdown"></div>
+      <button class="sion-result-retry" onclick="quiz.restart()">もう一度挑戦する</button>
+    </div>
+  </div>
+</div>
+
+<div class="sion-footer">INSTRUMENTATION SIGNAL BASICS ／ 監修：シオンテクノス株式会社</div>
+
+<script src="../shared/components.js"></script>
+<script>
+/* ======================= COMPONENT INFO ======================= */
+const componentInfo = {
+  powerSupply:{
+    num:'01', title:'電源', type:'ループ電源', normal:'24V DC',
+    body:'2線式トランスミッタとループ全体に電力を供給する直流電源です。トランスミッタは信号を「発電」するのではなく、この電源からの電流を可変抵抗のように調整することで4〜20mAの信号を作り出します。ループに必要な電流（最大20mA）を、配線抵抗や受信計器の抵抗を含めた全体に対して流し続けられるだけの電圧（コンプライアンス電圧）を確保できることが重要です。'
+  },
+  wireNode:{
+    num:'02', title:'ループ配線', type:'ツイストペア2線', normal:'直列ループ',
+    body:'電源・トランスミッタ・受信計器を1本の直列ループとしてつなぐ2本の電線です。ノイズの影響を受けにくくするため、2本をより合わせた「ツイストペア線」が使われることが多く、電磁ノイズが強い環境ではシールド線も併用されます。'
+  },
+  transmitterNode:{
+    num:'03', title:'トランスミッタ', type:'2線式', normal:'4〜20mA出力',
+    body:'温度・圧力などのセンサー部と、信号を作る変換部を内蔵した機器です。2線式トランスミッタは、測定値に応じてループ電流の「流れやすさ」を変化させる可変抵抗のように働き、測定値0%のとき4mA、100%のとき20mAの電流がループ全体に流れるようにします。「電流を消費する量を変化させて信号を作る」という発想がポイントです。'
+  },
+  receiverNode:{
+    num:'04', title:'受信計器・PLC入力', type:'シャント抵抗', normal:'250Ω前後',
+    body:'ループを流れる電流を、内部のシャント抵抗（一般に250Ω前後）に通すことで電圧に変換し、コントローラーやPLCのアナログ入力として読み取ります。例えば250Ωの抵抗であれば、4mAは1V、20mAは5Vとして扱われます。'
+  }
+};
+
+let currentNode = 'powerSupply';
+
+function selectNode(node){
+  currentNode = node;
+  document.querySelectorAll('.node-group').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = componentInfo[node];
+  document.getElementById('info-num').textContent = d.num;
+  document.getElementById('info-title').textContent = d.title;
+  document.getElementById('info-body').textContent = d.body;
+  document.getElementById('info-type').textContent = d.type;
+  document.getElementById('info-normal').textContent = d.normal;
+}
+
+/* ======================= SIGNAL SIMULATOR ======================= */
+let noiseOn = false;
+let wireBreak = false;
+
+function toggleNoise(){
+  noiseOn = !noiseOn;
+  document.getElementById('btn-noise').classList.toggle('on', noiseOn);
+  updateSimulator();
+}
+function toggleBreak(){
+  wireBreak = !wireBreak;
+  document.getElementById('btn-break').classList.toggle('on', wireBreak);
+  updateSimulator();
+}
+
+function updateSimulator(){
+  const slider = document.getElementById('sim-slider');
+  const val = Number(slider.value);
+  document.getElementById('sim-value-label').textContent = val;
+
+  let voltage = (val/100)*5;
+  let current = 4 + (val/100)*16;
+
+  if(noiseOn && !wireBreak){
+    voltage += 0.9;
+    current += 0.15;
+  }
+  if(wireBreak){
+    voltage = 0;
+    current = 0;
+  }
+
+  voltage = Math.max(0, voltage);
+  current = Math.max(0, current);
+
+  const vEl = document.getElementById('voltage-value');
+  const cEl = document.getElementById('current-value');
+  vEl.textContent = voltage.toFixed(2);
+  cEl.textContent = current.toFixed(2);
+
+  const vStatus = document.getElementById('voltage-status');
+  const cStatus = document.getElementById('current-status');
+
+  vEl.className = 'sc-value';
+  cEl.className = 'sc-value';
+
+  if(wireBreak){
+    vEl.classList.add('hot');
+    vStatus.className = 'sc-status status-bad';
+    vStatus.textContent = '0Vになっていますが、これは正常な測定値0%のときの表示と同じです。受信側では断線か0%か区別できません。';
+
+    cEl.classList.add('hot');
+    cStatus.className = 'sc-status status-bad';
+    cStatus.textContent = '0mAは正常な最小値4mAより低いため、明らかな異常として断線を検出できます（ライブゼロの効果）。';
+  } else if(noiseOn){
+    vEl.classList.add('warm');
+    vStatus.className = 'sc-status status-warn';
+    vStatus.textContent = 'ノイズの影響で数値が大きくぶれています。電圧信号は配線が長い・環境が悪いほど誤差が出やすくなります。';
+
+    cEl.classList.add('cool');
+    cStatus.className = 'sc-status status-ok';
+    cStatus.textContent = '同じノイズを加えても、電流信号はほとんど値が変わりません。電流ループはノイズの影響を受けにくい性質があります。';
+  } else {
+    vEl.classList.add('cool');
+    vStatus.className = 'sc-status status-ok';
+    vStatus.textContent = '正常に測定値を伝えています。';
+
+    cEl.classList.add('cool');
+    cStatus.className = 'sc-status status-ok';
+    cStatus.textContent = '正常に測定値を伝えています。';
+  }
+}
+
+/* ======================= QUIZ DATA ======================= */
+const quizLevels = {
+  beginner:[
+    {
+      q:'4-20mA信号で、測定値が0%のときに出力される電流はどれですか？',
+      options:['0mA','4mA','10mA','20mA'],
+      correct:1,
+      explain:'正解は「4mA」です。4-20mA方式では、測定値0%のときに4mA（ライブゼロ）を出力するのが基本で、これが断線検出などのメリットにつながります。'
+    },
+    {
+      q:'4-20mAループにおいて、電流はどのように流れますか？',
+      options:['電源・トランスミッタ・受信計器の中を並列に分かれて流れる','電源・トランスミッタ・受信計器が1本の直列ループとしてつながり、同じ電流が全体を流れる','電流は流れず電圧だけが伝わる','受信計器側だけで独立して発電される'],
+      correct:1,
+      explain:'正解は「電源・トランスミッタ・受信計器が1本の直列ループとしてつながり、同じ電流が全体を流れる」です。ループのどこでも同じ大きさの電流が流れるのが直列回路の性質です。'
+    },
+    {
+      q:'受信計器は、ループを流れる電流をどのように読み取りますか？',
+      options:['電流のまま直接、数値として保存するだけ','内部のシャント抵抗に電流を通して電圧に変換し読み取る','電流を音の大きさに変換する','電流を光の強さに変換する'],
+      correct:1,
+      explain:'正解は「内部のシャント抵抗に電流を通して電圧に変換し読み取る」です。代表的には250Ωのシャント抵抗が使われ、4mAは1V、20mAは5Vとして扱われます。'
+    },
+    {
+      q:'「2線式トランスミッタ」の特徴として正しいものはどれですか？',
+      options:['電源用の配線と信号用の配線が別々に4本必要','電源供給と信号伝送を同じ2本の配線でまかない、消費電流を変化させて信号を作る','電池がなければ動作しない','常に20mA固定を出力し続ける'],
+      correct:1,
+      explain:'正解は「電源供給と信号伝送を同じ2本の配線でまかない、消費電流を変化させて信号を作る」です。信号を発電するのではなく、ループの消費電流を調整することで4-20mA信号を作り出します。'
+    }
+  ],
+  intermediate:[
+    {
+      q:'電圧信号（0-5Vなど）が、電流信号（4-20mA）と比べて長距離伝送で不利になりやすい理由は何ですか？',
+      options:['電圧信号は伝送中に色が変化するため','配線の抵抗による電圧降下の影響を受けやすく、受信側で電圧が変化して誤差が出やすいため','電圧信号は磁石に反応するため','電圧信号は温度によって配線の色が変わるため'],
+      correct:1,
+      explain:'正解は「配線の抵抗による電圧降下の影響を受けやすく、受信側で電圧が変化して誤差が出やすいため」です。電流信号は直列ループの性質上、配線抵抗があっても電流の大きさがほぼ一定に保たれます。'
+    },
+    {
+      q:'4-20mA信号が「0mAではなく4mAを0%」とする、最大のメリットは何ですか？',
+      options:['消費電力を減らすため','断線時に電流が0mAになり、正常な0%（4mA）と明確に区別して断線を検出できるため','配線の色を統一するため','製造コストを下げるため'],
+      correct:1,
+      explain:'正解は「断線時に電流が0mAになり、正常な0%（4mA）と明確に区別して断線を検出できるため」です。この方式を「ライブゼロ」と呼びます。'
+    },
+    {
+      q:'ノイズが信号線に飛び込んだとき、電流信号（4-20mAループ）が電圧信号よりも影響を受けにくいのはなぜですか？',
+      options:['電流信号には電気が流れていないため','ループが直列回路として動作し、電源側の電圧に余裕がある限り、多少のノイズが加わっても回路全体を流れる電流の大きさが変わりにくいため','電流信号は無線で送られているため','電流信号には特殊な塗装がされているため'],
+      correct:1,
+      explain:'正解は「ループが直列回路として動作し、電源側の電圧に余裕がある限り、多少のノイズが加わっても回路全体を流れる電流の大きさが変わりにくいため」です。'
+    },
+    {
+      q:'ツイストペア線が信号線のノイズ対策として使われる理由は何ですか？',
+      options:['配線コストが安くなるから','2本の線をより合わせることで、外部からのノイズが2本の線に均等に（同相で）乗りやすくなり、差動的に打ち消しやすくなるから','見た目がきれいだから','電流容量が増えるから'],
+      correct:1,
+      explain:'正解は「2本の線をより合わせることで、外部からのノイズが2本の線に均等に（同相で）乗りやすくなり、差動的に打ち消しやすくなるから」です。'
+    },
+    {
+      q:'シールド線のシールド部分を接地（アース）するとき、現場で一般的に推奨される基本ルールはどれですか？',
+      options:['シールドの両端をしっかり接地する','シールドの片側の端だけを接地し、もう片方は接地しない','シールドはどこにも接地しない','シールドを信号線として使う'],
+      correct:1,
+      explain:'正解は「シールドの片側の端だけを接地し、もう片方は接地しない」です。両端接地するとグラウンドループが発生し、かえってノイズの原因になることがあります。'
+    }
+  ],
+  advanced:[
+    {
+      q:'4-20mAトランスミッタの「3線式」「4線式」が使われるのは主にどのような場合ですか？',
+      options:['配線コストを下げたいだけの場合','トランスミッタの消費電力が大きい、または電源電圧の余裕が少ないなど、電源線と信号線を分離したい場合','断線検出が不要な場合','ノイズ対策が不要な場合'],
+      correct:1,
+      explain:'正解は「トランスミッタの消費電力が大きい、または電源電圧の余裕が少ないなど、電源線と信号線を分離したい場合」です。'
+    },
+    {
+      q:'ある4-20mAループで、受信計器の表示が常に4mA固定で変化しない場合、まず疑うべき原因は何ですか？',
+      options:['断線とは別に、トランスミッタ自体の故障や設定異常、あるいは測定対象が実際に変化していない可能性','電源電圧が高すぎること','ノイズが強すぎること','配線が長すぎること'],
+      correct:0,
+      explain:'正解は「断線とは別に、トランスミッタ自体の故障や設定異常、あるいは測定対象が実際に変化していない可能性」です。断線時は0mAになる点との違いが切り分けの手がかりになります。'
+    },
+    {
+      q:'「コンプライアンス電圧」という言葉は、4-20mAループにおいて何を表しますか？',
+      options:['信号のノイズ耐性の強さ','ループ全体の抵抗（配線抵抗＋受信計器の入力抵抗など）に対して、規定の電流を流し続けるために電源側が供給できる電圧の上限','断線を検出する機能の名前','温度センサーの精度'],
+      correct:1,
+      explain:'正解は「ループ全体の抵抗（配線抵抗＋受信計器の入力抵抗など）に対して、規定の電流を流し続けるために電源側が供給できる電圧の上限」です。'
+    },
+    {
+      q:'現場での「バーンアウト」設定とは何を目的とした機能ですか？',
+      options:['火災を検知する機能','センサーや配線が断線したときに、受信側の指示値を意図的に上限側または下限側に振り切らせて異常を知らせる機能','電源をわざと焼き切る機能','ノイズを増幅する機能'],
+      correct:1,
+      explain:'正解は「センサーや配線が断線したときに、受信側の指示値を意図的に上限側または下限側に振り切らせて異常を知らせる機能」です。断線を見た目にもわかりやすくするための実務上の工夫です。'
+    },
+    {
+      q:'電圧信号の受信側で、配線抵抗による誤差を減らすための代表的な工夫はどれですか？',
+      options:['配線を細くする','できるだけ配線を短くする、または受信側の入力インピーダンスを高くして電流をほとんど流さないようにする','配線の色を変える','電源電圧を下げる'],
+      correct:1,
+      explain:'正解は「できるだけ配線を短くする、または受信側の入力インピーダンスを高くして電流をほとんど流さないようにする」です。長距離になるほど電流信号（4-20mA）の方が有利になります。'
+    }
+  ]
+};
+
+const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, advanced:{label:'上級'}};
+
+const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
+
+/* ======================= INIT ======================= */
+window.addEventListener('load', ()=>{
+  selectNode('powerSupply');
+  updateSimulator();
+  quiz.start('beginner');
+});
+</script>
+</body>
+</html>
