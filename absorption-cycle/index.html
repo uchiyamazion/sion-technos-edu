@@ -205,6 +205,92 @@
   </div>
 </div>
 
+<!-- PERIPHERAL SYSTEM -->
+<div class="stage" style="margin-top:24px;">
+  <div class="sion-panel">
+    <div class="sion-panel-title">PERIPHERAL SYSTEM ― クーリングタワーと冷却水系統</div>
+    <svg id="periph-svg" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- cooling tower -->
+      <g class="node-group" data-node="coolingTower" onclick="peripheralSelectNode('coolingTower')">
+        <rect class="node-box" x="250" y="30" width="140" height="60" rx="14"/>
+        <text class="node-label" x="320" y="56" text-anchor="middle">クーリングタワー</text>
+        <text class="node-sub" x="320" y="75" text-anchor="middle">冷却塔</text>
+      </g>
+
+      <!-- heat release (evaporative) -->
+      <path d="M300,10 Q305,-2 310,10 Q315,22 320,10" stroke="var(--warm)" stroke-width="2" fill="none"/>
+      <path d="M330,10 Q335,-2 340,10 Q345,22 350,10" stroke="var(--warm)" stroke-width="2" fill="none"/>
+      <text x="320" y="-8" text-anchor="middle" font-family="JetBrains Mono" font-size="9.5" fill="#fb923c">蒸発潜熱で外気へ放熱</text>
+
+      <!-- makeup water -->
+      <path d="M180,45 L246,45" stroke="#5c718f" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowMakeup)"/>
+      <text x="178" y="40" text-anchor="end" font-family="JetBrains Mono" font-size="9.5" fill="#7d8bab">補給水（蒸発分）</text>
+      <defs>
+        <marker id="arrowMakeup" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#5c718f"/>
+        </marker>
+      </defs>
+
+      <!-- loop wiring -->
+      <path class="pipe" stroke="#38bdf8" stroke-width="7" d="M 250,57 L 60,57 L 60,190"/>
+      <path class="pipe" stroke="#f43f5e" stroke-width="7" d="M 520,217 L 580,217 L 580,57 L 390,57"/>
+      <path class="pipe" stroke="#38bdf8" stroke-width="7" d="M 125,217 L 185,217"/>
+      <path class="pipe" stroke="#fb923c" stroke-width="7" d="M 325,217 L 380,217"/>
+
+      <polygon points="55,150 65,150 60,162" fill="#38bdf8"/>
+      <polygon points="150,212 150,222 162,217" fill="#38bdf8"/>
+      <polygon points="345,212 345,222 357,217" fill="#fb923c"/>
+      <polygon points="575,120 585,120 580,108" fill="#f43f5e"/>
+
+      <!-- pump -->
+      <g class="node-group" data-node="pump" onclick="peripheralSelectNode('pump')">
+        <rect class="node-box" x="15" y="190" width="110" height="55" rx="12"/>
+        <text class="node-label" x="70" y="215" text-anchor="middle">冷却水ポンプ</text>
+        <text class="node-sub" x="70" y="232" text-anchor="middle">CIRCULATION PUMP</text>
+      </g>
+
+      <!-- condenser water -->
+      <g class="node-group" data-node="condenserWater" onclick="peripheralSelectNode('condenserWater')">
+        <rect class="node-box" x="185" y="190" width="140" height="55" rx="12"/>
+        <text class="node-label" x="255" y="215" text-anchor="middle">凝縮器</text>
+        <text class="node-sub" x="255" y="232" text-anchor="middle">冷却水側・32℃前後で流入</text>
+      </g>
+
+      <!-- absorber water -->
+      <g class="node-group" data-node="absorberWater" onclick="peripheralSelectNode('absorberWater')">
+        <rect class="node-box" x="380" y="190" width="140" height="55" rx="12"/>
+        <text class="node-label" x="450" y="215" text-anchor="middle">吸収器</text>
+        <text class="node-sub" x="450" y="232" text-anchor="middle">冷却水側・37.5℃前後で流出</text>
+      </g>
+
+      <text x="310" y="280" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#5c718f">冷却水は「クーリングタワー→凝縮器→吸収器→クーリングタワー」の順に循環する</text>
+    </svg>
+    <div class="sion-hint"><span class="dot"></span>吸収式は圧縮機を使わない代わりに、冷却水ポンプとクーリングタワーのファンが主な消費電力になります。図の機器をクリックすると説明が切り替わります。</div>
+  </div>
+
+  <div>
+    <div class="sion-panel">
+      <div class="sion-panel-title">COMPONENT ― 周辺設備の説明</div>
+      <div class="info-head">
+        <span class="info-num" id="periph-info-num">01</span>
+        <span class="info-title" id="periph-info-title">クーリングタワー</span>
+      </div>
+      <div class="info-body" id="periph-info-body"></div>
+      <div class="compare-row">
+        <div class="compare-box">
+          <div class="compare-label">役割</div>
+          <div class="compare-value" id="periph-info-a">放熱</div>
+        </div>
+        <div class="compare-box">
+          <div class="compare-label">代表的な値</div>
+          <div class="compare-value" id="periph-info-b">32〜37.5℃</div>
+        </div>
+      </div>
+      <div class="sion-hint"><span class="dot"></span>図の機器をクリックすると切り替わります</div>
+    </div>
+  </div>
+</div>
+
 <!-- FIELD KNOWLEDGE -->
 <div class="field-panel">
   <div class="sion-panel">
@@ -488,6 +574,12 @@ const quizLevels = {
       options:['凝縮器','再生器','吸収器','送風機'],
       correct:2,
       explain:'正解は吸収器です。吸収液（臭化リチウム水溶液）が冷媒蒸気を化学的に吸い込むことで、蒸発器側の低圧を保ち続けます。'
+    },
+    {
+      q:'クーリングタワー（冷却塔）が冷却水を冷やす際に利用している現象は何ですか？',
+      options:['磁力による吸熱','水が蒸発するときに周囲から熱を奪う「蒸発潜熱」','圧縮による冷却','電気分解による冷却'],
+      correct:1,
+      explain:'正解は「水が蒸発するときに周囲から熱を奪う『蒸発潜熱』」です。温水の一部を細かい水滴にして空気にさらし、蒸発させることで残りの水を冷やします。'
     }
   ],
   intermediate:[
@@ -520,6 +612,12 @@ const quizLevels = {
       options:['電力が非常に安く、熱源が乏しい現場','工場の廃熱やガスなど熱源が豊富にある現場','冷凍温度をマイナス30℃以下にしたい現場','設置スペースが極端に狭い現場'],
       correct:1,
       explain:'正解は「工場の廃熱やガスなど熱源が豊富にある現場」です。電気の代わりに熱を使うため、廃熱やガスなどの熱源をうまく活用できる現場でメリットが大きくなります。'
+    },
+    {
+      q:'冷却水は一般的にどのような順序で循環しますか？',
+      options:['クーリングタワー→吸収器→凝縮器→クーリングタワー','クーリングタワー→凝縮器→吸収器→クーリングタワー','蒸発器→再生器→クーリングタワー','クーリングタワーだけで完結し、機器へは循環しない'],
+      correct:1,
+      explain:'正解は「クーリングタワー→凝縮器→吸収器→クーリングタワー」です。クーリングタワーで冷やされた水は先に凝縮器を通り、続けて吸収器で吸収熱を受け取ったあと、再びクーリングタワーへ戻って冷やされます。'
     }
   ],
   advanced:[
@@ -560,9 +658,40 @@ const levelMeta = {beginner:{label:'初級'}, intermediate:{label:'中級'}, adv
 
 const quiz = new SionQuiz({levels: quizLevels, levelMeta: levelMeta});
 
+/* ======================= PERIPHERAL SYSTEM ======================= */
+const peripheralInfo = {
+  coolingTower:{
+    num:'01', title:'クーリングタワー（冷却塔）', a:'放熱', b:'蒸発潜熱を利用',
+    body:'凝縮器・吸収器で冷媒や吸収液から受け取った熱を、最終的に外気へ捨てる場所です。温水の一部を細かい水滴として散布し、ファンで空気にさらして蒸発させることで、水が蒸発するときに周囲から熱を奪う「蒸発潜熱」を利用して残りの水を冷やします。蒸発した分の水は失われるため、補給水で補いながら運転します。'
+  },
+  pump:{
+    num:'02', title:'冷却水ポンプ', a:'循環', b:'常時運転が基本',
+    body:'クーリングタワーで冷やされた水を、凝縮器・吸収器へ送り出し、再びクーリングタワーへ戻す、という循環をつくる動力源です。吸収式冷凍機は圧縮機を使わない分、この冷却水ポンプとクーリングタワーのファンが、消費電力の主な内訳になります。ポンプが停止すると冷却水が循環せず、凝縮・吸収がうまく進まなくなるため、冷凍機本体と連動して運転されるのが基本です。'
+  },
+  condenserWater:{
+    num:'03', title:'凝縮器（冷却水側）', a:'受熱', b:'32℃前後で流入',
+    body:'クーリングタワーで冷やされた水がまず流れ込み、再生器から送られてきた高温の冷媒蒸気を冷やして液体に戻す際の熱を受け取ります。メーカー資料の一例では、冷却水は32℃前後で凝縮器に流入します。'
+  },
+  absorberWater:{
+    num:'04', title:'吸収器（冷却水側）', a:'受熱', b:'37.5℃前後で流出',
+    body:'凝縮器を通ったあとの冷却水は、続けて吸収器を通り、吸収液が冷媒蒸気を吸収する際に発生する「吸収熱」を受け取ります。この2つの機器で熱を受け取った冷却水は37.5℃前後まで温度が上がった状態でクーリングタワーへ戻され、そこで再び冷やされます。'
+  }
+};
+
+function peripheralSelectNode(node){
+  document.querySelectorAll('#periph-svg .node-group').forEach(g=>g.classList.toggle('active', g.dataset.node===node));
+  const d = peripheralInfo[node];
+  document.getElementById('periph-info-num').textContent = d.num;
+  document.getElementById('periph-info-title').textContent = d.title;
+  document.getElementById('periph-info-body').textContent = d.body;
+  document.getElementById('periph-info-a').textContent = d.a;
+  document.getElementById('periph-info-b').textContent = d.b;
+}
+
 /* ======================= INIT ======================= */
 window.addEventListener('load', ()=>{
   selectNode('condenser');
+  peripheralSelectNode('coolingTower');
   initParticles();
   animateParticles();
   quiz.start('beginner');
