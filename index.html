@@ -118,7 +118,7 @@
 async function loadModules(){
   const container = document.getElementById('module-sections');
   try{
-    const res = await fetch('modules.json');
+    const res = await fetch('modules.json?v=' + Date.now(), { cache: 'no-store' });
     if(!res.ok) throw new Error('modules.json の読み込みに失敗しました');
     const modules = await res.json();
     renderModules(modules, container);
