@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業理念 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(30px,5.5vw,54px);}
+  p.lede{font-size:16px; color:var(--text-2); max-width:660px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none; margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent);}
+
+  .stage{max-width:900px; margin:0 auto; padding:0 24px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+
+  /* ---- vision quote panel ---- */
+  .vision-quote{
+    text-align:center; padding:36px 24px; border-radius:20px;
+    background:var(--bg-panel); border:1px solid var(--line);
+    margin-bottom:20px;
+  }
+  .vision-quote .vq-keywords{
+    font-family:var(--font-display); font-weight:900; font-size:clamp(20px,4.5vw,30px);
+    line-height:1.6;
+  }
+  .vision-quote .vq-keywords .kw{
+    background:linear-gradient(120deg, var(--cool), var(--warm));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .vision-quote .vq-sub{font-family:var(--font-mono); font-size:13px; color:var(--text-3); margin-top:10px;}
+  .vision-quote .vq-sub strong{color:var(--warm); font-weight:700;}
+
+  /* ---- keyword accordion ---- */
+  .kw-tag{color:#02131f;}
+  .kw-tag.kw-souzou{background:#5eead4;}
+  .kw-tag.kw-chosen{background:#fb923c;}
+  .kw-tag.kw-seicho{background:#38bdf8;}
+
+  /* ---- jinbutsu circles ---- */
+  .circle-diagram{
+    position:relative; max-width:420px; margin:0 auto 22px; height:400px;
+  }
+  .p-circle{
+    position:absolute; border-radius:50%; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; cursor:pointer;
+    color:#02131f; font-family:var(--font-display); transition:transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 8px 24px -8px rgba(0,0,0,0.4);
+  }
+  .p-circle:hover, .p-circle.active{transform:scale(1.05);}
+  .p-circle .pc-name{font-weight:900; font-size:22px;}
+  .p-circle .pc-sub{font-family:var(--font-body); font-weight:500; font-size:11.5px; margin-top:4px; line-height:1.5; padding:0 10px;}
+
+  .p-circle.jiko{
+    width:190px; height:190px; top:0; left:50%; transform:translateX(-50%);
+    background:radial-gradient(circle at 35% 30%, #86efac, #22c55e);
+  }
+  .p-circle.jiko.active{transform:translateX(-50%) scale(1.05);}
+  .p-circle.tasha{
+    width:170px; height:170px; bottom:0; left:0;
+    background:radial-gradient(circle at 35% 30%, #d8b4fe, #a855f7);
+  }
+  .p-circle.kadai{
+    width:170px; height:170px; bottom:0; right:0;
+    background:radial-gradient(circle at 35% 30%, #fda4af, #f43f5e);
+  }
+
+  .jinbutsu-detail{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; font-size:13.5px; color:var(--text-2); line-height:1.85;
+    min-height:64px;
+  }
+  .jinbutsu-detail .jd-title{
+    font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--text-1);
+    margin-bottom:6px;
+  }
+  .jinbutsu-hint{
+    text-align:center; font-family:var(--font-mono); font-size:11.5px; color:var(--text-3);
+    margin-bottom:14px;
+  }
+
+  /* ---- closing panel ---- */
+  .closing-panel{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:20px;
+    padding:28px; font-size:14.5px; color:var(--text-2); line-height:2;
+  }
+  .closing-panel strong{color:var(--text-1);}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">CORPORATE PHILOSOPHY</div>
+  <h1 class="title sion-title">企業理念</h1>
+  <p class="lede">私たちがどんな考え方を大切にしながら日々の仕事に向き合っているのか。シオンテクノス株式会社のVisionと、そこから導かれる「求める人物像」を紹介します。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">Vision</span></div>
+    <div class="vision-quote">
+      <div class="vq-keywords">「<span class="kw">創造</span>」「<span class="kw">成長</span>」「<span class="kw">挑戦</span>」</div>
+      <div class="vq-sub">が<strong>おもろい</strong>と感じる企業造り</div>
+    </div>
+    <p style="font-size:13.5px; color:var(--text-2); line-height:1.9; text-align:center; margin-bottom:20px;">
+      それぞれのキーワードをタップすると、詳しい考え方が読めます。
+    </p>
+
+    <div class="sion-acc-item" data-acc="souzou">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag kw-tag kw-souzou">創造</span>
+          <span class="sion-acc-title">お客様の地域社会と自社の未来を創造する</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <p>私たちは、お客様の地域社会と自社の未来を創造します。目の前の仕事を「作業」としてこなすのではなく、その先にあるお客様の暮らしや地域の産業活動を支えているという意識を持つこと。それが「創造」の出発点です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" data-acc="chosen">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag kw-tag kw-chosen">挑戦</span>
+          <span class="sion-acc-title">向上心と探究心で、あらゆる可能性に挑戦する</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <p>私たちは、向上心と探究心を持ち、あらゆる可能性に挑戦することが喜びです。挑戦する行動の後に達成があり、成果があります。つまり「挑戦」は結果を保証するものではなく、行動そのものに価値がある、という考え方です。まずやってみること、そこから達成や成果が生まれます。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sion-acc-item" data-acc="seicho">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag kw-tag kw-seicho">成長</span>
+          <span class="sion-acc-title">自己・仲間・社員・自社・他社の成長を喜びとする</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner">
+          <p>自己、仲間や社員、自社、他社の成長が私たちの喜びです。成長は自分ひとりの技術向上にとどまらず、一緒に働く仲間、会社全体、さらには協力会社やお客様も含めた「関わるすべての人」の成長を指しています。誰かの成長を、自分の喜びとして捉える姿勢です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">求める人物像</span></div>
+    <p style="font-size:13.5px; color:var(--text-2); line-height:1.9; margin-bottom:20px;">
+      物事に向き合う力とは、「自己・他者・課題」に向き合う力のこと。物事に真摯に向き合う力があり、「未来を創造すること」「あらゆる可能性に挑戦すること」「自分を含め関わる人皆が成長すること」を一緒に面白がれる人をお待ちしています。
+    </p>
+
+    <div class="jinbutsu-hint">円をタップすると詳しい説明が表示されます</div>
+    <div class="circle-diagram">
+      <div class="p-circle jiko" data-person="jiko" onclick="selectPerson('jiko')">
+        <div class="pc-name">自己</div>
+        <div class="pc-sub">セルフマネジメント<br>ライフプラン</div>
+      </div>
+      <div class="p-circle tasha" data-person="tasha" onclick="selectPerson('tasha')">
+        <div class="pc-name">他者</div>
+        <div class="pc-sub">お客様との関わり<br>仲間との関わり</div>
+      </div>
+      <div class="p-circle kadai" data-person="kadai" onclick="selectPerson('kadai')">
+        <div class="pc-name">課題</div>
+        <div class="pc-sub">業務の遂行</div>
+      </div>
+    </div>
+
+    <div class="jinbutsu-detail" id="jinbutsu-detail">
+      <div class="jd-title">円をタップしてみましょう</div>
+      <div>「自己」「他者」「課題」、それぞれに向き合う力について説明します。</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">03</span><span class="info-title">理念のまとめ</span></div>
+    <div class="closing-panel">
+      <p>これらを実現しながら、弊社事業を通じて、<strong>地域社会及び地域企業様のインフラ維持に貢献</strong>します。そして、設備全般の安全運用に貢献することで地域社会の経済活動を支えたいと考えています。</p>
+      <p style="margin-top:14px;">私たちは<strong>隣人の笑顔のために、自分自身を磨き続けます。</strong></p>
+    </div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function toggleAcc(headEl){
+  const item = headEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.parentElement.querySelectorAll('.sion-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+const personData = {
+  jiko:{
+    title:'自己 ― セルフマネジメント／ライフプラン',
+    body:'自分自身の状態や成長を、自分で管理・設計する力です。目先の業務だけでなく、自分のキャリアや生活設計を主体的に考え、自己管理できる人であることを大切にしています。'
+  },
+  tasha:{
+    title:'他者 ― お客様との関わり／仲間との関わり',
+    body:'お客様や現場で共に働く仲間と、良い関係を築く力です。技術力だけでなく、相手の立場に立ったコミュニケーションや信頼関係づくりも「向き合う力」の一部と考えています。'
+  },
+  kadai:{
+    title:'課題 ― 業務の遂行',
+    body:'目の前の業務・課題に対して、最後までやり遂げる力です。困難な課題にも逃げずに向き合い、遂行し続けることが、創造・成長・挑戦につながっていきます。'
+  }
+};
+
+function selectPerson(key){
+  document.querySelectorAll('.p-circle').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.p-circle[data-person="${key}"]`).classList.add('active');
+  const d = personData[key];
+  const detail = document.getElementById('jinbutsu-detail');
+  detail.innerHTML = `<div class="jd-title">${d.title}</div><div>${d.body}</div>`;
+}
+</script>
+
+</body>
+</html>

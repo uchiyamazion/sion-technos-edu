@@ -138,7 +138,7 @@ function renderModules(modules, container){
       el.className = 'card ' + (isPublished ? 'active' : 'disabled');
       if(isPublished) el.href = m.path;
 
-      const levelsText = m.levels ? m.levels.join('・') + 'クイズ収録' : '';
+      const levelsText = (m.levels && m.levels.length > 0) ? m.levels.join('・') + 'クイズ収録' : '読み物教材';
       const statusText = isPublished ? levelsText : 'COMING SOON';
 
       el.innerHTML = `

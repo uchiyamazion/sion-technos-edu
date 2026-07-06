@@ -72,6 +72,15 @@
     "path": "chiller-systems/index.html"
   },
   {
+    "id": "company-philosophy",
+    "title": "企業理念",
+    "category": "企業理念",
+    "status": "published",
+    "levels": [],
+    "description": "シオンテクノス株式会社のVision「創造・成長・挑戦」と、そこから導かれる「求める人物像（自己・他者・課題）」を紹介します。",
+    "path": "company-philosophy/index.html"
+  },
+  {
     "id": "construction-reference",
     "title": "工事早見表（電線・銅管・ダクト）",
     "category": "工事",
