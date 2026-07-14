@@ -208,11 +208,12 @@ async function renderMakersSection(container){
     `;
     grid.appendChild(adminCard);
 
-    // 「企業理念」カテゴリ(見出し+グリッドの2要素)の直後に挿入する
-    const refIdx = 2;
-    if(container.children.length > refIdx){
-      container.insertBefore(heading, container.children[refIdx]);
-      container.insertBefore(grid, container.children[refIdx + 1]);
+    // 「工事」カテゴリの見出しの直前に挿入する(見つからない場合は末尾に追加)
+    const headings = [...container.querySelectorAll('.category-heading')];
+    const targetHeading = headings.find(h => h.textContent === '工事');
+    if(targetHeading){
+      container.insertBefore(heading, targetHeading);
+      container.insertBefore(grid, targetHeading);
     }else{
       container.appendChild(heading);
       container.appendChild(grid);
