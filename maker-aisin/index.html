@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アイシン ― メーカー別資料 ／ シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  :root{ --accent:#fb923c; }
+  header.hero{padding:56px 24px 40px; max-width:1000px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5.5vw,48px);}
+  p.lede{font-size:15.5px; color:var(--text-2); max-width:680px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 60px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .overview-panel{font-size:14px; color:var(--text-2); line-height:1.95;}
+  .tech-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+  .tech-card{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px;
+  }
+  .tech-card .tc-name{font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--text-1); margin-bottom:6px;}
+  .tech-card .tc-desc{font-size:13px; color:var(--text-2); line-height:1.8;}
+  .maint-list{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .maint-list li{
+    display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); line-height:1.8;
+  }
+  .maint-list li::before{content:"▸"; color:var(--accent); flex-shrink:0; font-family:var(--font-mono);}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+  <a class="back-link" href="https://uchiyamazion.github.io/sion-portal/">点検システム ポータル ↗</a>
+</div>
+
+<header class="hero">
+  <div class="sion-eyebrow">MANUFACTURER GUIDE ／ AISIN</div>
+  <h1 class="title sion-title">アイシン</h1>
+  <p class="lede">1987年にGHP(ガスヒートポンプエアコン)市場へ参入したメーカー。電気モーターではなくガスエンジンで室外機のコンプレッサーを駆動する点が最大の特徴で、契約電力を抑えたい学校・病院・BCP対策施設などで採用されています。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">主要ラインナップ</span></div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">標準・高効率</span>
+          <span class="sion-acc-title">GHP XAIR（エグゼア）シリーズ</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>F～Hシリーズと世代を重ねてきた高効率GHPシリーズ。低GWP冷媒R32対応の最新モデルでは、従来機よりGWPを大幅に低減しつつ運転効率も改善している。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">電源自立型</span>
+          <span class="sion-acc-title">GHPハイパワープラス</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>停電時にガスエンジンの発電で自立運転し、空調・照明・通信機器などへ電力供給できるBCP対策向けモデル。学校や避難所機能を持つ施設での採用例がある。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">冷暖フリー</span>
+          <span class="sion-acc-title">冷暖フリーGHP</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>冷房と暖房を同一冷媒配管で同時に行えるタイプ。冬でも冷房需要がある建物向け。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">連結設置</span>
+          <span class="sion-acc-title">まとマルチ</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>複数の室外ユニットを連結設置し、空調負荷に応じて効率よく運転する構成。台数制御により省エネ性を高める。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">独自技術・特徴</span></div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tc-name">ガスエンジン駆動コンプレッサー</div>
+        <div class="tc-desc">電気モーターの代わりにガスエンジンでコンプレッサーを駆動する、GHP最大の特徴。消費電力は電気式(EHP)の目安として約1/10とされる。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">エンジン排熱の暖房利用</div>
+        <div class="tc-desc">ガスエンジンの排熱を暖房に有効活用することで、外気温が下がっても快適な暖房能力を維持しやすい。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">自立発電運転</div>
+        <div class="tc-desc">停電時に電力供給なしで運転を開始し、発電した電力を空調や周辺機器に供給する機能（ハイパワープラス搭載）。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">03</span><span class="info-title">現場で使うポイント</span></div>
+    <div class="sion-panel">
+      <ul class="maint-list">
+        <li>GHPは法令によりガスエンジン部の簡易点検・定期点検が義務化されている。EHP(電気式)の感覚だけで点検周期を判断しないこと。</li>
+        <li>ガス種（都市ガス13A・12A、LPガス等）の設定を誤ると正常に運転できない機種があるため、現地のガス種を必ず確認する。</li>
+        <li>エンジンオイル・点火系統などガスエンジン特有の消耗部品があり、電気式ヒートポンプとは保守項目が異なる点に注意する。</li>
+      </ul>
+      <div class="sion-acc-warn">
+        <span class="warn-icon">!</span>
+        <span>型式の読み方・エラーコードの詳細な数値は機種・世代によって異なります。現場での最終判断は、必ず対象機種の据付説明書／サービスマニュアルを確認してください。</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function toggleAcc(headEl){
+  const item = headEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.parentElement.querySelectorAll('.sion-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>

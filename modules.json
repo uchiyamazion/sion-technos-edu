@@ -9,6 +9,60 @@
     "path": "company-philosophy/index.html"
   },
   {
+    "id": "maker-panasonic",
+    "title": "パナソニック",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "ECOi・ECO G・XEPHYなどの主要ラインナップ、エコナビ・ナノイーXなどの独自技術、現場で使う点検・トラブル対応のポイントを紹介します。",
+    "path": "maker-panasonic/index.html"
+  },
+  {
+    "id": "maker-hitachi",
+    "title": "日立",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "省エネの達人プレミアム・フレックスマルチなどの主要ラインナップ、熱交換器自動お掃除などの独自技術、現場で使う点検・トラブル対応のポイントを紹介します。",
+    "path": "maker-hitachi/index.html"
+  },
+  {
+    "id": "maker-daikin",
+    "title": "ダイキン",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "VRVシリーズ・スカイエアなどの主要ラインナップ、ストリーマ・マイクロチャネル熱交換器などの独自技術、現場で使う点検・トラブル対応のポイントを紹介します。",
+    "path": "maker-daikin/index.html"
+  },
+  {
+    "id": "maker-aisin",
+    "title": "アイシン",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "GHP XAIRシリーズ・ハイパワープラスなど、ガスヒートポンプ(GHP)専業メーカーとしての主要ラインナップと点検・保守のポイントを紹介します。",
+    "path": "maker-aisin/index.html"
+  },
+  {
+    "id": "maker-carrier",
+    "title": "日本キヤリア",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "ウルトラパワーエコ・暖太郎などの主要ラインナップ、セルフクリーン機能などの独自技術、現場で使う点検・トラブル対応のポイントを紹介します。",
+    "path": "maker-carrier/index.html"
+  },
+  {
+    "id": "maker-mitsubishi",
+    "title": "三菱電機",
+    "category": "メーカー別資料",
+    "status": "published",
+    "levels": [],
+    "description": "シティマルチ・ズバ暖マルチなどの主要ラインナップ、AIスマート起動などの独自技術、現場で使う点検・トラブル対応のポイントを紹介します。",
+    "path": "maker-mitsubishi/index.html"
+  },
+  {
     "id": "compression-cycle",
     "title": "冷凍サイクル（圧縮式）",
     "category": "冷凍サイクル",

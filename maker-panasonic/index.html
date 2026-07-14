@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パナソニック ― メーカー別資料 ／ シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  :root{ --accent:#38bdf8; }
+  header.hero{padding:56px 24px 40px; max-width:1000px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5.5vw,48px);}
+  p.lede{font-size:15.5px; color:var(--text-2); max-width:680px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 60px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .overview-panel{font-size:14px; color:var(--text-2); line-height:1.95;}
+  .tech-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+  .tech-card{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px;
+  }
+  .tech-card .tc-name{font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--text-1); margin-bottom:6px;}
+  .tech-card .tc-desc{font-size:13px; color:var(--text-2); line-height:1.8;}
+  .maint-list{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .maint-list li{
+    display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); line-height:1.8;
+  }
+  .maint-list li::before{content:"▸"; color:var(--accent); flex-shrink:0; font-family:var(--font-mono);}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+  <a class="back-link" href="https://uchiyamazion.github.io/sion-portal/">点検システム ポータル ↗</a>
+</div>
+
+<header class="hero">
+  <div class="sion-eyebrow">MANUFACTURER GUIDE ／ PANASONIC</div>
+  <h1 class="title sion-title">パナソニック</h1>
+  <p class="lede">ビル用マルチエアコン「ECOi」、ガスヒートポンプ「ECO G」、店舗・オフィス用パッケージエアコン「XEPHY」シリーズを展開。人感・床温センサーによる「エコナビ」や空気清浄技術「ナノイーX」など、独自の省エネ・快適技術に強みを持つメーカーです。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">主要ラインナップ</span></div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">フラッグシップ</span>
+          <span class="sion-acc-title">XEPHY Premium</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>店舗・オフィス用パッケージエアコンの最上位モデル。ナノイーXを標準搭載し、消臭・ウイルス抑制などの機能を持つ。省エネ性能が高く、月々の電気代を抑えたい現場に向く。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">標準モデル</span>
+          <span class="sion-acc-title">XEPHY Eco</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>XEPHY Premiumより室外機がコンパクトな標準モデル。設置スペースが限られる小～中規模の店舗・事務所に向く、価格を抑えたラインナップ。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">寒冷地</span>
+          <span class="sion-acc-title">XEPHY フル暖</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>外気温-25℃まで暖房運転が可能な寒冷地向けシリーズ。凍結防止ヒーターを標準搭載し、最長13時間の暖房連続運転に対応。北海道など積雪寒冷地の現場で採用例が多い。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">ビル用マルチ</span>
+          <span class="sion-acc-title">ECOi</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>VRF(ビル用マルチ)シリーズ。R32冷媒モデルもラインナップされ、独自の3段階オイル回収制御で信頼性を高めている。中～大規模ビルの空調更新で扱う機会が多い。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">GHP</span>
+          <span class="sion-acc-title">ECO G</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>ガスエンジン駆動のガスヒートポンプ(GHP)シリーズ。ECOiと同様にビル用マルチとして展開され、契約電力を抑えたい現場で選定される。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">独自技術・特徴</span></div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tc-name">エコナビ</div>
+        <div class="tc-desc">人感センサーと床温センサーのダブル検知で、人の活動量や不在を検知し自動で省エネ運転を行う。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">ナノイーX</div>
+        <div class="tc-desc">独自の微粒子イオン技術による空気清浄機能。消臭・ウイルス抑制効果を謳う上位モデル標準搭載の技術。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">R32冷媒</div>
+        <div class="tc-desc">新機種で採用が進む低GWP冷媒。現場では旧機種のR410A系統と冷媒管理を混同しないよう注意が必要。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">03</span><span class="info-title">現場で使うポイント</span></div>
+    <div class="sion-panel">
+      <ul class="maint-list">
+        <li>フィルターの目詰まりは風量低下・凍結の主要因。エコナビ搭載機は人感センサー窓の汚れも誤検知の原因になるため定期清掃を確認する。</li>
+        <li>室外機の3段階オイル回収制御を持つECOiは、冷媒回収時に通常のポンプダウン手順と異なる場合があるため、機種ごとの手順を必ず取扱説明書で確認する。</li>
+        <li>リモコンのエラー表示は機種・世代によってコード体系が異なる。現場でのコード判読は必ずその機種の据付・サービスマニュアルの一覧表と照合すること。</li>
+      </ul>
+      <div class="sion-acc-warn">
+        <span class="warn-icon">!</span>
+        <span>型式の読み方・エラーコードの詳細な数値は機種・世代によって異なります。現場での最終判断は、必ず対象機種の据付説明書／サービスマニュアルを確認してください。</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function toggleAcc(headEl){
+  const item = headEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.parentElement.querySelectorAll('.sion-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>

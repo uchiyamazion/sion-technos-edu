@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三菱電機 ― メーカー別資料 ／ シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  :root{ --accent:#f43f5e; }
+  header.hero{padding:56px 24px 40px; max-width:1000px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5.5vw,48px);}
+  p.lede{font-size:15.5px; color:var(--text-2); max-width:680px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 60px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .overview-panel{font-size:14px; color:var(--text-2); line-height:1.95;}
+  .tech-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+  .tech-card{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px;
+  }
+  .tech-card .tc-name{font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--text-1); margin-bottom:6px;}
+  .tech-card .tc-desc{font-size:13px; color:var(--text-2); line-height:1.8;}
+  .maint-list{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .maint-list li{
+    display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); line-height:1.8;
+  }
+  .maint-list li::before{content:"▸"; color:var(--accent); flex-shrink:0; font-family:var(--font-mono);}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+  <a class="back-link" href="https://uchiyamazion.github.io/sion-portal/">点検システム ポータル ↗</a>
+</div>
+
+<header class="hero">
+  <div class="sion-eyebrow">MANUFACTURER GUIDE ／ MITSUBISHI ELECTRIC</div>
+  <h1 class="title sion-title">三菱電機</h1>
+  <p class="lede">1984年に誕生したビル用マルチ「シティマルチ」シリーズを中心に展開。人感センサー「ムーブアイ」やAI技術「Maisart」を活用した「AIスマート起動」など、快適性と省エネを両立する独自技術に強みを持つメーカーです。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">主要ラインナップ</span></div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">ビル用マルチ</span>
+          <span class="sion-acc-title">シティマルチ</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>1984年誕生のビル用マルチエアコン。グランマルチ・リプレースマルチなど派生シリーズを持ち、長年にわたりビル空調の中心的な存在。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">高効率</span>
+          <span class="sion-acc-title">グランマルチ／シティマルチY GR</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>高COPと最新のリプレース（既設配管再利用）技術を組み合わせた高効率シリーズ。AIスマート起動にも対応する。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">寒冷地</span>
+          <span class="sion-acc-title">ズバ暖マルチ</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>外気温-15℃の寒冷地でも暖房能力を維持できるシリーズ。プレヒート機能や急速ヒート機能により、霜取り運転前後の室温低下を抑える。</p></div>
+      </div>
+    </div>
+    <div class="sion-acc-item">
+      <div class="sion-acc-head" onclick="toggleAcc(this)">
+        <div class="sion-acc-head-left">
+          <span class="sion-acc-tag">小型パッケージ</span>
+          <span class="sion-acc-title">Mr.Slim</span>
+        </div>
+        <span class="sion-acc-chevron">＋</span>
+      </div>
+      <div class="sion-acc-body">
+        <div class="sion-acc-body-inner"><p>設置場所や必要スペックに応じて選べる豊富なバリエーションを持つ、小型パッケージエアコンの人気シリーズ。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">独自技術・特徴</span></div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tc-name">人感ムーブアイ</div>
+        <div class="tc-desc">人の位置や活動量、床温度を検知し、快適な空調環境になるよう自動調整するセンサー機能。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">ぐるっとスマート気流</div>
+        <div class="tc-desc">4方向天井カセット形〈i-スクエアタイプ〉に搭載される気流制御で、部屋を360°快適にする独自技術。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">AIスマート起動（Maisart）</div>
+        <div class="tc-desc">三菱電機のAI技術「Maisart」を活用し、過去の運転データから最適な起動時刻を自動設定する機能。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-name">くーるリモートメンテナンス</div>
+        <div class="tc-desc">遠隔で空調機器の監視・点検を行うサービス。不調への早期対応を支援する。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">03</span><span class="info-title">現場で使うポイント</span></div>
+    <div class="sion-panel">
+      <ul class="maint-list">
+        <li>ズバ暖マルチはプレヒート・急速ヒートなど独自の室温キープシステムを持つため、暖房の立ち上がり挙動が標準機と異なる点を理解しておく。</li>
+        <li>リプレースシリーズ（配管再利用）は既設配管の状態次第で性能が左右されるため、更新工事の際は配管洗浄・気密確認の手順を省略しない。</li>
+        <li>型式の意味・エラーコードの詳細な読み方は世代・シリーズによって異なるため、必ず対象機種のサービスマニュアルで確認すること。</li>
+      </ul>
+      <div class="sion-acc-warn">
+        <span class="warn-icon">!</span>
+        <span>型式の読み方・エラーコードの詳細な数値は機種・世代によって異なります。現場での最終判断は、必ず対象機種の据付説明書／サービスマニュアルを確認してください。</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function toggleAcc(headEl){
+  const item = headEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.parentElement.querySelectorAll('.sion-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>
