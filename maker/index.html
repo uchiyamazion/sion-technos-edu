@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メーカー別資料 ／ シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:1000px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5.5vw,48px);}
+  p.lede{font-size:15.5px; color:var(--text-2); max-width:680px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 60px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .tech-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+  .tech-card{
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px;
+  }
+  .tech-card .tc-name{font-family:var(--font-display); font-weight:700; font-size:14.5px; color:var(--text-1); margin-bottom:6px;}
+  .tech-card .tc-desc{font-size:13px; color:var(--text-2); line-height:1.8;}
+  .maint-list{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .maint-list li{
+    display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); line-height:1.8;
+  }
+  .maint-list li::before{content:"▸"; color:var(--accent); flex-shrink:0; font-family:var(--font-mono);}
+  .updated-note{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-3); text-align:center; margin-top:30px;
+  }
+  .loading-state, .empty-state{ text-align:center; padding:80px 20px; color:var(--text-3); font-size:13px; }
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+  <a class="back-link" href="https://uchiyamazion.github.io/sion-portal/">点検システム ポータル ↗</a>
+</div>
+
+<div id="app">
+  <div class="loading-state">読み込み中…</div>
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function toggleAcc(headEl){
+  const item = headEl.parentElement;
+  const wasOpen = item.classList.contains('open');
+  item.parentElement.querySelectorAll('.sion-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+function esc(s){
+  const div = document.createElement('div');
+  div.textContent = s == null ? '' : String(s);
+  return div.innerHTML;
+}
+
+async function init(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const app = document.getElementById('app');
+
+  try {
+    const res = await fetch('../data/makers.json?v=' + Date.now(), { cache: 'no-store' });
+    const list = await res.json();
+    const m = list.find(x => x.id === id);
+
+    if (!m) {
+      app.innerHTML = '<div class="empty-state">指定されたメーカー資料が見つかりませんでした。<br><a class="back-link" href="../index.html" style="margin-top:10px; display:inline-block;">← 教材一覧に戻る</a></div>';
+      return;
+    }
+
+    document.documentElement.style.setProperty('--accent', m.accent || '#38bdf8');
+    document.title = m.company + ' ― メーカー別資料 ／ シオンテクノス教育システム';
+
+    const lineupHtml = (m.lineup || []).map(item => `
+      <div class="sion-acc-item">
+        <div class="sion-acc-head" onclick="toggleAcc(this)">
+          <div class="sion-acc-head-left">
+            <span class="sion-acc-tag">${esc(item.tag)}</span>
+            <span class="sion-acc-title">${esc(item.name)}</span>
+          </div>
+          <span class="sion-acc-chevron">＋</span>
+        </div>
+        <div class="sion-acc-body">
+          <div class="sion-acc-body-inner"><p>${esc(item.desc)}</p></div>
+        </div>
+      </div>
+    `).join('');
+
+    const techHtml = (m.tech || []).map(t => `
+      <div class="tech-card">
+        <div class="tc-name">${esc(t.name)}</div>
+        <div class="tc-desc">${esc(t.desc)}</div>
+      </div>
+    `).join('');
+
+    const maintHtml = (m.maintenance || []).map(x => `<li>${esc(x)}</li>`).join('');
+
+    app.innerHTML = `
+      <header class="hero">
+        <div class="sion-eyebrow">${esc(m.eyebrow)}</div>
+        <h1 class="title sion-title">${esc(m.company)}</h1>
+        <p class="lede">${esc(m.overview)}</p>
+      </header>
+      <div class="stage">
+        <section class="block">
+          <div class="info-head"><span class="info-num">01</span><span class="info-title">主要ラインナップ</span></div>
+          ${lineupHtml || '<div class="empty-state">まだ登録されていません</div>'}
+        </section>
+        <section class="block">
+          <div class="info-head"><span class="info-num">02</span><span class="info-title">独自技術・特徴</span></div>
+          <div class="tech-grid">${techHtml || '<div class="empty-state">まだ登録されていません</div>'}</div>
+        </section>
+        <section class="block">
+          <div class="info-head"><span class="info-num">03</span><span class="info-title">現場で使うポイント</span></div>
+          <div class="sion-panel">
+            <ul class="maint-list">${maintHtml}</ul>
+            <div class="sion-acc-warn">
+              <span class="warn-icon">!</span>
+              <span>型式の読み方・エラーコードの詳細な数値は機種・世代によって異なります。現場での最終判断は、必ず対象機種の据付説明書／サービスマニュアルを確認してください。</span>
+            </div>
+          </div>
+        </section>
+        ${m.updatedBy ? `<div class="updated-note">最終更新：${esc(m.updatedAt || '')} ／ ${esc(m.updatedBy)}</div>` : ''}
+      </div>
+    `;
+  } catch (err) {
+    app.innerHTML = `<div class="empty-state">読み込みに失敗しました<br><span style="opacity:.6">${esc(err.message)}</span></div>`;
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>

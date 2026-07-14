@@ -122,6 +122,7 @@ async function loadModules(){
     if(!res.ok) throw new Error('modules.json の読み込みに失敗しました');
     const modules = await res.json();
     renderModules(modules, container);
+    await renderMakersSection(container);
   }catch(err){
     container.innerHTML = `<div class="empty-state">教材一覧を読み込めませんでした。GitHub Pages等のWebサーバー経由で開いてください。<br><span style="opacity:0.6">(${err.message})</span></div>`;
   }
@@ -165,6 +166,60 @@ function renderModules(modules, container){
 
     container.appendChild(grid);
   });
+}
+
+/* メーカー別資料(data/makers.json)を「企業理念」カテゴリの直後に動的挿入する。
+   メーカーの追加・編集・削除は admin/index.html から行える。 */
+async function renderMakersSection(container){
+  try{
+    const res = await fetch('data/makers.json?v=' + Date.now(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('data/makers.json の読み込みに失敗しました');
+    const list = await res.json();
+
+    const heading = document.createElement('div');
+    heading.className = 'category-heading';
+    heading.textContent = 'メーカー別資料';
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    list.forEach(m=>{
+      const el = document.createElement('a');
+      el.className = 'card active';
+      el.href = `maker/index.html?id=${encodeURIComponent(m.id)}`;
+      el.innerHTML = `
+        <span class="card-tag">公開中</span>
+        <div class="card-title">${m.company}</div>
+        <div class="card-desc">${m.overview}</div>
+        <div class="card-status">読み物教材</div>
+      `;
+      grid.appendChild(el);
+    });
+
+    const adminCard = document.createElement('a');
+    adminCard.className = 'card active';
+    adminCard.href = 'admin/index.html';
+    adminCard.style.borderStyle = 'dashed';
+    adminCard.innerHTML = `
+      <span class="card-tag">管理</span>
+      <div class="card-title">＋ メーカー資料を編集</div>
+      <div class="card-desc">追加・編集・削除はこちらの管理画面から行えます。</div>
+      <div class="card-status">ADMIN</div>
+    `;
+    grid.appendChild(adminCard);
+
+    // 「企業理念」カテゴリ(見出し+グリッドの2要素)の直後に挿入する
+    const refIdx = 2;
+    if(container.children.length > refIdx){
+      container.insertBefore(heading, container.children[refIdx]);
+      container.insertBefore(grid, container.children[refIdx + 1]);
+    }else{
+      container.appendChild(heading);
+      container.appendChild(grid);
+    }
+  }catch(err){
+    console.error('メーカー資料セクションの読み込みに失敗しました', err);
+  }
 }
 
 loadModules();
