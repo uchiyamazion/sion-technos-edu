@@ -29,20 +29,33 @@
     margin:0 auto;
     padding:0 24px;
   }
+  .category-block{margin-bottom:8px;}
   .category-heading{
     font-family:var(--font-mono);
     font-size:12px;
     letter-spacing:0.15em;
     color:var(--text-3);
     text-transform:uppercase;
-    margin:44px 0 14px;
+    margin:44px 0 0;
     padding-bottom:10px;
     border-bottom:1px solid var(--line);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
   }
-  .category-heading:first-of-type{margin-top:0;}
+  .category-block:first-child .category-heading{margin-top:0;}
+  .category-heading .ch-left{display:flex; align-items:center; gap:10px;}
+  .category-heading .ch-count{
+    font-size:10px; color:var(--text-3); background:var(--bg-panel-2);
+    padding:2px 9px; border-radius:100px; letter-spacing:0;
+  }
+  .category-heading .ch-chevron{font-size:12px; color:var(--text-3); transition:transform .2s ease;}
+  .category-block.open .ch-chevron{transform:rotate(180deg);}
+  .category-block .grid{display:none; margin-top:20px;}
+  .category-block.open .grid{display:grid;}
 
   .grid{
-    display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
   }
@@ -128,6 +141,10 @@ async function loadModules(){
   }
 }
 
+function toggleCategory(headEl){
+  headEl.parentElement.classList.toggle('open');
+}
+
 function renderModules(modules, container){
   if(!modules || modules.length === 0){
     container.innerHTML = '<div class="empty-state">まだ教材が登録されていません。</div>';
@@ -138,15 +155,22 @@ function renderModules(modules, container){
   container.innerHTML = '';
 
   categories.forEach(cat=>{
+    const items = modules.filter(m => m.category === cat);
+
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.dataset.category = cat;
+
     const heading = document.createElement('div');
     heading.className = 'category-heading';
-    heading.textContent = cat;
-    container.appendChild(heading);
+    heading.innerHTML = `<span class="ch-left">${cat}<span class="ch-count">${items.length}</span></span><span class="ch-chevron">▾</span>`;
+    heading.addEventListener('click', () => toggleCategory(heading));
+    block.appendChild(heading);
 
     const grid = document.createElement('div');
     grid.className = 'grid';
 
-    modules.filter(m => m.category === cat).forEach(m=>{
+    items.forEach(m=>{
       const isPublished = m.status === 'published';
       const el = document.createElement(isPublished ? 'a' : 'div');
       el.className = 'card ' + (isPublished ? 'active' : 'disabled');
@@ -164,11 +188,16 @@ function renderModules(modules, container){
       grid.appendChild(el);
     });
 
-    container.appendChild(grid);
+    block.appendChild(grid);
+    container.appendChild(block);
   });
+
+  // 最初のカテゴリだけ初期状態で開いておく
+  const first = container.querySelector('.category-block');
+  if(first) first.classList.add('open');
 }
 
-/* メーカー別資料(data/makers.json)を「企業理念」カテゴリの直後に動的挿入する。
+/* メーカー別資料(data/makers.json)を「工事」カテゴリの直前に動的挿入する。
    メーカーの追加・編集・削除は admin/index.html から行える。 */
 async function renderMakersSection(container){
   try{
@@ -176,9 +205,15 @@ async function renderMakersSection(container){
     if(!res.ok) throw new Error('data/makers.json の読み込みに失敗しました');
     const list = await res.json();
 
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.dataset.category = 'メーカー別資料';
+
     const heading = document.createElement('div');
     heading.className = 'category-heading';
-    heading.textContent = 'メーカー別資料';
+    heading.innerHTML = `<span class="ch-left">メーカー別資料<span class="ch-count">${list.length}</span></span><span class="ch-chevron">▾</span>`;
+    heading.addEventListener('click', () => toggleCategory(heading));
+    block.appendChild(heading);
 
     const grid = document.createElement('div');
     grid.className = 'grid';
@@ -208,15 +243,14 @@ async function renderMakersSection(container){
     `;
     grid.appendChild(adminCard);
 
-    // 「工事」カテゴリの見出しの直前に挿入する(見つからない場合は末尾に追加)
-    const headings = [...container.querySelectorAll('.category-heading')];
-    const targetHeading = headings.find(h => h.textContent === '工事');
-    if(targetHeading){
-      container.insertBefore(heading, targetHeading);
-      container.insertBefore(grid, targetHeading);
+    block.appendChild(grid);
+
+    // 「工事」カテゴリの直前に挿入する(見つからない場合は末尾に追加)
+    const targetBlock = container.querySelector('.category-block[data-category="工事"]');
+    if(targetBlock){
+      container.insertBefore(block, targetBlock);
     }else{
-      container.appendChild(heading);
-      container.appendChild(grid);
+      container.appendChild(block);
     }
   }catch(err){
     console.error('メーカー資料セクションの読み込みに失敗しました', err);
