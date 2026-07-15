@@ -35,6 +35,14 @@
     display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); line-height:1.8;
   }
   .maint-list li::before{content:"▸"; color:var(--accent); flex-shrink:0; font-family:var(--font-mono);}
+  .err-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .err-table th{
+    text-align:left; font-family:var(--font-mono); font-size:10.5px; color:var(--text-3);
+    text-transform:uppercase; padding:8px 10px; border-bottom:1px solid var(--line);
+  }
+  .err-table td{padding:10px; border-bottom:1px solid var(--line); color:var(--text-2); vertical-align:top; line-height:1.7;}
+  .err-table td.err-code{font-family:var(--font-mono); font-weight:700; color:var(--accent); white-space:nowrap;}
+  .err-table tr:last-child td{border-bottom:none;}
   .updated-note{
     font-family:var(--font-mono); font-size:11px; color:var(--text-3); text-align:center; margin-top:30px;
   }
@@ -110,6 +118,16 @@ async function init(){
 
     const maintHtml = (m.maintenance || []).map(x => `<li>${esc(x)}</li>`).join('');
 
+    const errorCodes = m.errorCodes || [];
+    const errTableHtml = errorCodes.length ? `
+      <table class="err-table">
+        <thead><tr><th>コード</th><th>意味</th><th>対応・処置</th></tr></thead>
+        <tbody>
+          ${errorCodes.map(e => `<tr><td class="err-code">${esc(e.code)}</td><td>${esc(e.meaning)}</td><td>${esc(e.action)}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    ` : '<div class="empty-state">まだ登録されていません</div>';
+
     app.innerHTML = `
       <header class="hero">
         <div class="sion-eyebrow">${esc(m.eyebrow)}</div>
@@ -133,6 +151,12 @@ async function init(){
               <span class="warn-icon">!</span>
               <span>型式の読み方・エラーコードの詳細な数値は機種・世代によって異なります。現場での最終判断は、必ず対象機種の据付説明書／サービスマニュアルを確認してください。</span>
             </div>
+          </div>
+        </section>
+        <section class="block">
+          <div class="info-head"><span class="info-num">04</span><span class="info-title">エラーコード一覧</span></div>
+          <div class="sion-panel">
+            ${errTableHtml}
           </div>
         </section>
         ${m.updatedBy ? `<div class="updated-note">最終更新：${esc(m.updatedAt || '')} ／ ${esc(m.updatedBy)}</div>` : ''}

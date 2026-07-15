@@ -131,6 +131,7 @@ function buildMakerCard(m, idx) {
   renderSubitems(body, m, 'lineup', ['tag','name','desc']);
   renderSubitems(body, m, 'tech', ['name','desc']);
   renderSubitems(body, m, 'maintenance', null);
+  renderSubitems(body, m, 'errorCodes', ['code','meaning','action']);
 
   body.querySelector('.add-lineup').addEventListener('click', () => {
     m.lineup = m.lineup || [];
@@ -146,6 +147,11 @@ function buildMakerCard(m, idx) {
     m.maintenance = m.maintenance || [];
     m.maintenance.push('');
     renderSubitems(body, m, 'maintenance', null);
+  });
+  body.querySelector('.add-err').addEventListener('click', () => {
+    m.errorCodes = m.errorCodes || [];
+    m.errorCodes.push({ code:'', meaning:'', action:'' });
+    renderSubitems(body, m, 'errorCodes', ['code','meaning','action']);
   });
 
   body.querySelector('.btn-save').addEventListener('click', () => saveMaker(idx));
@@ -191,6 +197,10 @@ function buildBodyHtml(m) {
     <div class="maint-list-admin"></div>
     <button type="button" class="add-btn add-maint">＋ ポイントを追加</button>
 
+    <div class="section-label">エラーコード一覧</div>
+    <div class="err-list"></div>
+    <button type="button" class="add-btn add-err">＋ エラーコードを追加</button>
+
     <div class="btn-row">
       <button type="button" class="btn btn-delete">このメーカーを削除</button>
       <button type="button" class="btn btn-save">保存してGitHubへ反映</button>
@@ -204,9 +214,13 @@ function bindField(body, selector, obj, key) {
 }
 
 function renderSubitems(body, m, key, fields) {
-  const listEl = body.querySelector(
-    key === 'lineup' ? '.lineup-list' : key === 'tech' ? '.tech-list' : '.maint-list-admin'
-  );
+  const selectorMap = {
+    lineup: '.lineup-list',
+    tech: '.tech-list',
+    maintenance: '.maint-list-admin',
+    errorCodes: '.err-list'
+  };
+  const listEl = body.querySelector(selectorMap[key]);
   const items = m[key] || [];
   listEl.innerHTML = '';
 
@@ -215,7 +229,7 @@ function renderSubitems(body, m, key, fields) {
     row.className = 'subitem';
 
     if (fields) {
-      // lineup or tech: オブジェクト配列
+      // lineup / tech / errorCodes: オブジェクト配列
       let inner = '';
       if (key === 'lineup') {
         inner = `
@@ -225,17 +239,28 @@ function renderSubitems(body, m, key, fields) {
           </div>
           <textarea class="si-desc" placeholder="説明文">${esc(item.desc)}</textarea>
         `;
+        row.innerHTML = `<button type="button" class="rm">×</button>${inner}`;
+        row.querySelector('.si-name').addEventListener('input', e => item.name = e.target.value);
+        row.querySelector('.si-desc').addEventListener('input', e => item.desc = e.target.value);
+        row.querySelector('.si-tag').addEventListener('input', e => item.tag = e.target.value);
+      } else if (key === 'errorCodes') {
+        inner = `
+          <input type="text" class="si-code" placeholder="コード（例：E1, P4）" style="margin-bottom:8px;" value="${esc(item.code)}">
+          <textarea class="si-meaning" placeholder="意味・症状" style="margin-bottom:8px;">${esc(item.meaning)}</textarea>
+          <textarea class="si-action" placeholder="対応・処置">${esc(item.action)}</textarea>
+        `;
+        row.innerHTML = `<button type="button" class="rm">×</button>${inner}`;
+        row.querySelector('.si-code').addEventListener('input', e => item.code = e.target.value);
+        row.querySelector('.si-meaning').addEventListener('input', e => item.meaning = e.target.value);
+        row.querySelector('.si-action').addEventListener('input', e => item.action = e.target.value);
       } else {
         inner = `
           <input type="text" class="si-name" placeholder="技術名" style="margin-bottom:8px;" value="${esc(item.name)}">
           <textarea class="si-desc" placeholder="説明文">${esc(item.desc)}</textarea>
         `;
-      }
-      row.innerHTML = `<button type="button" class="rm">×</button>${inner}`;
-      row.querySelector('.si-name').addEventListener('input', e => item.name = e.target.value);
-      row.querySelector('.si-desc').addEventListener('input', e => item.desc = e.target.value);
-      if (key === 'lineup') {
-        row.querySelector('.si-tag').addEventListener('input', e => item.tag = e.target.value);
+        row.innerHTML = `<button type="button" class="rm">×</button>${inner}`;
+        row.querySelector('.si-name').addEventListener('input', e => item.name = e.target.value);
+        row.querySelector('.si-desc').addEventListener('input', e => item.desc = e.target.value);
       }
     } else {
       // maintenance: 文字列配列
@@ -297,7 +322,7 @@ function addNewMaker() {
   makers.push({
     id: '', company: '', eyebrow: 'MANUFACTURER GUIDE',
     accent: '#38bdf8', overview: '',
-    lineup: [], tech: [], maintenance: [],
+    lineup: [], tech: [], maintenance: [], errorCodes: [],
     updatedBy: '', updatedAt: ''
   });
   renderList();
