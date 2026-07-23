@@ -136,6 +136,7 @@ async function loadModules(){
     const modules = await res.json();
     renderModules(modules, container);
     await renderMakersSection(container);
+    await renderDocumentsSection(container);
   }catch(err){
     container.innerHTML = `<div class="empty-state">教材一覧を読み込めませんでした。GitHub Pages等のWebサーバー経由で開いてください。<br><span style="opacity:0.6">(${err.message})</span></div>`;
   }
@@ -254,6 +255,51 @@ async function renderMakersSection(container){
     }
   }catch(err){
     console.error('メーカー資料セクションの読み込みに失敗しました', err);
+  }
+}
+
+/* 規程・資料(data/documents.json)を末尾のカテゴリとして動的挿入する。
+   Googleドライブ等、社内限定の外部リンクをまとめて置く場所。
+   新しい書類を追加するときは documents.json に1件追記するだけでよい。 */
+async function renderDocumentsSection(container){
+  try{
+    const res = await fetch('data/documents.json?v=' + Date.now(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('data/documents.json の読み込みに失敗しました');
+    const list = await res.json();
+    if(!list || list.length === 0) return;
+
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    block.dataset.category = '規程・資料';
+
+    const heading = document.createElement('div');
+    heading.className = 'category-heading';
+    heading.innerHTML = `<span class="ch-left">規程・資料<span class="ch-count">${list.length}</span></span><span class="ch-chevron">▾</span>`;
+    heading.addEventListener('click', () => toggleCategory(heading));
+    block.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    list.forEach(m=>{
+      const el = document.createElement('a');
+      el.className = 'card active';
+      el.href = m.url;
+      el.target = '_blank';
+      el.rel = 'noopener';
+      el.innerHTML = `
+        <span class="card-tag">外部リンク</span>
+        <div class="card-title">${m.title}</div>
+        <div class="card-desc">${m.description}</div>
+        <div class="card-status">🔒 社内限定・Googleドライブで開きます ↗</div>
+      `;
+      grid.appendChild(el);
+    });
+
+    block.appendChild(grid);
+    container.appendChild(block);
+  }catch(err){
+    console.error('規程・資料セクションの読み込みに失敗しました', err);
   }
 }
 
