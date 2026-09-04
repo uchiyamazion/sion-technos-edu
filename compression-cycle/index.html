@@ -1066,6 +1066,18 @@ const quizDataByLevel = {
       options:['蒸発器→膨張弁→圧縮機→凝縮器','圧縮機→凝縮器→膨張弁→蒸発器','凝縮器→圧縮機→蒸発器→膨張弁','膨張弁→圧縮機→凝縮器→蒸発器'],
       correct:1,
       explain:'正解は「圧縮機→凝縮器→膨張弁→蒸発器」です。この順番で冷媒が循環することで、熱の吸収と放出が連続的に行われます。'
+    },
+    {
+      q:'膨張弁の主な役割はどれですか？',
+      options:['冷媒を圧縮して高温高圧にする','高圧の液冷媒を急激に減圧し、低温低圧の状態にする','冷媒を凝縮させる','室内の空気を送風する'],
+      correct:1,
+      explain:'正解は「高圧の液冷媒を急激に減圧し、低温低圧の状態にする」です。減圧によって冷媒の一部が気化し、周囲から熱を奪いやすい低温状態が作られます。'
+    },
+    {
+      q:'室外機の中に主に収められている機器はどれですか？',
+      options:['蒸発器のみ','圧縮機・凝縮器・ファン','膨張弁のみ','リモコンの受信部のみ'],
+      correct:1,
+      explain:'正解は「圧縮機・凝縮器・ファン」です。一般的な壁掛形エアコンでは、室外機に圧縮機と凝縮器、送風用のファンが収められています。'
     }
   ],
   intermediate:[
@@ -1110,6 +1122,18 @@ const quizDataByLevel = {
       options:['冷媒を凍結させて保管しやすくするため','完全に液化しきったことを確認し、膨張弁での性能を安定させるため','圧縮機の回転数を上げるため','配管の音を静かにするため'],
       correct:1,
       explain:'正解は「完全に液化しきったことを確認し、膨張弁での性能を安定させるため」です。液冷媒に気泡が混ざったまま膨張弁に入ると、正しく減圧できず能力低下の原因になります。'
+    },
+    {
+      q:'圧縮機の吐出ガス温度が異常に高くなる原因として考えられるものはどれですか？',
+      options:['冷媒の充填量が多すぎる','冷媒不足や圧縮比の増大など、圧縮機に負荷がかかる状態','室内温度が低すぎる','リモコンの電池切れ'],
+      correct:1,
+      explain:'正解は「冷媒不足や圧縮比の増大など、圧縮機に負荷がかかる状態」です。吐出温度の異常上昇は圧縮機の焼き付きにつながるおそれがあるため、多くの機種で保護機能が働きます。'
+    },
+    {
+      q:'冷房運転時に高圧側(凝縮器側)の圧力が異常に高くなる原因として考えられるものはどれですか？',
+      options:['冷媒が不足している','室外機の熱交換器の汚れや周辺の風量不足','リモコンの設定温度が高すぎる','フィルターを掃除しすぎた'],
+      correct:1,
+      explain:'正解は「室外機の熱交換器の汚れや周辺の風量不足」です。放熱がうまくいかないと凝縮器内で冷媒が十分に液化できず、高圧側の圧力が上昇します。'
     }
   ],
   advanced:[
@@ -1160,6 +1184,18 @@ const quizDataByLevel = {
       options:['ボンベの見た目が悪くなるため','液冷媒は温度上昇で膨張するため、満量まで入れると異常な内圧上昇や破裂の危険があるため','冷媒の色が変わるため','回収機が壊れるため'],
       correct:1,
       explain:'正解は「液冷媒は温度上昇で膨張するため、満量まで入れると異常な内圧上昇や破裂の危険があるため」です。ボンベには規定の充填率（多くは80%程度）が定められており、これを守らないと重大事故につながります。'
+    },
+    {
+      q:'ポンプダウン作業の目的として正しいものはどれですか？',
+      options:['冷媒を大気中に放出するため','冷媒を室外機側に回収してから配管を外し、大気への冷媒放出を防ぐため','圧縮機を洗浄するため','電気配線を点検するため'],
+      correct:1,
+      explain:'正解は「冷媒を室外機側に回収してから配管を外し、大気への冷媒放出を防ぐため」です。フロン排出抑制法の観点からも、冷媒を大気に放出しないための基本作業として重要です。'
+    },
+    {
+      q:'圧縮機の「液戻り」が続くとどのような不具合につながりやすいですか？',
+      options:['能力が向上する','液冷媒が圧縮機内の潤滑油を希釈し、焼き付きや破損の原因になる','冷媒の色が変わるだけで実害はない','リモコンの電池が早く減る'],
+      correct:1,
+      explain:'正解は「液冷媒が圧縮機内の潤滑油を希釈し、焼き付きや破損の原因になる」です。液冷媒は圧縮できないため、圧縮機に液のまま吸い込まれると機械的な損傷(液圧縮)を招く危険もあります。'
     }
   ]
 };
@@ -1171,7 +1207,32 @@ const levelMeta = {
 };
 
 let currentLevel = 'beginner';
-let quizData = quizDataByLevel[currentLevel];
+
+/* Fisher-Yates: 元の配列は変更せず、シャッフルした新しい配列を返す */
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* 毎回、出題順と選択肢の並び順をランダム化したデータを作る */
+function prepareQuizData(level){
+  const original = quizDataByLevel[level];
+  return shuffleArray(original).map(item=>{
+    const order = shuffleArray(item.options.map((_,i)=>i));
+    return {
+      q: item.q,
+      options: order.map(i=>item.options[i]),
+      correct: order.indexOf(item.correct),
+      explain: item.explain
+    };
+  });
+}
+
+let quizData = prepareQuizData(currentLevel);
 
 let quizIndex = 0;
 let quizAnswered = false;
@@ -1179,7 +1240,7 @@ let userAnswers = new Array(quizData.length).fill(null);
 
 function selectLevel(level){
   currentLevel = level;
-  quizData = quizDataByLevel[level];
+  quizData = prepareQuizData(level);
   document.querySelectorAll('.level-btn').forEach(b=>b.classList.toggle('active', b.dataset.level===level));
   quizIndex = 0;
   userAnswers = new Array(quizData.length).fill(null);
@@ -1270,6 +1331,7 @@ function showResults(){
 }
 
 function restartQuiz(){
+  quizData = prepareQuizData(currentLevel);
   quizIndex = 0;
   userAnswers = new Array(quizData.length).fill(null);
   renderQuiz();

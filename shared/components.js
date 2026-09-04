@@ -48,9 +48,31 @@ class SionQuiz{
     return {msg:'もう一度、解説を読み直してみましょう。', sub:'上の図やアコーディオンの解説を見ながら、順番に理解を積み上げていきましょう。'};
   }
 
+  /* Fisher-Yates: 元の配列は変更せず、シャッフルした新しい配列を返す */
+  static shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
   start(level){
     this.currentLevel = level;
-    this.quizData = this.levels[level] || [];
+    const original = this.levels[level] || [];
+
+    /* 毎回、出題順と選択肢の並び順をランダム化する */
+    this.quizData = SionQuiz.shuffle(original).map(item=>{
+      const order = SionQuiz.shuffle(item.options.map((_,i)=>i));
+      return {
+        q: item.q,
+        options: order.map(i=>item.options[i]),
+        correct: order.indexOf(item.correct),
+        explain: item.explain
+      };
+    });
+
     this.quizIndex = 0;
     this.userAnswers = new Array(this.quizData.length).fill(null);
 
