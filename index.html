@@ -10,17 +10,18 @@
 <style>
   /* このページ固有のスタイルのみここに書く。共通トークンは shared/design-tokens.css を参照 */
   header{
-    padding:64px 24px 40px;
+    padding:72px 24px 48px;
     max-width:1000px;
     margin:0 auto;
     text-align:center;
+    position:relative;
   }
-  h1{font-size:clamp(30px,5.5vw,52px);}
+  h1{font-size:clamp(32px,6vw,56px); letter-spacing:0.01em;}
   p.lede{
     font-size:15.5px;
     color:var(--text-2);
-    max-width:520px;
-    margin:18px auto 0;
+    max-width:540px;
+    margin:20px auto 0;
     line-height:1.9;
   }
 
@@ -29,51 +30,78 @@
     margin:0 auto;
     padding:0 24px;
   }
-  .category-block{margin-bottom:8px;}
+  .category-block{margin-bottom:6px;}
   .category-heading{
     font-family:var(--font-mono);
     font-size:12px;
-    letter-spacing:0.15em;
-    color:var(--text-3);
+    letter-spacing:0.16em;
+    color:var(--text-2);
     text-transform:uppercase;
-    margin:44px 0 0;
-    padding-bottom:10px;
+    margin:48px 0 0;
+    padding:14px 4px;
     border-bottom:1px solid var(--line);
     cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:space-between;
+    transition:color .2s ease, border-color .2s ease;
   }
+  .category-heading:hover{color:var(--text-1); border-color:var(--accent);}
   .category-block:first-child .category-heading{margin-top:0;}
-  .category-heading .ch-left{display:flex; align-items:center; gap:10px;}
+  .category-heading .ch-left{display:flex; align-items:center; gap:12px;}
   .category-heading .ch-count{
-    font-size:10px; color:var(--text-3); background:var(--bg-panel-2);
-    padding:2px 9px; border-radius:100px; letter-spacing:0;
+    font-size:10px; color:var(--text-1); background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    padding:3px 10px; border-radius:100px; letter-spacing:0;
+    transition:border-color .2s ease;
   }
-  .category-heading .ch-chevron{font-size:12px; color:var(--text-3); transition:transform .2s ease;}
+  .category-heading:hover .ch-count{border-color:var(--accent);}
+  .category-heading .ch-chevron{
+    font-size:11px; color:var(--text-3); transition:transform .25s ease, color .2s ease;
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .category-heading:hover .ch-chevron{color:var(--text-1); border-color:var(--accent);}
   .category-block.open .ch-chevron{transform:rotate(180deg);}
-  .category-block .grid{display:none; margin-top:20px;}
-  .category-block.open .grid{display:grid;}
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-    gap:20px;
+  .category-block .grid{
+    display:none;
+    margin-top:22px;
+    animation:sionFadeIn .3s ease;
   }
-  @media (max-width:720px){.grid{grid-template-columns:1fr;}}
+  .category-block.open .grid{display:grid;}
+  @keyframes sionFadeIn{
+    from{opacity:0; transform:translateY(-6px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* auto-fillで「1件だけのカテゴリが不自然に間延びする」問題を解消し、
+     カードは常に自然な幅を保ったまま、足りない分は空白のまま詰めて並べる */
+  .grid{
+    grid-template-columns:repeat(auto-fill, minmax(260px, 330px));
+    justify-content:flex-start;
+    gap:18px;
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr;}
+  }
 
   .card{
-    background:var(--bg-panel);
+    background:linear-gradient(165deg, var(--bg-panel-2), var(--bg-panel));
     border:1px solid var(--line);
-    border-radius:20px;
-    padding:28px;
+    border-radius:18px;
+    padding:26px;
     display:flex;
     flex-direction:column;
     gap:14px;
     text-decoration:none;
     color:inherit;
-    transition:border-color .25s ease, transform .25s ease;
+    transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
   }
-  .card.active:hover{border-color:var(--accent); transform:translateY(-3px);}
+  .card.active:hover{
+    border-color:var(--accent);
+    transform:translateY(-4px);
+    box-shadow:0 16px 36px -18px rgba(56,189,248,0.35);
+  }
   .card.disabled{opacity:0.5; cursor:default;}
   .card-tag{
     font-family:var(--font-mono);
@@ -85,9 +113,9 @@
   }
   .card.active .card-tag{background:var(--cool); color:#02131f;}
   .card.disabled .card-tag{background:var(--bg-panel-2); color:var(--text-3); border:1px solid var(--line);}
-  .card-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .card-title{font-family:var(--font-display); font-weight:900; font-size:21px; line-height:1.35;}
   .card-desc{font-size:13.5px; color:var(--text-2); line-height:1.8;}
-  .card-status{font-family:var(--font-mono); font-size:11px; color:var(--text-3); margin-top:auto;}
+  .card-status{font-family:var(--font-mono); font-size:11px; color:var(--text-3); margin-top:auto; padding-top:4px;}
 
   .empty-state{
     color:var(--text-3);
