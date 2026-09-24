@@ -44,10 +44,8 @@
 
   .vp-list{list-style:none; display:flex; flex-direction:column; gap:12px;}
   .vp-list li{
-    font-size:13.5px; color:var(--text-2); line-height:1.7; padding-left:20px; position:relative;
+    font-size:13.5px; color:var(--text-2); line-height:1.7;
   }
-  .value-panel.up .vp-list li::before{content:"＋"; position:absolute; left:0; top:0; color:#5eead4; font-family:var(--font-mono); font-weight:700;}
-  .value-panel.down .vp-list li::before{content:"－"; position:absolute; left:0; top:0; color:#f87171; font-family:var(--font-mono); font-weight:700;}
 
   .closing-panel{
     background:var(--bg-panel); border:1px solid var(--line); border-radius:20px;
@@ -65,8 +63,8 @@
 
 <header class="hero">
   <div class="sion-eyebrow">CORPORATE PHILOSOPHY ／ VALUE IN ACTION</div>
-  <h1 class="title sion-title">企業価値を高めよう！</h1>
-  <p class="lede">日々の小さな行動の積み重ねが、お客様から見た「シオンテクノスの価値」を作っています。現場でのちょっとした対応が、価値を上げることもあれば、下げてしまうこともあります。</p>
+  <h1 class="title sion-title">行動で自分の価値を高めよう！</h1>
+  <p class="lede">日々の小さな行動の積み重ねが、お客様から見た「自分の価値」を作っています。現場でのちょっとした対応が、価値を上げることもあれば、下げてしまうこともあります。</p>
 </header>
 
 <div class="stage">
@@ -76,41 +74,38 @@
       <div class="value-panel up">
         <div class="vp-head">
           <div class="vp-icon">＋</div>
-          <div class="vp-title">価値を上げる行動</div>
+          <div class="vp-title">価値を上げる10の行動</div>
         </div>
         <ul class="vp-list">
-          <li>お客様の話を聞く</li>
-          <li>コール＆レスポンス</li>
-          <li>付加価値のある説明があるかないか</li>
-          <li>同業他社のできないをこなせたとき</li>
-          <li>作業の対応速度が速い</li>
-          <li>養生をしっかりする</li>
-          <li>１WAY２JOB</li>
-          <li>相手の気持ちに表情を合わせる</li>
-          <li>お客様の困りごとプラスα</li>
-          <li>仕事以外でのコミュニケーション</li>
-          <li>相手の言う事を一旦受け入れる</li>
-          <li>あいさつをしっかりする</li>
-          <li>真摯に対応する</li>
+          <li>①あいさつをしっかりする</li>
+          <li>②作業前の養生をしっかりする</li>
+          <li>③相手の気持ちに表情を合わせて対話する</li>
+          <li>④お客様の話をよく聴き、相手の言うことを一旦受け入れる</li>
+          <li>⑤コール＆レスポンスや対応速度を高める</li>
+          <li>⑥お客様と報・連・相以外にもコミュニケーションを深める</li>
+          <li>⑦「1 Way 2 Job」お客様の困りごとの直接解決以外にも、プラスαで何かできる事は無いかを考える</li>
+          <li>⑧報告や説明に付加価値を持たせる</li>
+          <li>⑨同業他社に真似できないスキルを身に着ける</li>
+          <li>⑩仲間やお客様に対して、常に真摯に対応する</li>
         </ul>
       </div>
 
       <div class="value-panel down">
         <div class="vp-head">
           <div class="vp-icon">－</div>
-          <div class="vp-title">価値を下げる行動</div>
+          <div class="vp-title">価値を下げる10の行動</div>
         </div>
         <ul class="vp-list">
-          <li>約束が守れられない</li>
-          <li>作業後に結果報告を怠る</li>
-          <li>お客様の物を汚す、態度が悪い</li>
-          <li>社外的にモラルの無い言動</li>
-          <li>規律を順守できない</li>
-          <li>見積段階でお客さんが他社より高い価格設定と感じた場合</li>
-          <li>安全面を考慮せずに怪我をする等</li>
-          <li>車の移動時乱暴な運転をする（社名の看板が入っている）</li>
-          <li>お客様の相談に対して事務的な対応になる</li>
-          <li>機械は直すが人を直さない（不満が解消されていない）</li>
+          <li>①無駄に待たせる</li>
+          <li>②約束や規律を遵守できない</li>
+          <li>③お客様のものを汚す、態度が悪い</li>
+          <li>④マナーやモラルの無い言動</li>
+          <li>⑤危険に映る作業をする</li>
+          <li>⑥乱暴な車の運転</li>
+          <li>⑦作業後の結果報告を怠る</li>
+          <li>⑧見積や作業を見てお客様が割高に感じる</li>
+          <li>⑨お客様の相談に対して事務的な対応をする</li>
+          <li>⑩機械は修理してもお客様の不満が解消されていない</li>
         </ul>
       </div>
     </div>
@@ -118,8 +113,9 @@
 
   <section class="block">
     <div class="closing-panel">
+      <strong>自分の言動を俯瞰的に顧みよう</strong><br><br>
       技術力で機械を直すことはもちろん大切ですが、それだけでは<strong>お客様の不満は解消されません</strong>。<br>
-      あいさつ・報告・約束を守ることといった当たり前の積み重ねが、シオンテクノスの企業価値そのものです。<br>
+      あいさつ・報告・約束を守ることといった当たり前の積み重ねが、自分自身の価値そのものです。<br>
       一つひとつの行動が、<strong>「創造」「成長」「挑戦」</strong>という理念にもつながっています。
     </div>
   </section>
