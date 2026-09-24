@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業価値を高めよう ／ シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:56px 24px 40px; max-width:900px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5.5vw,48px);}
+  p.lede{font-size:15px; color:var(--text-2); max-width:640px; margin:18px auto 0; line-height:1.9;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-3);
+    text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 60px;}
+  section.block{margin-top:40px;}
+  section.block:first-child{margin-top:0;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+
+  .value-grid{display:grid; grid-template-columns:1fr; gap:20px;}
+  @media (min-width:720px){.value-grid{grid-template-columns:1fr 1fr;}}
+
+  .value-panel{border-radius:20px; padding:24px 22px; border:1px solid var(--line);}
+  .value-panel.up{background:rgba(94,234,212,0.06); border-color:rgba(94,234,212,0.35);}
+  .value-panel.down{background:rgba(244,63,94,0.06); border-color:rgba(244,63,94,0.3);}
+
+  .vp-head{display:flex; align-items:center; gap:10px; margin-bottom:18px;}
+  .vp-icon{
+    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:16px; flex-shrink:0;
+  }
+  .value-panel.up .vp-icon{background:#5eead4; color:#02131f;}
+  .value-panel.down .vp-icon{background:#f43f5e; color:#02131f;}
+  .vp-title{font-family:var(--font-display); font-weight:900; font-size:16px;}
+  .value-panel.up .vp-title{color:#5eead4;}
+  .value-panel.down .vp-title{color:#f87171;}
+
+  .vp-list{list-style:none; display:flex; flex-direction:column; gap:12px;}
+  .vp-list li{
+    font-size:13.5px; color:var(--text-2); line-height:1.7; padding-left:20px; position:relative;
+  }
+  .value-panel.up .vp-list li::before{content:"＋"; position:absolute; left:0; top:0; color:#5eead4; font-family:var(--font-mono); font-weight:700;}
+  .value-panel.down .vp-list li::before{content:"－"; position:absolute; left:0; top:0; color:#f87171; font-family:var(--font-mono); font-weight:700;}
+
+  .closing-panel{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:20px;
+    padding:26px; font-size:14px; color:var(--text-2); line-height:2; text-align:center;
+  }
+  .closing-panel strong{color:var(--text-1);}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0; display:flex; justify-content:space-between; align-items:center;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+  <a class="back-link" href="https://uchiyamazion.github.io/sion-portal/">点検システム ポータル ↗</a>
+</div>
+
+<header class="hero">
+  <div class="sion-eyebrow">CORPORATE PHILOSOPHY ／ VALUE IN ACTION</div>
+  <h1 class="title sion-title">企業価値を高めよう！</h1>
+  <p class="lede">日々の小さな行動の積み重ねが、お客様から見た「シオンテクノスの価値」を作っています。現場でのちょっとした対応が、価値を上げることもあれば、下げてしまうこともあります。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="value-grid">
+      <div class="value-panel up">
+        <div class="vp-head">
+          <div class="vp-icon">＋</div>
+          <div class="vp-title">価値を上げる行動</div>
+        </div>
+        <ul class="vp-list">
+          <li>お客様の話を聞く</li>
+          <li>コール＆レスポンス</li>
+          <li>付加価値のある説明があるかないか</li>
+          <li>同業他社のできないをこなせたとき</li>
+          <li>作業の対応速度が速い</li>
+          <li>養生をしっかりする</li>
+          <li>１WAY２JOB</li>
+          <li>相手の気持ちに表情を合わせる</li>
+          <li>お客様の困りごとプラスα</li>
+          <li>仕事以外でのコミュニケーション</li>
+          <li>相手の言う事を一旦受け入れる</li>
+          <li>あいさつをしっかりする</li>
+          <li>真摯に対応する</li>
+        </ul>
+      </div>
+
+      <div class="value-panel down">
+        <div class="vp-head">
+          <div class="vp-icon">－</div>
+          <div class="vp-title">価値を下げる行動</div>
+        </div>
+        <ul class="vp-list">
+          <li>約束が守れられない</li>
+          <li>作業後に結果報告を怠る</li>
+          <li>お客様の物を汚す、態度が悪い</li>
+          <li>社外的にモラルの無い言動</li>
+          <li>規律を順守できない</li>
+          <li>見積段階でお客さんが他社より高い価格設定と感じた場合</li>
+          <li>安全面を考慮せずに怪我をする等</li>
+          <li>車の移動時乱暴な運転をする（社名の看板が入っている）</li>
+          <li>お客様の相談に対して事務的な対応になる</li>
+          <li>機械は直すが人を直さない（不満が解消されていない）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="closing-panel">
+      技術力で機械を直すことはもちろん大切ですが、それだけでは<strong>お客様の不満は解消されません</strong>。<br>
+      あいさつ・報告・約束を守ることといった当たり前の積み重ねが、シオンテクノスの企業価値そのものです。<br>
+      一つひとつの行動が、<strong>「創造」「成長」「挑戦」</strong>という理念にもつながっています。
+    </div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+</body>
+</html>

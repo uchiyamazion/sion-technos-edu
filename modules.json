@@ -9,6 +9,15 @@
     "path": "company-philosophy/index.html"
   },
   {
+    "id": "company-value",
+    "title": "企業価値を高めよう",
+    "category": "企業理念",
+    "status": "published",
+    "levels": [],
+    "description": "現場での日々の行動が「お客様から見た企業価値」をどう左右するか、価値を上げる行動と下げる行動を対比して紹介します。",
+    "path": "company-value/index.html"
+  },
+  {
     "id": "compression-cycle",
     "title": "冷凍サイクル（圧縮式）",
     "category": "冷凍サイクル",
