@@ -357,7 +357,7 @@
     overflow:hidden;
     transition:max-height .4s ease;
   }
-  .acc-item.open .acc-body{max-height:900px;}
+  .acc-item.open .acc-body{max-height:1600px;}
   .acc-body-inner{
     padding:0 18px 20px;
     font-size:13.5px;
@@ -773,11 +773,49 @@
   </div>
 </div>
 
+<!-- SUPERHEAT / SUBCOOL -->
+<div class="stage" style="margin-top:24px;">
+  <div class="panel">
+    <div class="panel-title">SUPERHEAT / SUBCOOL ― 過熱度・過冷却度</div>
+    <div class="info-body" style="margin-bottom:14px;">
+      圧力計の値から<b>飽和温度</b>（その圧力で冷媒が蒸発・凝縮する温度）がわかります。実際の配管温度との差が診断の手がかりです。<br>
+      <b style="color:#fb923c;">過熱度（SH）</b>＝ 吸入管温度 − 蒸発温度（低圧の飽和温度）　／　<b style="color:#5eead4;">過冷却度（SC）</b>＝ 凝縮温度（高圧の飽和温度）− 液管温度
+    </div>
+    <div class="mode-bar" style="justify-content:flex-start; margin:0 0 12px;">
+      <button class="mode-btn active" id="sh-r-R410A" onclick="shSetRef('R410A')">R410A</button>
+      <button class="mode-btn" id="sh-r-R32" onclick="shSetRef('R32')">R32</button>
+    </div>
+    <div class="info-body" style="margin-bottom:6px;">
+      低圧側の圧力（ゲージ圧）：<b id="sh-lp-v"></b> MPa<input type="range" id="sh-lp" min="0.30" max="1.40" step="0.01" value="0.93" style="width:100%" oninput="shUpdate()">
+      吸入管の温度：<b id="sh-st-v"></b> ℃<input type="range" id="sh-st" min="-10" max="30" step="1" value="14" style="width:100%" oninput="shUpdate()">
+      高圧側の圧力（ゲージ圧）：<b id="sh-hp-v"></b> MPa<input type="range" id="sh-hp" min="1.50" max="4.00" step="0.01" value="2.60" style="width:100%" oninput="shUpdate()">
+      液管の温度：<b id="sh-lt-v"></b> ℃<input type="range" id="sh-lt" min="15" max="60" step="1" value="38" style="width:100%" oninput="shUpdate()">
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">蒸発温度</div><div class="stat-value" id="sh-et">-</div></div>
+      <div class="stat"><div class="stat-label">過熱度 SH</div><div class="stat-value warm" id="sh-sh">-</div></div>
+      <div class="stat"><div class="stat-label">凝縮温度</div><div class="stat-value" id="sh-ct">-</div></div>
+      <div class="stat"><div class="stat-label">過冷却度 SC</div><div class="stat-value" id="sh-sc">-</div></div>
+    </div>
+    <div class="acc-warn" style="margin-top:12px; background:#38bdf814; border-color:#38bdf840; color:var(--text-2);"><span class="warn-icon" style="color:var(--accent);">i</span><span id="sh-judge"></span></div>
+    <div class="acc-note">目安は一般的な値です。実際の判断は機種ごとの仕様値・サービスマニュアルを優先してください。R410AとR32は、ほぼ一定の温度で蒸発・凝縮する冷媒として扱っています。</div>
+
+    <div style="font-family:var(--font-display); font-weight:700; font-size:14px; margin:22px 0 8px;">圧力と飽和温度の目安（ゲージ圧 MPa）</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:center; min-width:420px;">
+        <tr style="color:var(--text-3); font-family:var(--font-mono); font-size:11px;"><td style="padding:6px;">飽和温度</td><td>0℃</td><td>10℃</td><td>20℃</td><td>30℃</td><td>40℃</td><td>50℃</td></tr>
+        <tr style="border-top:1px solid var(--line);"><td style="padding:8px; font-weight:700;">R410A</td><td>0.70</td><td>0.99</td><td>1.34</td><td>1.79</td><td>2.32</td><td>2.97</td></tr>
+        <tr style="border-top:1px solid var(--line);"><td style="padding:8px; font-weight:700;">R32</td><td>0.71</td><td>1.01</td><td>1.37</td><td>1.83</td><td>2.38</td><td>3.04</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- FIELD KNOWLEDGE -->
 <div class="field-panel">
   <div class="field-card">
     <div class="panel-title">FIELD KNOWLEDGE ― 現場のプロ技術</div>
-    <p class="field-intro">ここからは家庭用エアコンの原理を一歩超えて、施工・整備の現場で使われる実務知識です。エアコンの着脱工事で欠かせない「ポンプダウン」「冷媒回収機」「真空引き」の3つを、監修：シオンテクノス株式会社の知見を交えて解説します。</p>
+    <p class="field-intro">ここからは家庭用エアコンの原理を一歩超えて、施工・整備の現場で使われる実務知識です。エアコンの着脱工事で欠かせない「ポンプダウン」「冷媒回収機」「真空引き」に加え、冷媒の種類・フロン排出抑制法・運転異常の切り分け・液バック・暖房の仕組みを、監修：シオンテクノス株式会社の知見を交えて解説します。</p>
 
     <div class="acc-item" id="acc-pumpdown">
       <div class="acc-head" onclick="toggleAcc('acc-pumpdown')">
@@ -868,6 +906,138 @@
           <div class="acc-note">豆知識：真空ポンプで水分が「沸騰して蒸発する」のは、圧力を下げると水の沸点も下がるためです。真空に近づけるほど、常温でも水分が気体になって抜けていきます。</div>
         </div>
       </div>
+
+    <div class="acc-item" id="acc-refrig">
+      <div class="acc-head" onclick="toggleAcc('acc-refrig')">
+        <div class="acc-head-left">
+          <span class="acc-tag">冷媒知識</span>
+          <span class="acc-title">冷媒の種類と特性<small>REFRIGERANTS ― R410A・R32・R22</small></span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <h4>主な冷媒</h4>
+          <ul>
+            <li><b>R410A</b>：R32とR125の混合冷媒。不燃性（A1）。GWP（温暖化係数）は約2090。圧力が高いため、R22用の機器や工具は使えません。</li>
+            <li><b>R32</b>：単一冷媒。微燃性（A2L）。GWPは約675とR410Aより低く、近年のエアコンで主流になっています。</li>
+            <li><b>R22</b>：オゾン層を壊すHCFC。生産・消費は2020年に全廃されており、古い機器の保守でのみ出会います。</li>
+          </ul>
+          <h4>現場での注意</h4>
+          <ul>
+            <li>冷媒ごとに専用の機器・冷凍機油・ゲージ類を使い、<b>別の冷媒を混ぜない</b>（R32の機器にR410Aを入れない）。</li>
+            <li>R410Aは混合冷媒のため、ボンベから充填するときは<b>液の状態</b>で入れます（組成が変わるのを防ぐため）。</li>
+            <li>R32は微燃性です。火気・ろう付け作業のときの換気と、機器ごとの据付・取扱いの指示を確認します。</li>
+          </ul>
+          <div class="acc-note">GWPは国内で一般に使われる値の目安です。機器の銘板と取扱説明書で、冷媒の種類と封入量を必ず確認しましょう。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="acc-furohou">
+      <div class="acc-head" onclick="toggleAcc('acc-furohou')">
+        <div class="acc-head-left">
+          <span class="acc-tag">法令</span>
+          <span class="acc-title">フロン排出抑制法<small>FLON LAW ― 点検・記録・回収</small></span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <h4>対象</h4>
+          <p>フロン類を使う<b>業務用</b>のエアコン・冷凍冷蔵機器（第一種特定製品）です。家庭用エアコンは対象外です。</p>
+          <h4>管理者の主な義務</h4>
+          <ul>
+            <li><b>簡易点検</b>：全ての機器を<b>3か月に1回以上</b>。目視で異音・外観の損傷・油にじみなどを確認します。</li>
+            <li><b>定期点検</b>：専門知識を持つ者が実施します。エアコンは7.5kW以上50kW未満で<b>3年に1回以上</b>、50kW以上で<b>1年に1回以上</b>。冷凍冷蔵機器は7.5kW以上で1年に1回以上です。</li>
+            <li><b>記録簿</b>：点検・修理・充填量などを記録し、機器の廃棄まで保存します。</li>
+            <li><b>漏えい量の報告</b>：CO₂換算で年間1,000t以上の漏えいがあれば、国へ報告します。</li>
+            <li><b>廃棄時</b>：フロン類は、充填回収業者に回収を依頼します。</li>
+          </ul>
+          <div class="acc-warn"><span class="warn-icon">!</span><span>法令は改正されることがあります。実際の運用は、環境省・経済産業省などの最新の公式情報で確認してください。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="acc-diag">
+      <div class="acc-head" onclick="toggleAcc('acc-diag')">
+        <div class="acc-head-left">
+          <span class="acc-tag">診断</span>
+          <span class="acc-title">運転異常の切り分け<small>TROUBLESHOOTING ― 圧力と温度のパターン</small></span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>低圧・高圧・過熱度（SH）・過冷却度（SC）の組み合わせから原因を絞り込みます。傾向の目安であり、複数の症状を総合して判断します。</p>
+          <ul>
+            <li><b>冷媒不足</b>：低圧↓、高圧↓、SH↑、SC↓</li>
+            <li><b>冷媒の入れすぎ（過充填）</b>：高圧↑、SC↑（液バックの危険あり）</li>
+            <li><b>膨張弁の絞りすぎ・詰まり</b>：低圧↓、SH↑</li>
+            <li><b>室内の風量不足（フィルター詰まり等）</b>：低圧↓、霜付き、液バックの恐れ</li>
+            <li><b>凝縮器の汚れ・室外ファン不良</b>：高圧↑、吐出温度↑</li>
+            <li><b>空気（不凝縮ガス）の混入</b>：高圧↑、圧力に対して凝縮温度が合わない</li>
+            <li><b>圧縮機の能力低下</b>：高圧↓、低圧↑（高低圧の差が小さい）</li>
+          </ul>
+          <div class="acc-note">豆知識：まず「低圧・高圧が高いか低いか」を見て、次にSH・SCで絞ると、原因を見つけやすくなります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="acc-liqback">
+      <div class="acc-head" onclick="toggleAcc('acc-liqback')">
+        <div class="acc-head-left">
+          <span class="acc-tag">故障原因</span>
+          <span class="acc-title">液バックと液圧縮<small>LIQUID BACK ― 圧縮機を壊す代表例</small></span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <h4>何が起きるか</h4>
+          <p><b>液バック</b>は、液冷媒が圧縮機に戻ってくる現象です。圧縮機の中で液を圧縮してしまう<b>液圧縮</b>になると、液は縮まないため、弁やピストンなどが破損します。</p>
+          <h4>主な原因</h4>
+          <ul>
+            <li>冷媒の入れすぎ</li>
+            <li>過熱度（SH）が小さすぎる（膨張弁の開きすぎなど）</li>
+            <li>室内の風量不足（フィルター詰まりなど）</li>
+            <li>長期停止中や低外気温時に、冷媒が圧縮機の油に溶け込む（起動時に泡立つ）</li>
+          </ul>
+          <h4>予防</h4>
+          <ul>
+            <li>冷媒量を適正にし、過熱度を確認する</li>
+            <li>長期停止後は、クランクケースヒーターに通電して温めてから起動する</li>
+            <li>ポンプダウン・真空引きの手順を守る</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" id="acc-heatpump">
+      <div class="acc-head" onclick="toggleAcc('acc-heatpump')">
+        <div class="acc-head-left">
+          <span class="acc-tag">暖房・寒冷地</span>
+          <span class="acc-title">暖房の仕組みと除霜運転<small>HEAT PUMP ― 四方弁と霜取り</small></span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <h4>暖房の仕組み</h4>
+          <p><b>四方弁</b>が冷媒の流れを逆転させます。暖房では室内機が凝縮器、室外機が蒸発器になり、外気から熱をくみ上げて室内に運びます（ヒートポンプ）。</p>
+          <h4>除霜運転</h4>
+          <ul>
+            <li>外気温が低いと、室外機の熱交換器の表面温度が0℃を下回り、<b>霜が付きます</b>。霜がつくと熱交換が悪くなります。</li>
+            <li>そこで、四方弁を切り替えて一時的に<b>冷房サイクル</b>にし、高温のガスで霜を溶かします。その間、暖房は一時的に止まります。</li>
+          </ul>
+          <h4>寒冷地での注意</h4>
+          <ul>
+            <li>外気温が下がるほど、暖房能力は低下します。寒冷地では、寒冷地仕様の機種を選びます。</li>
+            <li>室外機は積雪・ドレン水の凍結を防ぐため、防雪フードや架台で対策します。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </div>
@@ -1135,6 +1305,12 @@ const quizDataByLevel = {
       options:['温度が変わる熱','状態が変わるときだけ出入りする熱','圧力が変わる熱','電気で発生する熱'],
       correct:0,
       explain:'正解は「温度が変わる熱」です。温度計で変化が測れる熱が顕熱、状態変化に使われて温度が変わらない熱が潜熱です。'
+    },
+    {
+      q:'フロン排出抑制法で、業務用エアコンの管理者が全ての機器に行う簡易点検の頻度は？',
+      options:['1年に1回以上', '3か月に1回以上', '3年に1回以上', '故障したときだけ'],
+      correct:1,
+      explain:'正解は3か月に1回以上です。簡易点検は全ての対象機器が対象で、目視で異音・外観の損傷・油にじみなどを確認します。'
     }
   ],
   intermediate:[
@@ -1203,6 +1379,24 @@ const quizDataByLevel = {
       options:['顕熱','潜熱','輻射熱','摩擦熱'],
       correct:1,
       explain:'正解は潜熱です。水蒸気が水に変わる（結露する）ときに出る熱が潜熱で、空気の温度を下げる顕熱とは別に処理されます。'
+    },
+    {
+      q:'過熱度（SH）を表す式として正しいものはどれですか？',
+      options:['吸入管温度 − 蒸発温度', '凝縮温度 − 液管温度', '吐出温度 − 吸入管温度', '室温 − 設定温度'],
+      correct:0,
+      explain:'正解は「吸入管温度 − 蒸発温度」です。蒸発温度は低圧の飽和温度のことで、圧力計の値から求めます。'
+    },
+    {
+      q:'液バックで圧縮機が壊れやすい理由はどれですか？',
+      options:['液は圧縮してもほとんど縮まないため', '液は電気を通すため', '液は温度が高いため', '液は音が大きいため'],
+      correct:0,
+      explain:'正解は「液は圧縮してもほとんど縮まないため」です。圧縮機内で液を圧縮すると、弁やピストンなどが破損します。'
+    },
+    {
+      q:'暖房運転中の除霜運転で、四方弁はどう動作しますか？',
+      options:['一時的に冷房サイクルへ切り替える', '暖房サイクルのまま霜を無視する', '冷媒をすべて回収する', '圧縮機を逆回転させる'],
+      correct:0,
+      explain:'正解は「一時的に冷房サイクルへ切り替える」です。高温のガスで室外機の霜を溶かします。その間、暖房は一時的に止まります。'
     }
   ],
   advanced:[
@@ -1265,6 +1459,18 @@ const quizDataByLevel = {
       options:['能力が向上する','液冷媒が圧縮機内の潤滑油を希釈し、焼き付きや破損の原因になる','冷媒の色が変わるだけで実害はない','リモコンの電池が早く減る'],
       correct:1,
       explain:'正解は「液冷媒が圧縮機内の潤滑油を希釈し、焼き付きや破損の原因になる」です。液冷媒は圧縮できないため、圧縮機に液のまま吸い込まれると機械的な損傷(液圧縮)を招く危険もあります。'
+    },
+    {
+      q:'高圧が高く、過冷却度（SC）が大きいときに最も疑われる原因はどれですか？',
+      options:['冷媒の入れすぎ（過充填）', '冷媒不足', '圧縮機の能力低下', '室内フィルターの詰まり'],
+      correct:0,
+      explain:'正解は冷媒の入れすぎです。過充填では、凝縮器の中に液が多くたまり、高圧と過冷却度が大きくなります。'
+    },
+    {
+      q:'R410Aをボンベから充填するとき、液の状態で入れる理由は？',
+      options:['混合冷媒の組成が変わるのを防ぐため', '冷媒を温めるため', '圧力を下げるため', '充填時間を長くするため'],
+      correct:0,
+      explain:'正解は「混合冷媒の組成が変わるのを防ぐため」です。R410AはR32とR125の混合冷媒で、ガスで抜くと成分比が変わってしまいます。'
     }
   ]
 };
@@ -1429,6 +1635,49 @@ function updateHeatSim(){
   document.getElementById('hs-s').textContent=st;
   document.getElementById('hs-note').textContent=note;
 }
+
+/* ---------- 過熱度・過冷却度シミュレーター ---------- */
+var SH_TBL={
+  R410A:[[-30,.169],[-25,.229],[-20,.299],[-15,.380],[-10,.472],[-5,.578],[0,.698],[5,.833],[10,.985],[15,1.155],[20,1.344],[25,1.553],[30,1.785],[35,2.040],[40,2.321],[45,2.629],[50,2.966],[55,3.334],[60,3.737],[65,4.178],[70,4.661]],
+  R32:[[-30,.172],[-25,.233],[-20,.304],[-15,.387],[-10,.481],[-5,.589],[0,.712],[5,.850],[10,1.006],[15,1.179],[20,1.373],[25,1.588],[30,1.826],[35,2.089],[40,2.377],[45,2.693],[50,3.040],[55,3.419],[60,3.832],[65,4.283],[70,4.775]]
+};
+var shRef='R410A';
+function shSat(p){
+  var t=SH_TBL[shRef];
+  if(p<=t[0][1]) return t[0][0];
+  for(var i=1;i<t.length;i++){
+    if(p<=t[i][1]){var a=t[i-1],b=t[i];return a[0]+(p-a[1])/(b[1]-a[1])*(b[0]-a[0]);}
+  }
+  return t[t.length-1][0];
+}
+function shSetRef(r){
+  shRef=r;
+  document.getElementById('sh-r-R410A').classList.toggle('active',r==='R410A');
+  document.getElementById('sh-r-R32').classList.toggle('active',r==='R32');
+  shUpdate();
+}
+function shUpdate(){
+  var lp=+document.getElementById('sh-lp').value, st=+document.getElementById('sh-st').value;
+  var hp=+document.getElementById('sh-hp').value, lt=+document.getElementById('sh-lt').value;
+  document.getElementById('sh-lp-v').textContent=lp.toFixed(2);
+  document.getElementById('sh-st-v').textContent=st;
+  document.getElementById('sh-hp-v').textContent=hp.toFixed(2);
+  document.getElementById('sh-lt-v').textContent=lt;
+  var et=shSat(lp), ct=shSat(hp), sh=st-et, sc=ct-lt;
+  document.getElementById('sh-et').textContent=et.toFixed(1)+' ℃';
+  document.getElementById('sh-ct').textContent=ct.toFixed(1)+' ℃';
+  document.getElementById('sh-sh').textContent=sh.toFixed(1)+' K';
+  document.getElementById('sh-sc').textContent=sc.toFixed(1)+' K';
+  var m=[];
+  if(sh<3) m.push('過熱度が小さい（3K未満）：液冷媒が圧縮機に戻る恐れ（液バック）。冷媒の入れすぎや膨張弁の開きすぎを疑います。');
+  else if(sh>10) m.push('過熱度が大きい（10K超）：冷媒不足や膨張弁の絞りすぎが疑われます。');
+  else m.push('過熱度は目安の範囲（3〜10K）です。');
+  if(sc<3) m.push('過冷却度が小さい（3K未満）：冷媒不足気味、または空気の混入が疑われます。');
+  else if(sc>10) m.push('過冷却度が大きい（10K超）：冷媒の入れすぎ（過充填）が疑われます。');
+  else m.push('過冷却度は目安の範囲（3〜10K）です。');
+  document.getElementById('sh-judge').innerHTML=m.join('<br>');
+}
+shUpdate();
 </script>
 </body>
 </html>
