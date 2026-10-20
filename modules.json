@@ -18,6 +18,15 @@
     "path": "company-value/index.html"
   },
   {
+    "id": "business-flow",
+    "title": "シオンテクノスの業務フロー",
+    "category": "会社・業務の流れ",
+    "status": "published",
+    "levels": [],
+    "description": "事業の全体像と取扱メーカー、パナソニック案件（A-RIS）の修理フローと自社案件の流れを紹介します。",
+    "path": "business-flow/index.html"
+  },
+  {
     "id": "compression-cycle",
     "title": "冷凍サイクル（圧縮式）",
     "category": "冷凍サイクル",
