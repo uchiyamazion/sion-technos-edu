@@ -728,6 +728,51 @@
   </div>
 </div>
 
+<!-- LATENT / SENSIBLE HEAT -->
+<div class="stage" style="margin-top:24px;">
+  <div class="panel">
+    <div class="panel-title">HEAT ― 顕熱と潜熱</div>
+    <div class="info-body" style="margin-bottom:14px;">
+      熱には2種類あります。<b style="color:#fb923c;">顕熱</b>は「温度が変わる熱」、<b style="color:#5eead4;">潜熱</b>は「温度は変わらず、状態（液体⇔気体など）を変えるために使われる熱」です。エアコンは、冷媒の<b style="color:#5eead4;">潜熱</b>を使って大量の熱を運んでいます。
+    </div>
+    <div style="font-family:var(--font-display); font-weight:700; font-size:14px; margin-bottom:6px;">体験：水1kgに熱を加えていくと？（0℃の水からスタート）</div>
+    <svg id="hs-svg" viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:520px; display:block; margin:0 auto;">
+      <line class="ph-axis" x1="40" y1="20" x2="40" y2="180"/>
+      <line class="ph-axis" x1="40" y1="180" x2="300" y2="180"/>
+      <text class="ph-axis-label" x="34" y="16" text-anchor="end">温度 ℃</text>
+      <text class="ph-axis-label" x="300" y="198" text-anchor="end">加えた熱量 kJ</text>
+      <text class="ph-axis-label" x="36" y="184" text-anchor="end">0</text>
+      <text class="ph-axis-label" x="36" y="130" text-anchor="end">100</text>
+      <line x1="40" y1="130" x2="300" y2="130" stroke="#ffffff22" stroke-dasharray="3 4"/>
+      <polyline points="40,180 79,130" fill="none" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>
+      <polyline points="79,130 290,130" fill="none" stroke="#5eead4" stroke-width="3" stroke-linecap="round"/>
+      <polyline points="290,130 300,100" fill="none" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>
+      <text class="ph-point-label" x="52" y="168" fill="#fb923c">顕熱</text>
+      <text class="ph-point-label" x="150" y="122" fill="#5eead4">潜熱（蒸発）</text>
+      <circle id="hs-dot" cx="40" cy="180" r="6" fill="#fff" stroke="#38bdf8" stroke-width="3"/>
+    </svg>
+    <input id="hs-range" type="range" min="0" max="2800" step="10" value="0" style="width:100%; margin:10px 0 4px;" oninput="updateHeatSim()">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">加えた熱量</div><div class="stat-value" id="hs-q">0 kJ</div></div>
+      <div class="stat"><div class="stat-label">温度</div><div class="stat-value warm" id="hs-t">0 ℃</div></div>
+      <div class="stat"><div class="stat-label">状態</div><div class="stat-value" id="hs-s">水（液体）</div></div>
+    </div>
+    <div class="hint" style="margin-top:8px;"><span class="dot"></span><span id="hs-note">顕熱：温度が上がっていきます</span></div>
+    <div class="acc-note" style="margin-top:14px;">水の目安値：比熱 約4.19kJ/(kg·K)、蒸発の潜熱 約2257kJ/kg（1気圧・100℃）。0→100℃の顕熱は約419kJですが、100℃の水を蒸発させる潜熱はその約5.4倍あります。</div>
+
+    <div style="font-family:var(--font-display); font-weight:700; font-size:14px; margin:22px 0 8px;">冷凍サイクルのどこで使われている？</div>
+    <div class="info-body" style="margin-bottom:0;">
+      <ul style="margin-left:20px;">
+        <li><b>蒸発器</b>：冷媒が液体→ガスに変わる（<b style="color:#5eead4;">潜熱</b>）。室内の熱を奪う主役です。</li>
+        <li><b>凝縮器</b>：冷媒がガス→液体に変わる（<b style="color:#5eead4;">潜熱</b>）。奪った熱を屋外へ捨てます。</li>
+        <li><b>過熱ガスの冷却／過熱度（スーパーヒート）／過冷却度（サブクール）</b>：温度が変わる部分なので<b style="color:#fb923c;">顕熱</b>です。</li>
+        <li><b>膨張弁</b>：圧力を下げて沸点（飽和温度）を下げ、低温で蒸発できる状態にします。</li>
+        <li><b>室内の空気</b>：温度が下がるのは<b style="color:#fb923c;">顕熱</b>、除湿（水蒸気が水になる）は<b style="color:#5eead4;">潜熱</b>の処理です。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- FIELD KNOWLEDGE -->
 <div class="field-panel">
   <div class="field-card">
@@ -1078,6 +1123,18 @@ const quizDataByLevel = {
       options:['蒸発器のみ','圧縮機・凝縮器・ファン','膨張弁のみ','リモコンの受信部のみ'],
       correct:1,
       explain:'正解は「圧縮機・凝縮器・ファン」です。一般的な壁掛形エアコンでは、室外機に圧縮機と凝縮器、送風用のファンが収められています。'
+    },
+    {
+      q:'冷媒が蒸発器の中で液体からガスに変わるとき、使われる熱は何でしょうか？',
+      options:['顕熱','潜熱','比熱','放射熱'],
+      correct:1,
+      explain:'正解は潜熱です。液体から気体への状態変化では、温度は変わらずに熱が吸収されます。これが室内の熱を奪う主役です。'
+    },
+    {
+      q:'「顕熱」の説明として正しいものはどれですか？',
+      options:['温度が変わる熱','状態が変わるときだけ出入りする熱','圧力が変わる熱','電気で発生する熱'],
+      correct:0,
+      explain:'正解は「温度が変わる熱」です。温度計で変化が測れる熱が顕熱、状態変化に使われて温度が変わらない熱が潜熱です。'
     }
   ],
   intermediate:[
@@ -1134,6 +1191,18 @@ const quizDataByLevel = {
       options:['冷媒が不足している','室外機の熱交換器の汚れや周辺の風量不足','リモコンの設定温度が高すぎる','フィルターを掃除しすぎた'],
       correct:1,
       explain:'正解は「室外機の熱交換器の汚れや周辺の風量不足」です。放熱がうまくいかないと凝縮器内で冷媒が十分に液化できず、高圧側の圧力が上昇します。'
+    },
+    {
+      q:'凝縮器で、冷媒が過熱ガスから凝縮を始めるまでに冷やされる部分で出入りする熱は何でしょうか？',
+      options:['顕熱','潜熱','融解熱','反応熱'],
+      correct:0,
+      explain:'正解は顕熱です。ガスの温度が下がる間は顕熱、凝縮してガスが液になる間は潜熱（温度はほぼ一定）となります。'
+    },
+    {
+      q:'エアコンの除湿で、空気中の水蒸気が水になるときに処理される熱は何でしょうか？',
+      options:['顕熱','潜熱','輻射熱','摩擦熱'],
+      correct:1,
+      explain:'正解は潜熱です。水蒸気が水に変わる（結露する）ときに出る熱が潜熱で、空気の温度を下げる顕熱とは別に処理されます。'
     }
   ],
   advanced:[
@@ -1345,6 +1414,21 @@ window.addEventListener('load', ()=>{
   animateParticles();
   selectLevel('beginner');
 });
+
+/* ---------- 顕熱・潜熱シミュレーター ---------- */
+function updateHeatSim(){
+  var q=+document.getElementById('hs-range').value, t, st, note;
+  if(q<=419){t=q/4.19; st='水（液体）'; note='顕熱：温度が上がっていきます';}
+  else if(q<=2676){t=100; st='蒸発中（水と水蒸気が混在）'; note='潜熱：加えた熱は状態変化に使われ、温度は100℃のまま変わりません';}
+  else{t=100+(q-2676)/2.0; st='水蒸気（ガス）'; note='顕熱：すべて蒸発したので、再び温度が上がります';}
+  var x=40+q/2800*260, y=180-Math.min(t,160)/160*160*0.8125;
+  var yy = t<=100 ? 180-t*0.5 : 130-(t-100)*0.5*1.0;
+  var dot=document.getElementById('hs-dot'); dot.setAttribute('cx',x); dot.setAttribute('cy',Math.max(yy,20));
+  document.getElementById('hs-q').textContent=Math.round(q)+' kJ';
+  document.getElementById('hs-t').textContent=Math.round(t)+' ℃';
+  document.getElementById('hs-s').textContent=st;
+  document.getElementById('hs-note').textContent=note;
+}
 </script>
 </body>
 </html>
