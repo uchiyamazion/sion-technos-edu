@@ -8,31 +8,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/design-tokens.css">
 <style>
-  header.hero{padding:56px 24px 40px; max-width:1100px; margin:0 auto; text-align:center;}
-  h1.title{font-size:clamp(30px,5.5vw,54px);}
-  p.lede{font-size:16px; color:var(--text-2); max-width:660px; margin:18px auto 0; line-height:1.9;}
+  header.hero{padding:56px 24px 28px; max-width:1100px; margin:0 auto; text-align:center; position:relative;}
+  header.hero::before{content:""; position:absolute; inset:-40px 0 auto 0; height:320px; background:radial-gradient(ellipse 520px 220px at 50% 40%, #38bdf826, transparent), radial-gradient(ellipse 360px 180px at 70% 60%, #fb923c1f, transparent); pointer-events:none;}
+  h1.title{font-size:clamp(30px,5.5vw,54px); position:relative;}
+  p.lede{font-size:16px; color:var(--text-2); max-width:660px; margin:18px auto 0; line-height:1.9; position:relative;}
   .back-link{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-decoration:none; margin-bottom:28px;}
   .back-link:hover{color:var(--accent);}
   .stage{max-width:900px; margin:0 auto; padding:0 24px;}
-  section.block{margin-top:40px;}
-  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  section.block{margin-top:48px;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:16px;}
   .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
   .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
-  .panel{background:var(--bg-panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:14px;}
-  .panel h3{font-size:15px; margin-bottom:10px;}
   .chips{display:flex; flex-wrap:wrap; gap:8px;}
   .chip{background:var(--bg-panel-2); border:1px solid var(--line); border-radius:100px; padding:5px 14px; font-size:13px;}
-  .note{font-size:13px; color:var(--text-2); line-height:1.8; margin-bottom:14px;}
-  .flow{display:flex; flex-direction:column; max-width:560px; margin:0 auto;}
-  .fstep{display:flex; align-items:center; gap:12px; background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:12px 16px;}
-  .fstep.me{border-color:var(--accent); background:var(--bg-panel-2);}
-  .fnum{font-family:var(--font-mono); font-size:12px; color:var(--accent); min-width:22px;}
-  .ft{font-weight:700; font-size:15px;}
-  .fs{font-size:12.5px; color:var(--text-2); margin-top:2px;}
-  .farr{text-align:center; color:var(--accent); font-size:12px; padding:6px 0; min-height:22px;}
-  .farr::before{content:"▼ ";}
-  .farr span{color:var(--text-2);}
-  .facc{margin:2px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr;}}
+  .panel{background:linear-gradient(160deg,var(--bg-panel-2),var(--bg-panel)); border:1px solid var(--line); border-radius:18px; padding:20px;}
+  .panel .pk{font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; color:var(--accent); margin-bottom:6px;}
+  .panel h3{font-family:var(--font-display); font-weight:900; font-size:18px; margin-bottom:12px;}
+  .makers .chip{border-color:#38bdf855;}
+  .makers .chip.hl{background:linear-gradient(120deg,#38bdf833,#5eead433); border-color:var(--accent); font-weight:700;}
+  /* relation diagram */
+  .rel{display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;}
+  .rnode{padding:14px 20px; border-radius:16px; background:var(--bg-panel); border:1px solid var(--line); font-weight:700; text-align:center; min-width:120px;}
+  .rnode small{display:block; font-weight:400; font-size:11.5px; color:var(--text-2); margin-top:3px;}
+  .rnode.me{border-color:var(--cool); box-shadow:0 0 24px #5eead433; background:linear-gradient(160deg,#5eead41c,var(--bg-panel));}
+  .rline{font-family:var(--font-mono); color:var(--accent); font-size:18px; animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{50%{opacity:.35;}}
+  .rel-cap{text-align:center; font-size:12.5px; color:var(--text-2); margin:10px 0 22px;}
+  /* legend */
+  .legend{display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin:6px 0 4px; font-size:12px; color:var(--text-2);}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px;}
+  /* timeline */
+  .tl{position:relative; margin:22px auto 0; max-width:640px; padding-left:8px;}
+  .tl::before{content:""; position:absolute; left:26px; top:10px; bottom:10px; width:2px; background:linear-gradient(to bottom,var(--accent),var(--cool),var(--warm)); opacity:.45;}
+  .phase{position:relative; margin:34px 0 14px 0; display:flex; align-items:center; gap:10px; padding-left:56px;}
+  .phase:first-child{margin-top:0;}
+  .ph-id{font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; color:#02131f; background:linear-gradient(120deg,var(--accent),var(--cool)); padding:3px 10px; border-radius:100px; font-weight:700;}
+  .ph-name{font-family:var(--font-display); font-weight:900; font-size:16px;}
+  .tstep{position:relative; display:flex; gap:14px; margin-bottom:12px;}
+  .tnode{flex:0 0 36px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; font-size:13px; background:var(--bg-deep); border:2px solid var(--line); color:var(--text-2); position:relative; z-index:1; margin-left:0;}
+  .tcard{flex:1; background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:12px 16px; transition:transform .2s, border-color .2s;}
+  .tcard:hover{transform:translateX(3px); border-color:var(--accent);}
+  .trow{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .ttitle{font-weight:700; font-size:15px;}
+  .tsub{font-size:12.5px; color:var(--text-2); margin-top:4px; line-height:1.7;}
+  .who{font-family:var(--font-mono); font-size:10.5px; padding:2px 9px; border-radius:100px; white-space:nowrap; border:1px solid var(--line); color:var(--text-2);}
+  .who-me .tnode{border-color:var(--cool); color:var(--cool); box-shadow:0 0 14px #5eead444;}
+  .who-me .who{color:var(--cool); border-color:#5eead466; background:#5eead414;}
+  .who-mk .tnode{border-color:var(--warm); color:var(--warm);}
+  .who-mk .who{color:var(--warm); border-color:#fb923c66; background:#fb923c14;}
+  .who-cu .tnode{border-color:var(--accent); color:var(--accent);}
+  .who-cu .who{color:var(--accent); border-color:#38bdf866; background:#38bdf814;}
+  .facc{margin:12px 0 2px;}
+  .rv{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .rv.in{opacity:1; transform:none;}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1; transform:none; transition:none;} .rline{animation:none;}}
 </style>
 </head>
 <body class="sion-reset sion-body">
@@ -46,87 +77,62 @@
   <div class="sion-credit-badge"><span class="badge-dot"></span>監修：<strong>シオンテクノス株式会社</strong></div>
   <div class="sion-eyebrow">BUSINESS FLOW</div>
   <h1 class="title sion-title">シオンテクノスの業務フロー</h1>
-  <p class="lede">事業の全体像と、案件がどう流れるかを理解しましょう。パナソニック案件の修理フローは、各ステップをタップすると詳細が開きます。</p>
+  <p class="lede">事業の全体像と、案件がどう流れるかを理解しましょう。パナソニック案件の修理フローは、ステップ内のタグをタップすると詳細が開きます。</p>
 </header>
 
 <div class="stage">
 
   <section class="block">
     <div class="info-head"><span class="info-num">01</span><span class="info-title">事業の全体像</span></div>
-    <div class="panel"><h3>エアコン業務（空調）</h3><div class="chips"><span class="chip">メンテナンス</span><span class="chip">工事</span></div></div>
-    <div class="panel"><h3>建設業</h3><div class="chips"><span class="chip">管工事</span><span class="chip">電気工事</span></div></div>
+    <div class="grid2">
+      <div class="panel"><div class="pk">AIR CONDITIONING</div><h3>エアコン業務（空調）</h3><div class="chips"><span class="chip">メンテナンス</span><span class="chip">工事</span></div></div>
+      <div class="panel"><div class="pk">CONSTRUCTION</div><h3>建設業</h3><div class="chips"><span class="chip">管工事</span><span class="chip">電気工事</span></div></div>
+    </div>
   </section>
 
   <section class="block">
     <div class="info-head"><span class="info-num">02</span><span class="info-title">取扱メーカー</span></div>
-    <div class="panel"><div class="chips"><span class="chip">ダイキン</span><span class="chip">パナソニック（三洋電機）</span><span class="chip">日本キヤリア（東芝）</span><span class="chip">アイシン精機</span><span class="chip">日立</span><span class="chip">三菱</span><span class="chip">ヤンマー</span></div></div>
+    <div class="panel makers"><div class="chips"><span class="chip">ダイキン</span><span class="chip hl">パナソニック（三洋電機）</span><span class="chip">日本キヤリア（東芝）</span><span class="chip">アイシン精機</span><span class="chip">日立</span><span class="chip">三菱</span><span class="chip">ヤンマー</span></div></div>
   </section>
 
   <section class="block">
     <div class="info-head"><span class="info-num">03</span><span class="info-title">案件の流れ</span></div>
 
-    <h3 style="font-size:16px; margin:6px 0 6px;">パターンA：メーカー経由案件（修理）</h3>
-    <p class="note">例：パナソニックHVAC&amp;CCシステムズ㈱の場合。シオンはメーカーの「サービス指定店」として対応します。</p>
-    <div class="flow">
-<div class="fstep"><span class="fnum">1</span><div><div class="ft">ユーザー様</div><div class=fs>「エアコンが使えない」</div></div></div>
-<div class="farr"><span>メーカーのコールセンターへ入電</span></div>
-<div class="fstep"><span class="fnum">2</span><div><div class="ft">メーカー（コールセンター）</div><div class=fs>修理依頼を受付</div></div></div>
-<div class="farr"><span>A-RISで修理オーダー依頼（ディスパッチでも依頼）</span></div>
-<div class="sion-acc-item facc">
-  <div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')">
-    <div class="sion-acc-head-left"><span class="sion-acc-tag">A-RIS</span><span class="sion-acc-title">メーカーの修理受付システム</span></div>
-    <span class="sion-acc-chevron">＋</span>
-  </div>
-  <div class="sion-acc-body"><div class="sion-acc-body-inner"><p><b>メニューの主な機能</b></p><div class="chips"><span class="chip">修理件名一覧問合せ</span><span class="chip">サービスマン状況一覧</span><span class="chip">見積一覧</span><span class="chip">完了・検収登録</span><span class="chip">経過状況表示</span><span class="chip">ボトルラベル発行</span></div><p style="margin-top:14px"><b>リアル状況表示（サービスマン別）</b></p><p>サービスマンごとに、各状態の未対応件数を一覧で確認できます。赤表示は要注意の件数です。</p><div class="chips"><span class="chip">未受付</span><span class="chip">未振分</span><span class="chip">未診断</span><span class="chip">未手配</span><span class="chip">未アポ</span><span class="chip">未指示</span><span class="chip">修理指示</span><span class="chip">次回未受付</span></div><p style="margin-top:14px"><b>修理件名の一覧</b></p><p>報告書No、受付日時、訪問日、お客様名、住所、商品品番、処理内容（部品交換など）、手配状況、連絡事項が1件ずつ表示されます。</p></div></div>
-</div>
-<div class="farr"><span>依頼内容：報告書No・物件名・電話番号・修理内容・担当者</span></div>
-<div class="fstep me"><span class="fnum">3</span><div><div class="ft">振分：シオンテクノス各営業所</div><div class=fs>札幌・函館・旭川</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">4</span><div><div class="ft">サービスマン手配</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">5</span><div><div class="ft">お客様へアポ取り</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">6</span><div><div class="ft">訪問・情報取得</div><div class=fs>ペンコンのメニューから案件情報を取得</div></div></div>
-<div class="sion-acc-item facc">
-  <div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')">
-    <div class="sion-acc-head-left"><span class="sion-acc-tag">ペンコン</span><span class="sion-acc-title">現場用タブレットPC</span></div>
-    <span class="sion-acc-chevron">＋</span>
-  </div>
-  <div class="sion-acc-body"><div class="sion-acc-body-inner"><p>サービスマンが現場に持参する端末です。メニューから案件情報を取得し、診断後はこの端末で報告書を作成・提出します。</p></div></div>
-</div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">7</span><div><div class="ft">お客様訪問・診断</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">8</span><div><div class="ft">ペンコンで報告書を作成・提出</div></div></div>
-<div class="farr"><span>部品交換が必要な場合</span></div>
-<div class="fstep me"><span class="fnum">9</span><div><div class="ft">部品交換の見積り</div><div class=fs>パナソニックへ提出</div></div></div>
-<div class="farr"></div>
-<div class="fstep"><span class="fnum">10</span><div><div class="ft">パナソニックから発注を受ける</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">11</span><div><div class="ft">部品手配</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">12</span><div><div class="ft">修理対応</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">13</span><div><div class="ft">お客様のサイン取得</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">14</span><div><div class="ft">会社へ連携</div><div class=fs>メーカーに報告／シオンテクノスから請求</div></div></div>
-<div class="farr"></div>
-<div class="fstep me"><span class="fnum">15</span><div><div class="ft">A-RISで完了・未完了を登録</div></div></div>
-<div class="sion-acc-item facc">
-  <div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')">
-    <div class="sion-acc-head-left"><span class="sion-acc-tag">報告書No</span><span class="sion-acc-title">完了・未完了の登録</span></div>
-    <span class="sion-acc-chevron">＋</span>
-  </div>
-  <div class="sion-acc-body"><div class="sion-acc-body-inner"><p>A-RISで「作業完了」か「未完了」かを登録します。報告書Noは英字と数字の番号に枝番（A1、B1など）が付く形式で、枝番が変わります。</p></div></div>
-</div>
+    <div class="rel">
+      <div class="rnode">お客様</div><span class="rline">⇄</span>
+      <div class="rnode me">シオンテクノス<small>自社案件（直接）</small></div>
     </div>
+    <div class="rel-cap">自社案件：お客様と直接やり取りします</div>
 
-    <h3 style="font-size:16px; margin:40px 0 6px;">パターンB：自社案件</h3>
-    <p class="note">お客様と直接やり取りする案件です。</p>
-    <div class="flow">
-<div class="fstep me"><span class="fnum"></span><div><div class="ft">シオンテクノス</div></div></div>
-<div class="farr"><span>直接やり取り</span></div>
-<div class="fstep"><span class="fnum"></span><div><div class="ft">ユーザー様</div></div></div>
+    <div class="rel">
+      <div class="rnode">お客様</div><span class="rline">→</span>
+      <div class="rnode">メーカー<small>コールセンター／A-RIS</small></div><span class="rline">→</span>
+      <div class="rnode me">シオンテクノス<small>サービス指定店</small></div>
+    </div>
+    <div class="rel-cap">メーカー経由案件：パナソニックHVAC&amp;CCシステムズ㈱の修理を例に、15ステップで見ていきます</div>
+
+    <div class="legend"><span><i style="background:var(--cool)"></i>シオンテクノス</span><span><i style="background:var(--warm)"></i>メーカー</span><span><i style="background:var(--accent)"></i>お客様</span></div>
+
+    <div class="tl">
+<div class="phase"><span class="ph-id">PHASE 01</span><span class="ph-name">依頼受付〜振分</span></div>
+<div class="tstep rv who-cu"><div class="tnode">1</div><div class="tcard"><div class="trow"><span class="ttitle">お客様から入電</span><span class="who">お客様</span></div><div class=tsub>「エアコンが使えない」→メーカーのコールセンターへ</div></div></div>
+<div class="tstep rv who-mk"><div class="tnode">2</div><div class="tcard"><div class="trow"><span class="ttitle">A-RISで修理オーダー依頼</span><span class="who">メーカー</span></div><div class=tsub>ディスパッチでも依頼。依頼内容：報告書No・物件名・電話番号・修理内容・担当者</div><div class="sion-acc-item facc"><div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')"><div class="sion-acc-head-left"><span class="sion-acc-tag">A-RIS</span><span class="sion-acc-title">メーカーの修理受付システム</span></div><span class="sion-acc-chevron">＋</span></div><div class="sion-acc-body"><div class="sion-acc-body-inner"><p><b>メニューの主な機能</b></p><div class="chips"><span class="chip">修理件名一覧問合せ</span><span class="chip">サービスマン状況一覧</span><span class="chip">見積一覧</span><span class="chip">完了・検収登録</span><span class="chip">経過状況表示</span><span class="chip">ボトルラベル発行</span></div><p style="margin-top:14px"><b>リアル状況表示（サービスマン別）</b></p><p>サービスマンごとに、各状態の未対応件数を一覧で確認できます。赤表示は要注意の件数です。</p><div class="chips"><span class="chip">未受付</span><span class="chip">未振分</span><span class="chip">未診断</span><span class="chip">未手配</span><span class="chip">未アポ</span><span class="chip">未指示</span><span class="chip">修理指示</span><span class="chip">次回未受付</span></div><p style="margin-top:14px"><b>修理件名の一覧</b></p><p>報告書No、受付日時、訪問日、お客様名、住所、商品品番、処理内容（部品交換など）、手配状況、連絡事項が1件ずつ表示されます。</p></div></div></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">3</div><div class="tcard"><div class="trow"><span class="ttitle">振分</span><span class="who">シオン</span></div><div class=tsub>札幌・函館・旭川のシオンテクノス各営業所へ</div></div></div>
+<div class="phase"><span class="ph-id">PHASE 02</span><span class="ph-name">手配〜訪問診断</span></div>
+<div class="tstep rv who-me"><div class="tnode">4</div><div class="tcard"><div class="trow"><span class="ttitle">サービスマン手配</span><span class="who">シオン</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">5</div><div class="tcard"><div class="trow"><span class="ttitle">お客様へアポ取り</span><span class="who">シオン</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">6</div><div class="tcard"><div class="trow"><span class="ttitle">訪問・情報取得</span><span class="who">シオン</span></div><div class=tsub>ペンコンのメニューから案件情報を取得</div><div class="sion-acc-item facc"><div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')"><div class="sion-acc-head-left"><span class="sion-acc-tag">ペンコン</span><span class="sion-acc-title">現場用タブレットPC</span></div><span class="sion-acc-chevron">＋</span></div><div class="sion-acc-body"><div class="sion-acc-body-inner"><p>サービスマンが現場に持参する端末です。メニューから案件情報を取得し、診断後はこの端末で報告書を作成・提出します。</p></div></div></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">7</div><div class="tcard"><div class="trow"><span class="ttitle">お客様訪問・診断</span><span class="who">シオン</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">8</div><div class="tcard"><div class="trow"><span class="ttitle">ペンコンで報告書を作成・提出</span><span class="who">シオン</span></div></div></div>
+<div class="phase"><span class="ph-id">PHASE 03</span><span class="ph-name">見積り〜部品手配</span></div>
+<div class="tstep rv who-me"><div class="tnode">9</div><div class="tcard"><div class="trow"><span class="ttitle">部品交換の見積り</span><span class="who">シオン</span></div><div class=tsub>パナソニックへ提出（部品交換が必要な場合）</div></div></div>
+<div class="tstep rv who-mk"><div class="tnode">10</div><div class="tcard"><div class="trow"><span class="ttitle">パナソニックから発注を受ける</span><span class="who">メーカー</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">11</div><div class="tcard"><div class="trow"><span class="ttitle">部品手配</span><span class="who">シオン</span></div></div></div>
+<div class="phase"><span class="ph-id">PHASE 04</span><span class="ph-name">修理〜完了・請求</span></div>
+<div class="tstep rv who-me"><div class="tnode">12</div><div class="tcard"><div class="trow"><span class="ttitle">修理対応</span><span class="who">シオン</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">13</div><div class="tcard"><div class="trow"><span class="ttitle">お客様のサイン取得</span><span class="who">シオン</span></div></div></div>
+<div class="tstep rv who-me"><div class="tnode">14</div><div class="tcard"><div class="trow"><span class="ttitle">会社へ連携</span><span class="who">シオン</span></div><div class=tsub>メーカーに報告／シオンテクノスから請求</div></div></div>
+<div class="tstep rv who-me"><div class="tnode">15</div><div class="tcard"><div class="trow"><span class="ttitle">A-RISで完了・未完了を登録</span><span class="who">シオン</span></div><div class="sion-acc-item facc"><div class="sion-acc-head" onclick="this.parentElement.classList.toggle('open')"><div class="sion-acc-head-left"><span class="sion-acc-tag">報告書No</span><span class="sion-acc-title">完了・未完了の登録</span></div><span class="sion-acc-chevron">＋</span></div><div class="sion-acc-body"><div class="sion-acc-body-inner"><p>A-RISで「作業完了」か「未完了」かを登録します。報告書Noは英字と数字の番号に枝番（A1、B1など）が付く形式で、枝番が変わります。</p></div></div></div></div></div>
     </div>
   </section>
 
@@ -134,5 +140,13 @@
 
 <div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
 
+<script>
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.12});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
 </body>
 </html>
