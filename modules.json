@@ -151,5 +151,14 @@
     ],
     "description": "電線の太さと許容電流、冷媒配管（銅管）のサイズ、ダクトの静圧など、現場でよく使う早見表と、その正しい使い方をまとめました。",
     "path": "construction-reference/index.html"
+  },
+  {
+    "id": "v-belt",
+    "title": "Vベルトの調整・交換方法",
+    "category": "保守・点検",
+    "status": "published",
+    "levels": [],
+    "description": "Vベルトの交換サイン、たわみ量の計算、交換の10ステップ、よくあるトラブルを学びます。",
+    "path": "v-belt/index.html"
   }
 ]

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vベルトの調整・交換方法 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:48px 24px 24px; max-width:900px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5vw,46px);}
+  p.lede{font-size:15px; color:var(--text-2); max-width:640px; margin:16px auto 0; line-height:1.9;}
+  .back-link{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-decoration:none; margin-bottom:24px;}
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 40px;}
+  section.block{margin-top:44px;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .panel{background:linear-gradient(160deg,var(--bg-panel-2),var(--bg-panel)); border:1px solid var(--line); border-radius:18px; padding:20px; margin-bottom:14px;}
+  .body{font-size:14px; color:var(--text-2); line-height:1.9;}
+  .body b{color:var(--text-1);}
+  .warn{display:flex; gap:12px; background:#fb923c14; border:1px solid #fb923c55; border-radius:14px; padding:14px 16px; font-size:13.5px; line-height:1.8; color:var(--text-2); margin-top:20px;}
+  .warn .ic{font-family:var(--font-display); font-weight:900; color:#fb923c; font-size:18px;}
+  table.t{width:100%; border-collapse:collapse; font-size:13px; min-width:460px;}
+  table.t th{text-align:left; font-family:var(--font-mono); font-size:11px; color:var(--text-3); padding:8px; letter-spacing:.06em;}
+  table.t td{padding:10px 8px; border-top:1px solid var(--line); color:var(--text-2); vertical-align:top; line-height:1.7;}
+  .scroll{overflow-x:auto;}
+  .ck{display:flex; align-items:flex-start; gap:10px; padding:10px 4px; border-top:1px solid var(--line); font-size:14px; color:var(--text-2); cursor:pointer; line-height:1.7;}
+  .ck:first-of-type{border-top:none;}
+  .ck input{margin-top:5px; width:18px; height:18px; accent-color:#5eead4; flex:0 0 auto;}
+  .res{margin-top:12px; padding:12px 16px; border-radius:12px; font-weight:700; font-size:14px; border:1px solid var(--line);}
+  .res.ok{border-color:#5eead466; color:#5eead4; background:#5eead414;}
+  .res.ng{border-color:#fb923c66; color:#fb923c; background:#fb923c14;}
+  .calc label{display:block; font-size:13.5px; color:var(--text-2); margin-top:12px;}
+  .calc b.v{color:var(--text-1);}
+  .calc input[type=range]{width:100%;}
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px;}
+  @media(max-width:560px){.stats{grid-template-columns:1fr;}}
+  .stat{background:var(--bg-panel); border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center;}
+  .stat .l{font-family:var(--font-mono); font-size:10.5px; color:var(--text-3);}
+  .stat .n{font-family:var(--font-display); font-weight:900; font-size:22px; margin-top:4px;}
+  .stat .n.hl{color:#5eead4;}
+  .tl{position:relative; margin-top:10px; padding-left:4px;}
+  .tl::before{content:""; position:absolute; left:21px; top:8px; bottom:8px; width:2px; background:linear-gradient(to bottom,var(--accent),var(--cool,#5eead4)); opacity:.4;}
+  .tstep{position:relative; display:flex; gap:14px; margin-bottom:12px;}
+  .tnode{flex:0 0 36px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; font-size:13px; background:var(--bg-deep); border:2px solid #5eead4; color:#5eead4; position:relative; z-index:1; box-shadow:0 0 14px #5eead433;}
+  .tcard{flex:1; background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:12px 16px;}
+  .ttitle{font-weight:700; font-size:15px;}
+  .tsub{font-size:13px; color:var(--text-2); margin-top:4px; line-height:1.8;}
+  .tsub b{color:var(--text-1);}
+  .rv{opacity:0; transform:translateY(12px); transition:opacity .45s ease, transform .45s ease;}
+  .rv.in{opacity:1; transform:none;}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1; transform:none; transition:none;}}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">MAINTENANCE</div>
+  <h1 class="title sion-title">Vベルトの調整・交換方法</h1>
+  <p class="lede">送風機・ポンプ・冷却塔のファンなどで使われるVベルトの、点検・張り調整・交換の手順を学びます。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">Vベルトとは</span></div>
+    <div class="panel body">
+      モーターの回転を、プーリー（溝付きの車）から別のプーリーへ伝える部品です。空調では、空調機や送風機、冷却塔のファン、ポンプなどに使われます。ベルトの両側面が溝に食い込んで力を伝えるため、<b>張り具合</b>がとても重要です。
+      <div class="scroll" style="margin-top:14px;"><table class="t">
+        <tr><th>断面の形</th><th>M</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+        <tr><td>幅 × 高さ（mm）</td><td>10.0×5.5</td><td>12.5×9.0</td><td>16.5×11.0</td><td>22.0×14.0</td><td>31.5×19.0</td><td>38.0×25.5</td></tr>
+      </table></div>
+      <p style="margin-top:12px;">ベルトには「A-45」のように、断面の形と呼び番号（長さの目安）が刻印されています。交換のときは、この刻印を必ず控えます。</p>
+    </div>
+    <div class="warn"><span class="ic">!</span><div><b>安全のために</b>：回転部は巻き込まれると大変危険です。作業前に電源を遮断して施錠・表示（ロックアウト・タグアウト）を行い、作業後はベルトカバーを必ず戻します。</div></div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">交換のサインをチェック</span></div>
+    <div class="panel">
+      <div class="body" style="margin-bottom:8px;">当てはまるものにチェックを入れてみましょう。</div>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>ベルトの側面や底面に亀裂がある</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>ゴムが硬くなり、表面がテカっている</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>側面が摩耗して光っている、または黒い粉が出る</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>ベルトが溝の中に沈み、底に当たっている</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>芯線（コード）が露出している、ほつれている</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>油・グリスが付いて膨れている</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>運転中に「キュルキュル」と鳴く（スリップ音）</span></label>
+<label class="ck"><input type="checkbox" onchange="chkUpdate()"><span>複数本のうち、1本だけ明らかに伸びている</span></label>
+      <div class="res ok" id="chk-res">チェックなし：今のところ、交換のサインは見られません。</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">03</span><span class="info-title">張り調整：たわみ量の目安</span></div>
+    <div class="panel body">
+      ベルトの中央を指で押したときの<b>たわみ量</b>で、張り具合を確認します。目安は、<b>スパン（プーリー間でベルトが張られている長さ）の約1/64</b>（100mmあたり約1.5mm）です。押す力と正確な値は、ベルトとプーリーのメーカー資料に従います。
+      <svg viewBox="0 0 320 130" style="width:100%; max-width:480px; display:block; margin:14px auto 0;" xmlns="http://www.w3.org/2000/svg" aria-label="スパンとたわみ量の図">
+        <circle cx="60" cy="62" r="34" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        <circle cx="260" cy="66" r="24" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        <line x1="60" y1="28" x2="260" y2="42" stroke="#9db0c9" stroke-width="3" stroke-dasharray="5 4"/>
+        <path d="M60 28 Q160 50 260 42" fill="none" stroke="#5eead4" stroke-width="3"/>
+        <line x1="160" y1="35" x2="160" y2="46" stroke="#fb923c" stroke-width="2.5"/>
+        <text x="168" y="62" fill="#fb923c" font-size="11" font-family="sans-serif">たわみ量</text>
+        <line x1="60" y1="112" x2="260" y2="112" stroke="#9db0c9" stroke-width="1.5"/>
+        <text x="130" y="126" fill="#9db0c9" font-size="11" font-family="sans-serif">スパン</text>
+      </svg>
+    </div>
+    <div class="panel calc">
+      <div style="font-family:var(--font-display); font-weight:700;">たわみ量を計算してみよう</div>
+      <label>軸間距離：<b class="v" id="c-v"></b> mm<input type="range" id="c" min="200" max="3000" step="10" value="800" oninput="calc()"></label>
+      <label>大プーリーの径：<b class="v" id="d-v"></b> mm<input type="range" id="d" min="80" max="800" step="5" value="250" oninput="calc()"></label>
+      <label>小プーリーの径：<b class="v" id="s-v"></b> mm<input type="range" id="s" min="50" max="500" step="5" value="150" oninput="calc()"></label>
+      <div class="stats">
+        <div class="stat"><div class="l">スパン</div><div class="n" id="o-span">-</div></div>
+        <div class="stat"><div class="l">たわみ量の目安（1/64）</div><div class="n hl" id="o-def">-</div></div>
+        <div class="stat"><div class="l">100mmあたり</div><div class="n" id="o-per">1.5 mm</div></div>
+      </div>
+      <p class="body" style="margin-top:10px; font-size:12.5px;">スパン＝√（軸間距離² − ((大径 − 小径)÷2)²）で計算しています。</p>
+    </div>
+    <div class="panel body">
+      <b>張りすぎ</b>：軸受に負担がかかって早く傷み、ベルトの寿命も縮みます。<br>
+      <b>張り不足</b>：スリップして風量・水量が落ち、ベルトが焼けて異音が出ます。
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">04</span><span class="info-title">交換の手順（10ステップ）</span></div>
+    <div class="tl">
+<div class="tstep rv"><div class="tnode">1</div><div class="tcard"><div class="ttitle">作業前の準備</div><div class="tsub">電源を遮断し、ロックアウト・タグアウト（施錠と表示）をします。回転が完全に止まるまで待ち、周囲に作業中であることを知らせます。</div></div></div>
+<div class="tstep rv"><div class="tnode">2</div><div class="tcard"><div class="ttitle">ベルトカバーを外す</div><div class="tsub">カバー（ガード）を外します。作業が終わったら、必ず元に戻します。</div></div></div>
+<div class="tstep rv"><div class="tnode">3</div><div class="tcard"><div class="ttitle">現状を確認する</div><div class="tsub">ベルトの型式（A、Bなどの形と呼び番号）、本数、プーリー径を控えます。交換前の張り具合と状態も、写真や記録で残します。</div></div></div>
+<div class="tstep rv"><div class="tnode">4</div><div class="tcard"><div class="ttitle">軸間を縮めてベルトを外す</div><div class="tsub">モーターの固定ボルトと調整ボルトを緩め、モーターを動かして軸間を縮めます。ベルトをこじって外すと、ベルトもプーリーも傷むので避けます。</div></div></div>
+<div class="tstep rv"><div class="tnode">5</div><div class="tcard"><div class="ttitle">プーリーの溝を点検する</div><div class="tsub">溝の摩耗（段付き）、サビ、油・汚れを確認します。溝が摩耗していると、新しいベルトでも早く傷むので、プーリーも交換します。</div></div></div>
+<div class="tstep rv"><div class="tnode">6</div><div class="tcard"><div class="ttitle">新しいベルトを掛ける</div><div class="tsub">同じ型式・長さのベルトを、<b>全数まとめて</b>交換します。新旧の混在や、メーカー・ロットの違うベルトの組み合わせは避けます。工具でこじ入れず、軸間を縮めた状態で溝に掛けます。</div></div></div>
+<div class="tstep rv"><div class="tnode">7</div><div class="tcard"><div class="ttitle">芯出しをする</div><div class="tsub">2つのプーリーの側面に直定規を当て、同じ面にそろっているか、平行になっているかを確認します。芯がずれていると、ベルトが片減りします。</div></div></div>
+<div class="tstep rv"><div class="tnode">8</div><div class="tcard"><div class="ttitle">張りを調整する</div><div class="tsub">調整ボルトで軸間を広げ、<b>たわみ量</b>が規定内になるように張ります。左右を均等に動かし、固定ボルトを締めてから、もう一度たわみ量を測ります（下の計算機が使えます）。</div></div></div>
+<div class="tstep rv"><div class="tnode">9</div><div class="tcard"><div class="ttitle">手回しと試運転</div><div class="tsub">手でプーリーを回して、ベルトが溝に正しく収まっているか確認します。続けて短時間運転し、異音・振動・発熱・電流値を確認します。</div></div></div>
+<div class="tstep rv"><div class="tnode">10</div><div class="tcard"><div class="ttitle">再調整と復旧</div><div class="tsub">ベルトは使い始めに少し伸びるため、しばらく運転した後にもう一度張りを確認します。ベルトカバーを戻し、記録を残します。</div></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">05</span><span class="info-title">よくあるトラブルと対策</span></div>
+    <div class="panel"><div class="scroll"><table class="t">
+      <tr><th>症状</th><th>主な原因</th><th>対策</th></tr>
+      <tr><td><b>キュルキュル音、焼けたような臭い</b></td><td>張り不足によるスリップ、溝の摩耗</td><td>張り直す。溝を点検する</td></tr><tr><td><b>ベルトが片側だけ摩耗する、ねじれる</b></td><td>芯ずれ（芯出し不良）</td><td>直定規で芯出しをやり直す</td></tr><tr><td><b>短期間で切れる</b></td><td>張りすぎ、異物のかみ込み、規格違い</td><td>たわみ量と型式を確認する</td></tr><tr><td><b>風量・水量が足りない</b></td><td>スリップによる回転数の低下</td><td>張りと、プーリー径を確認する</td></tr><tr><td><b>モーターや軸受が熱くなる</b></td><td>張りすぎで軸受に負担がかかっている</td><td>規定のたわみ量に戻す</td></tr><tr><td><b>1本だけ早く伸びる、バタつく</b></td><td>新旧混在、ベルトの組み合わせ不良</td><td>全数まとめて交換する</td></tr>
+    </table></div></div>
+  </section>
+
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+function chkUpdate(){
+  var n=document.querySelectorAll('.ck input:checked').length, r=document.getElementById('chk-res');
+  if(n===0){r.className='res ok'; r.textContent='チェックなし：今のところ、交換のサインは見られません。';}
+  else{r.className='res ng'; r.textContent=n+'項目が該当：ベルトの交換を検討しましょう。複数本掛けの場合は、全数まとめて交換します。';}
+}
+function calc(){
+  var C=+document.getElementById('c').value, D=+document.getElementById('d').value, d=+document.getElementById('s').value;
+  var big=Math.max(D,d), small=Math.min(D,d);
+  document.getElementById('c-v').textContent=C; document.getElementById('d-v').textContent=D; document.getElementById('s-v').textContent=d;
+  var h=(big-small)/2;
+  if(C<=h){document.getElementById('o-span').textContent='-'; document.getElementById('o-def').textContent='-'; return;}
+  var t=Math.sqrt(C*C-h*h);
+  document.getElementById('o-span').textContent=Math.round(t)+' mm';
+  document.getElementById('o-def').textContent=(t/64).toFixed(1)+' mm';
+}
+calc();
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.12});
+  els.forEach(function(e){io.observe(e);});
+})();
+</script>
+<script src="../shared/back-button.js" defer></script>
+<script src="../shared/glossary-link.js" defer></script>
+</body>
+</html>
