@@ -27,6 +27,15 @@
     "path": "business-flow/index.html"
   },
   {
+    "id": "glossary",
+    "title": "空調工事の専門用語集",
+    "category": "用語集",
+    "status": "published",
+    "levels": [],
+    "description": "現場でよく使う455語の用語を、検索・カテゴリ・五十音で引けます。",
+    "path": "glossary/index.html"
+  },
+  {
     "id": "compression-cycle",
     "title": "冷凍サイクル（圧縮式）",
     "category": "冷凍サイクル",

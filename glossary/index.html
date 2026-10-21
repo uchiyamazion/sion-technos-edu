@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空調工事の専門用語集 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:48px 24px 24px; max-width:900px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(28px,5vw,46px);}
+  p.lede{font-size:15px; color:var(--text-2); max-width:600px; margin:16px auto 0; line-height:1.9;}
+  .back-link{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-decoration:none; margin-bottom:24px;}
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 40px;}
+  .search-wrap{position:sticky; top:0; z-index:20; background:linear-gradient(var(--bg-deep) 82%, transparent); padding:14px 0 10px;}
+  .search{width:100%; padding:14px 18px; border-radius:14px; border:1px solid var(--line); background:var(--bg-panel); color:var(--text-1); font:500 16px/1.4 var(--font-body, "Noto Sans JP", sans-serif); outline:none;}
+  .search:focus{border-color:var(--accent); box-shadow:0 0 0 3px #38bdf829;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .chip{background:var(--bg-panel); border:1px solid var(--line); color:var(--text-2); border-radius:100px; padding:6px 14px; font:500 13px/1 var(--font-body, "Noto Sans JP", sans-serif); cursor:pointer;}
+  .chip.on{background:linear-gradient(120deg,#38bdf833,#5eead433); border-color:var(--accent); color:var(--text-1); font-weight:700;}
+  .chip small{opacity:.6; margin-left:4px;}
+  .kana{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .kana button{min-width:36px; padding:6px 8px; border-radius:8px; border:1px solid var(--line); background:transparent; color:var(--text-2); font:700 13px/1 var(--font-display); cursor:pointer;}
+  .kana button:disabled{opacity:.25; cursor:default;}
+  .kana button:not(:disabled):hover{border-color:var(--accent); color:var(--accent);}
+  .count{font-family:var(--font-mono); font-size:12px; color:var(--text-3); margin:16px 2px 8px;}
+  .gh{font-family:var(--font-display); font-weight:900; font-size:20px; color:var(--accent); margin:26px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); scroll-margin-top:150px;}
+  .term{background:var(--bg-panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px;}
+  .th{display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 10px;}
+  .tn{font-family:var(--font-display); font-weight:700; font-size:16px;}
+  .ty{font-size:12px; color:var(--text-3);}
+  .tc{margin-left:auto; font-family:var(--font-mono); font-size:10.5px; padding:2px 9px; border-radius:100px; border:1px solid var(--line); color:var(--text-2); white-space:nowrap;}
+  .td{font-size:13.5px; color:var(--text-2); line-height:1.85; margin-top:6px;}
+  mark{background:#5eead433; color:var(--text-1); border-radius:3px; padding:0 1px;}
+  .empty{text-align:center; color:var(--text-3); padding:50px 0; font-size:14px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-eyebrow">GLOSSARY</div>
+  <h1 class="title sion-title">空調工事の専門用語集</h1>
+  <p class="lede">現場でよく使う用語を、検索・カテゴリ・五十音で引けます。読み（ひらがな）でも検索できます。</p>
+</header>
+
+<div class="stage">
+  <div class="search-wrap">
+    <input id="q" class="search" type="search" placeholder="用語・読み・説明で検索（例：シロッコ、ふくしゃ）" autocomplete="off">
+    <div class="chips" id="chips"></div>
+    <div class="kana" id="kana"></div>
+  </div>
+  <div class="count" id="count">読み込み中…</div>
+  <div id="list"></div>
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+(function(){
+  var DATA=[], cat='すべて', query='';
+  var ROWS=[['あ','あいうえお'],['か','かきくけこ'],['さ','さしすせそ'],['た','たちつてと'],['な','なにぬねの'],['は','はひふへほ'],['ま','まみむめも'],['や','やゆよ'],['ら','らりるれろ'],['わ','わをん']];
+  var SMALL={'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','っ':'つ','ゃ':'や','ゅ':'ゆ','ょ':'よ','ゎ':'わ'};
+  function norm(s){return String(s).normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0x60);});}
+  function base(ch){var d=ch.normalize('NFD').replace(/[\u3099\u309a]/g,'').normalize('NFC');return SMALL[d]||d;}
+  function group(it){
+    var s=norm(it.yomi||it.term).replace(/^[^a-z0-9\u3041-\u3096\u4e00-\u9fff]+/,'');
+    var c=s.charAt(0);
+    if(!c) return 'その他';
+    if(/[a-z0-9]/.test(c)) return '英数';
+    if(/[\u3041-\u3096]/.test(c)){
+      var b=base(c);
+      for(var i=0;i<ROWS.length;i++){ if(ROWS[i][1].indexOf(b)>=0) return ROWS[i][0]+'行'; }
+    }
+    return 'その他';
+  }
+  var ORDER=ROWS.map(function(r){return r[0]+'行';}).concat(['英数','その他']);
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function hl(text,q){
+    if(!q) return esc(text);
+    var out='',t=String(text),n=norm(t),i=0;
+    if(n.length!==t.length) return esc(t);
+    while(i<t.length){
+      var k=n.indexOf(q,i);
+      if(k<0){out+=esc(t.slice(i));break;}
+      out+=esc(t.slice(i,k))+'<mark>'+esc(t.slice(k,k+q.length))+'</mark>';
+      i=k+q.length;
+    }
+    return out;
+  }
+  function render(){
+    var q=norm(query).trim();
+    var items=DATA.filter(function(it){
+      if(cat!=='すべて' && it.cat!==cat) return false;
+      return !q || it._s.indexOf(q)>=0;
+    });
+    document.getElementById('count').textContent=items.length+' 件'+(q||cat!=='すべて'?'（全'+DATA.length+'語中）':'');
+    var list=document.getElementById('list');
+    if(!items.length){list.innerHTML='<div class="empty">該当する用語がありません</div>';updateKana(items);return;}
+    var html='',last='';
+    items.forEach(function(it){
+      if(it._g!==last){last=it._g;html+='<div class="gh" id="g-'+esc(last)+'">'+esc(last)+'</div>';}
+      html+='<div class="term"><div class="th"><span class="tn">'+hl(it.term,q)+'</span>'+(it.yomi?'<span class="ty">'+hl(it.yomi,q)+'</span>':'')+'<span class="tc">'+esc(it.cat)+'</span></div><div class="td">'+hl(it.desc,q)+'</div></div>';
+    });
+    list.innerHTML=html;
+    updateKana(items);
+  }
+  function updateKana(items){
+    var have={};items.forEach(function(it){have[it._g]=1;});
+    var h='';
+    ORDER.forEach(function(g){ if(have[g]||!items.length&&false){} h+='<button type="button" data-g="'+g+'"'+(have[g]?'':' disabled')+'>'+g.replace('行','')+'</button>'; });
+    var k=document.getElementById('kana'); k.innerHTML=h;
+    Array.prototype.forEach.call(k.querySelectorAll('button'),function(b){
+      b.onclick=function(){var el=document.getElementById('g-'+b.getAttribute('data-g')); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});};
+    });
+  }
+  function buildChips(){
+    var counts={};DATA.forEach(function(it){counts[it.cat]=(counts[it.cat]||0)+1;});
+    var cats=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];});
+    var h='<button type="button" class="chip on" data-c="すべて">すべて<small>'+DATA.length+'</small></button>';
+    cats.forEach(function(c){h+='<button type="button" class="chip" data-c="'+esc(c)+'">'+esc(c)+'<small>'+counts[c]+'</small></button>';});
+    var box=document.getElementById('chips'); box.innerHTML=h;
+    box.onclick=function(e){
+      var b=e.target.closest('.chip'); if(!b) return;
+      cat=b.getAttribute('data-c');
+      Array.prototype.forEach.call(box.children,function(x){x.classList.toggle('on',x===b);});
+      render();
+    };
+  }
+  fetch('../data/glossary.json').then(function(r){return r.json();}).then(function(d){
+    DATA=d.map(function(it){it._g=group(it);it._r=norm(it.yomi||it.term);it._s=norm(it.term+' '+it.yomi+' '+it.desc);return it;});
+    DATA.sort(function(a,b){var ga=ORDER.indexOf(a._g),gb=ORDER.indexOf(b._g);return ga-gb||a._r.localeCompare(b._r,'ja');});
+    buildChips();
+    var qs=new URLSearchParams(location.search).get('q');
+    if(qs){query=qs;document.getElementById('q').value=qs;}
+    document.getElementById('q').addEventListener('input',function(e){query=e.target.value;render();});
+    render();
+  }).catch(function(){document.getElementById('count').textContent='用語集の読み込みに失敗しました。ページを再読み込みしてください。';});
+})();
+</script>
+<script src="../shared/back-button.js" defer></script>
+</body>
+</html>
