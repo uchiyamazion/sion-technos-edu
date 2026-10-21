@@ -81,6 +81,7 @@
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
+  text-wrap:balance;
 }
 
 /* ---------- credit badge (社名クレジット) ---------- */
