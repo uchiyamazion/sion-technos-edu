@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パナソニック・三洋電機 PACの型番の見方 ― シオンテクノス教育システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/design-tokens.css">
+<style>
+  header.hero{padding:48px 24px 24px; max-width:900px; margin:0 auto; text-align:center;}
+  h1.title{font-size:clamp(21px,5.4vw,46px);}
+  p.lede{font-size:15px; color:var(--text-2); max-width:640px; margin:16px auto 0; line-height:1.9;}
+  .back-link{display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-decoration:none; margin-bottom:24px;}
+  .back-link:hover{color:var(--accent);}
+  .stage{max-width:900px; margin:0 auto; padding:0 24px 40px;}
+  section.block{margin-top:40px;}
+  .info-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .info-num{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+  .info-title{font-family:var(--font-display); font-weight:900; font-size:22px;}
+  .panel{background:linear-gradient(160deg,var(--bg-panel-2),var(--bg-panel)); border:1px solid var(--line); border-radius:18px; padding:20px; margin-bottom:14px;}
+  .body{font-size:14px; color:var(--text-2); line-height:1.9;}
+  .search{width:100%; padding:14px 18px; border-radius:14px; border:1px solid var(--line); background:var(--bg-panel); color:var(--text-1); font:700 18px/1.4 var(--font-mono); letter-spacing:.04em; outline:none; text-transform:uppercase;}
+  .search:focus{border-color:var(--accent); box-shadow:0 0 0 3px #38bdf829;}
+  .exs{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  .ex{background:var(--bg-panel); border:1px solid var(--line); color:var(--text-2); border-radius:100px; padding:6px 12px; font:500 12px/1 var(--font-mono); cursor:pointer;}
+  .ex:hover{border-color:var(--accent); color:var(--text-1);}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+  .tab{background:var(--bg-panel); border:1px solid var(--line); color:var(--text-2); border-radius:100px; padding:8px 14px; font:500 13px/1.2 var(--font-body,"Noto Sans JP",sans-serif); cursor:pointer;}
+  .tab.on{background:linear-gradient(120deg,#38bdf833,#5eead433); border-color:var(--accent); color:var(--text-1); font-weight:700;}
+  .seg{display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 16px;}
+  .sg{text-align:center; min-width:46px;}
+  .sg .no{font-size:12px; color:var(--text-3); margin-bottom:3px;}
+  .sg .cd{font:700 18px/1 var(--font-mono); padding:10px 12px; border-radius:10px; border:2px solid var(--cc,#38bdf8); background:color-mix(in srgb,var(--cc,#38bdf8) 14%,transparent); color:var(--text-1);}
+  .sg.empty .cd{opacity:.45; border-style:dashed;}
+  .c0{--cc:#38bdf8}.c1{--cc:#5eead4}.c2{--cc:#fb923c}.c3{--cc:#f472b6}.c4{--cc:#a78bfa}.c5{--cc:#fde68a}.c6{--cc:#34d399}.c7{--cc:#f87171}.c8{--cc:#60a5fa}.c9{--cc:#fbbf24}
+  .tag{display:inline-block; font:700 11px/1 var(--font-mono); padding:3px 9px; border-radius:100px; border:1px solid var(--line); color:var(--text-2); margin-right:6px;}
+  table.t{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.t td, table.t th{padding:9px 8px; border-top:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.7;}
+  table.t th{font:500 11px/1 var(--font-mono); color:var(--text-3); border-top:none;}
+  table.t td.k{font:700 14px/1.7 var(--font-mono); white-space:nowrap;}
+  .res-h{font-family:var(--font-display); font-weight:900; font-size:17px; margin-bottom:4px;}
+  .miss{color:#fb923c; font-size:14px; line-height:1.8;}
+  .fcard{border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-bottom:10px; background:var(--bg-panel);}
+  .fcard h4{font-size:14px; margin-bottom:6px;}
+  .fcard h4 i{font-style:normal; font-family:var(--font-mono); color:var(--cc); margin-right:6px;}
+  .fcard .opt{font-size:13px; color:var(--text-2); line-height:1.9;}
+  .fcard .opt b{font-family:var(--font-mono); color:var(--text-1); margin-right:8px;}
+  .note{font-size:12.5px; color:var(--text-3); line-height:1.8; margin-top:10px;}
+</style>
+</head>
+<body class="sion-reset sion-body">
+
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 0;">
+  <a class="back-link" href="../index.html">← 教材一覧に戻る</a>
+</div>
+
+<header class="hero">
+  <div class="sion-credit-badge"><span class="badge-dot"></span>監修：<strong>シオンテクノス株式会社</strong></div>
+  <div class="sion-eyebrow">MODEL NUMBER</div>
+  <h1 class="title sion-title">PACの型番の見方</h1>
+  <p class="lede">パナソニックと三洋電機の業務用エアコン（PAC）の型番を、記号ごとに読み解きます。型番を入力すると、意味を自動で表示します。</p>
+</header>
+
+<div class="stage">
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">01</span><span class="info-title">型番を入力して読んでみよう</span></div>
+    <div class="panel">
+      <input id="q" class="search" type="text" placeholder="例：CU-P224X3E" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <div class="exs" id="exs"></div>
+      <div id="res" style="margin-top:18px;"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="info-head"><span class="info-num">02</span><span class="info-title">記号の早見表</span></div>
+    <div class="tabs" id="stabs"></div>
+    <div class="tabs" id="utabs"></div>
+    <div class="panel" id="ref"></div>
+  </section>
+
+  <p class="note">メーカー資料（型式製番早見表）をもとにしています。機種によって例外があるため、最終的には銘板・カタログで確認してください。</p>
+</div>
+
+<div class="sion-footer">SION TECHNOS EDUCATION SYSTEM ／ 監修：シオンテクノス株式会社</div>
+
+<script>
+(function(){
+  var OPT_P = {E:'耐塩害仕様', J:'耐重塩害仕様'};
+  var UT_PO = {U:'4方向天井カセット形',L:'2方向天井カセット形',DM:'1方向天井カセット形',D:'高天井用1方向カセット形',F:'天井ビルトインカセット形',FE:'ビルトインオールダクト形',E:'天井埋込形',T:'天井吊形',K:'壁掛形',B:'床置形・床置プレナム形',BD:'床置ダクト形',V:'天吊形厨房用',VK:'高温吸込み対応天吊形厨房用'};
+  var UT_PM = {U:'4方向天井カセット形',L:'2方向天井カセット形',DM:'1方向天井カセット形',D:'高天井用1方向カセット形',F:'天井ビルトインカセット形',FE:'ビルトインオールダクト形',E:'天井埋込形',T:'天井吊形',K:'壁掛形',BD:'床置ダクト形',P:'ペリメーター用床置形',PM:'ペリメーター用床置埋込形',WN:'壁ビルトイン形',V:'天吊形厨房用',X:'直膨コイル付外気処理ユニット',XW:'床置形ハイフレッシュ',XE:'天井埋込形ハイフレッシュ',CK:'吸込一体形クリーンエアコン',CD:'壁下吸込み形クリーンエアコン'};
+  var UT_SO = {S:'4方向天井カセット形',SS:'2方向天井カセット形',SA:'1方向天井カセット形',SL:'高天井用1方向カセット形',BD:'天井ビルトインカセット形',BU:'ビルトインオールダクト形',T:'天井吊形',K:'壁掛形',TK:'天吊形厨房用',E:'床置プレナム形'};
+  var UT_SM = {S:'4方向天井カセット形',SS:'2方向天井カセット形',SA:'1方向天井カセット形',SL:'高天井用1方向カセット形',BD:'天井ビルトインカセット形',BU:'ビルトインオールダクト形',U:'天井埋込形',T:'天井吊形',K:'壁掛形',TK:'天吊形厨房用',DE:'床置ダクト形',E:'床置プレナム形',F:'ペリメーター床置',FM:'ペリメーター床置埋込',BM:'ビルトインカセット電動弁外付タイプ',DM:'壁ビルトイン',Y:'床吹出し',GU:'直膨コイル付外気処理※',GUF:'ハイフレッシュ※',UF:'天井埋込型ハイフレッシュ※',MD:'病院用クリーンPAC吸込一体形',MK:'病院用クリーンPAC壁下吸込形'};
+  var UT_GH = {U:'4方向天井カセット形',L:'2方向天井カセット形',DM:'1方向天井カセット形',D:'高天井用1方向カセット形',F:'天井ビルトインカセット形',FE:'ビルトインオールダクト形',E:'天井埋込形',T:'天井吊形',V:'天吊形厨房用',K:'壁掛形',B:'床置形',BE:'床置プレナム形',BD:'床置ダクト形',P:'ペリメーター用床置形',PM:'ペリメーター用床置埋込形',WN:'壁ビルトイン形',G:'直膨コイル付外気処理ユニット',XW:'床置形ハイフレッシュ',XE:'天井埋込形ハイフレッシュ',CK:'吸込一体形クリーンエアコン',CD:'壁下吸込み形クリーンエアコン'};
+  var CAP = {l:'能力表示', cap:1, note:'表示数 × 0.1kW（一部例外あり）'};
+  var MINOR = {l:'マイナーチェンジ', note:'アルファベット', none:'なし'};
+  var FREQ = {l:'電源周波数種別', d:{'5':'50Hz用','6':'60Hz用'}, none:'なし'};
+  var SEQ = 'S→T→U→A→B→B1→BN→E→E1→EN';
+
+  var SERIES = [
+   {id:'po', name:'パナソニック オフィス・店舗用', out:{ex:'CU-P224X3E', re:/^CU-?P(\d{2,3})(X|H|C)(\d+)([EJ])?$/, map:function(m){return ['CU','P',m[1],m[2],m[3],m[4]||''];},
+      f:[{l:'商品区分',d:{CU:'空冷式室外機'}},{l:'業界統一記号',d:{P:'新冷媒R410A'}},CAP,{l:'ラインナップ',d:{X:'高効率タイプ',H:'標準タイプ',C:'冷房専用'}},{l:'開発番号',note:'数順'},{l:'分類',d:OPT_P,none:'なし'}]},
+    in:{ex:'CS-P112U4', re:/^CS-?P(\d{2,3})(DM|FE|BD|VK|U|L|D|F|E|T|K|B|V)(\d+)([A-Z])?$/, map:function(m){return ['CS','P',m[1],m[2],m[3],m[4]||''];},
+      f:[{l:'商品区分',d:{CS:'空冷式室内機'}},{l:'業界統一記号',d:{P:'新冷媒R410A'}},{l:'能力表示',cap:1,note:'表示数 × 0.1kW（一部例外あり）'},{l:'ユニットタイプ',d:UT_PO},{l:'開発番号',note:'数順'},MINOR]}},
+
+   {id:'pm', name:'パナソニック ビル用マルチ', out:{ex:'CU-P224UXR3E', re:/^CU-?P(\d{2,3})UX(P|R|E|K)(\d+)([A-Z]{0,2})$/, map:function(m){var t=m[4],mi='',cl='';if(t.length===1){if(t==='E'||t==='J')cl=t;else mi=t;}else if(t.length===2){mi=t[0];cl=t[1];}return ['CU','P',m[1],'UX',m[2],m[3],mi,cl];},
+      f:[{l:'商品区分',d:{CU:'空冷式室外機'}},{l:'業界統一記号',d:{P:'新冷媒R410A'}},CAP,{l:'接続仕様',d:{UX:'ビル用マルチ'}},{l:'ラインナップ',d:{P:'高効率',R:'既設配管対応',E:'冷暖フリー',K:'氷蓄熱'}},{l:'開発番号',note:'数順'},MINOR,{l:'分類',d:OPT_P,none:'なし'}]},
+    in:{ex:'CS-P112U4UA6', re:/^CS-?P(\d{2,3})(DM|FE|BD|PM|WN|XW|XE|CK|CD|U|L|D|F|E|T|K|P|V|X)(\d+)U([A-Z]?)([56]?)$/, map:function(m){return ['CS','P',m[1],m[2],m[3],'U',m[4],m[5]];},
+      f:[{l:'商品区分',d:{CS:'空冷式室内機'}},{l:'業界統一記号',d:{P:'新冷媒R410A'}},CAP,{l:'ユニットタイプ',d:UT_PM},{l:'開発番号',note:'数順'},{l:'接続室外機タイプ',d:{U:'ビル用マルチ'}},MINOR,FREQ]}},
+
+   {id:'so', name:'三洋電機 オフィス・店舗用', out:{ex:'SPW-CHVP50BN2', re:/^SPW-?C(H)(E|V)P(\d{2,3})(BN|B1|EN|E1|S|T|U|A|B|E)([EJ2])?$/, map:function(m){return ['SPW','C',m[1],m[2],'P',m[3],m[4],m[5]||''];},
+      f:[{l:'商品区分',d:{SPW:'空冷式室外機'}},{l:'室外機ユニットの意味',d:{C:'コンデンショニングユニット'}},{l:'能力種別',d:{H:'ヒートポンプ'}},{l:'ラインナップ',d:{E:'エスパシオ（インバータ機種）',V:'スーパーエスパシオⅡ（インバータ機種）'}},{l:'業界統一記号',d:{P:'新冷媒R410A'}},CAP,{l:'開発番号',note:'例：BN、Eなど'},{l:'分類',d:{E:'耐塩害仕様',J:'耐重塩害仕様','2':'単相機種'},none:'なし'}]},
+    in:{ex:'SPW-SP56BN', re:/^SPW-?(SS|SA|SL|BD|BU|TK|S|T|K|E)P(\d{2,3})(BN|B1|EN|E1|B|E)$/, map:function(m){return ['SPW',m[1],'P',m[2],m[3]];},
+      f:[{l:'商品区分',d:{SPW:'空冷式室内機'}},{l:'ユニットタイプ',d:UT_SO},{l:'業界統一記号',d:{P:'新冷媒対応品'}},{l:'能力表示',cap:1,note:'表示数 × 0.1kW'},{l:'開発番号表示',note:'B形（B、BN、E）'}]}},
+
+   {id:'sm', name:'三洋電機 ビル用マルチ', out:{ex:'SPW-CH280B-E', re:/^SPW-?CH(WDZ|DX|DZ)?(\d{2,3})(BN|B1|EN|E1|S|T|U|A|B|E)-?([EJ])?$/, map:function(m){return ['SPW','C','H',m[1]||'',m[2],m[3],m[4]||''];},
+      f:[{l:'商品区分',d:{SPW:'空冷式室外機'}},{l:'室外機ユニットの意味',d:{C:'コンデンショニングユニット'}},{l:'能力種別',d:{H:'ヒートポンプ'}},{l:'ラインナップ',d:{DX:'スーパーWマルチ',DZ:'スーパーW-3WAYマルチ',WDZ:'水熱源W-3WAYマルチ'},none:'なし（記載のない機種あり）'},CAP,{l:'開発番号',note:'開発番号の推移：'+SEQ},{l:'分類',d:OPT_P,none:'なし'}]},
+    in:{ex:'SPW-SXRP56BH', re:/^SPW-?(GUF|GU|UF|MD|MK|DE|FM|BM|DM|SS|SA|SL|BD|BU|TK|S|U|T|K|E|F|Y)X(RP|R|P)(\d{2,3})(BH|B)$/, map:function(m){return ['SPW',m[1],'X',m[2],m[3],m[4]];},
+      f:[{l:'商品区分',d:{SPW:'空冷式室内機'}},{l:'ユニットタイプ',d:UT_SM},{l:'ラインナップ',d:{X:'マルチ機種'}},{l:'業界統一記号',d:{R:'新冷媒R410A対応品',P:'新冷媒対応品'},multi:1},{l:'能力表示',cap:1,note:'表示数 × 0.1kW（※印の機種は処理風量）'},{l:'開発番号表示',d:{B:'ヒーターレス標準品',BH:'補助ヒーター内蔵三相電源機種'}}]}},
+
+   {id:'gh', name:'パナソニック ガスヒートポンプ（GHP）', out:{ex:'U-GH224S1DRE', re:/^U-?G(W|F|C)?(H|X|P|Z|B)(\d{2,3})([A-Z]\d*)(S)?(D)?(R)?([EJWXY])?$/, map:function(m){return ['U','G',m[1]||'',m[2],m[3],m[4],m[5]||'',m[6]||'',m[7]||'',m[8]||''];},
+      f:[{l:'商品区分',d:{U:'ガスヒートポンプ室外機'}},{l:'業界統一記号',d:{G:'ガスヒートポンプ'}},{l:'接続仕様',d:{W:'Wマルチ',F:'3WAYマルチ',C:'チラー接続専用機'},none:'無＝ビル用マルチ'},{l:'ラインナップ',d:{H:'標準室外機',X:'ハイパワーエクセル',P:'ソーラーリンクエクセル',Z:'ハイパワーマルチ',B:'エクセルプラス'}},CAP,{l:'開発番号',note:'M1・M2・M3、S1・S2・S3…（アルファベット順送り。I・O・Q・Zは除く）'},{l:'電源仕様',d:{S:'単相200V'},none:'無＝三相200V'},{l:'臭気触媒',d:{D:'臭気触媒付き（現行機は全機付き）'},none:'なし'},{l:'使用条件',d:{R:'リニューアル用'},none:'無＝新設用'},{l:'分類',d:{E:'耐塩害仕様',J:'耐重塩害仕様',W:'温水取出仕様',X:'温水取出＋耐塩害',Y:'温水取出＋耐重塩害'},none:'なし'}]},
+    in:{ex:'S-G112US1', re:/^S-?G(\d{2,3})(DM|FE|BE|BD|PM|WN|XW|XE|CK|CD|U|L|D|F|E|T|V|K|B|P|G)([A-Z]\d*)([A-Z]?)([56]?)$/, map:function(m){return ['S','G',m[1],m[2],m[3],m[4],m[5]];},
+      f:[{l:'商品区分',d:{S:'ガスヒートポンプ室内機'}},{l:'業界統一記号',d:{G:'ガスヒートポンプ'}},CAP,{l:'ユニットタイプ',d:UT_GH},{l:'開発番号',note:'アルファベット順送り（I・O・Q・Zは除く）'},MINOR,FREQ]}}
+  ];
+  var CIRC = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function meaning(f, v, vals){
+    if (v === '') return f.none || '（なし）';
+    if (f.cap){
+      var n = parseInt(v,10); if (isNaN(n)) return v;
+      var kw = (n/10).toFixed(1)+' kW';
+      if (vals && /^(GU|GUF|UF)$/.test(vals[1]||'') ) return '処理風量（表示数×0.1）※外気処理系の機種';
+      return kw+'（'+v+' × 0.1kW）';
+    }
+    if (f.multi){ return v.split('').map(function(c){return c+'：'+(f.d[c]||'?');}).join(' ／ '); }
+    if (f.d) return f.d[v] || '（早見表にない記号です）';
+    return f.note || '';
+  }
+  function seg(f, vals){
+    return '<div class="seg">'+f.map(function(fl,i){
+      var v = vals[i];
+      return '<div class="sg c'+(i%10)+(v===''?' empty':'')+'"><div class="no">'+CIRC[i]+'</div><div class="cd">'+(v===''?'□':esc(v))+'</div></div>';
+    }).join('')+'</div>';
+  }
+  function decodeTable(f, vals){
+    return '<table class="t"><tr><th>No.</th><th>項目</th><th>記号</th><th>意味</th></tr>'+f.map(function(fl,i){
+      return '<tr><td>'+CIRC[i]+'</td><td>'+esc(fl.l)+'</td><td class="k">'+(vals[i]===''?'—':esc(vals[i]))+'</td><td>'+esc(meaning(fl,vals[i],vals))+'</td></tr>';
+    }).join('')+'</table>';
+  }
+  function norm(s){return s.normalize('NFKC').toUpperCase().replace(/[\s　・･()（）]/g,'').replace(/[ー－−‐]/g,'-');}
+
+  function decode(raw){
+    var s = norm(raw); if (!s) return null;
+    for (var i=0;i<SERIES.length;i++){
+      var kinds=[['out','室外機'],['in','室内機']];
+      for (var k=0;k<2;k++){
+        var u = SERIES[i][kinds[k][0]], m = s.match(u.re);
+        if (m) return {series:SERIES[i], unit:u, kind:kinds[k][1], vals:u.map(m)};
+      }
+    }
+    return null;
+  }
+  function showResult(){
+    var v = document.getElementById('q').value, box = document.getElementById('res');
+    if (!v.trim()){ box.innerHTML = '<div class="body">型番を入力するか、上の例をタップしてください。</div>'; return; }
+    var r = decode(v);
+    if (!r){ box.innerHTML = '<div class="miss">この型番は読み取れませんでした。ハイフンや記号の入力、対象機種（パナソニック・三洋電機の業務用PAC、GHP）を確認してください。</div>'; return; }
+    box.innerHTML = '<div class="res-h"><span class="tag">'+r.kind+'</span>'+esc(r.series.name)+'</div>'+seg(r.unit.f, r.vals)+decodeTable(r.unit.f, r.vals);
+  }
+
+  // 例
+  var exs = document.getElementById('exs');
+  SERIES.forEach(function(s){ ['out','in'].forEach(function(k){
+    var b = document.createElement('button'); b.type='button'; b.className='ex'; b.textContent = s[k].ex;
+    b.onclick = function(){ document.getElementById('q').value = s[k].ex; showResult(); };
+    exs.appendChild(b);
+  });});
+  document.getElementById('q').addEventListener('input', showResult);
+
+  // 早見表
+  var curS = 0, curU = 'out';
+  function renderRef(){
+    var st = document.getElementById('stabs'), ut = document.getElementById('utabs');
+    st.innerHTML = SERIES.map(function(s,i){return '<button type="button" class="tab'+(i===curS?' on':'')+'" data-s="'+i+'">'+esc(s.name)+'</button>';}).join('');
+    ut.innerHTML = [['out','室外機の型番'],['in','室内機の型番']].map(function(x){return '<button type="button" class="tab'+(x[0]===curU?' on':'')+'" data-u="'+x[0]+'">'+x[1]+'</button>';}).join('');
+    var s = SERIES[curS], u = s[curU], vals = u.map(u.ex.toUpperCase().replace(/[\s　]/g,'').match(u.re));
+    var h = '<div class="res-h">'+esc(s.name)+'（'+(curU==='out'?'室外機':'室内機')+'）</div>'
+          + '<div class="body" style="margin-bottom:6px;">例：<b style="font-family:var(--font-mono); color:var(--text-1);">'+esc(u.ex)+'</b></div>'
+          + seg(u.f, vals);
+    h += u.f.map(function(fl,i){
+      var body = '';
+      if (fl.d){ body = Object.keys(fl.d).map(function(c){return '<div class="opt"><b>'+esc(c)+'</b>'+esc(fl.d[c])+'</div>';}).join(''); if (fl.none) body += '<div class="opt"><b>□</b>'+esc(fl.none)+'</div>'; }
+      else body = '<div class="opt">'+esc(fl.note||'')+'</div>';
+      return '<div class="fcard c'+(i%10)+'"><h4><i>'+CIRC[i]+'</i>'+esc(fl.l)+'</h4>'+body+'</div>';
+    }).join('');
+    document.getElementById('ref').innerHTML = h;
+    Array.prototype.forEach.call(st.querySelectorAll('.tab'), function(b){ b.onclick=function(){curS=+b.getAttribute('data-s'); renderRef();}; });
+    Array.prototype.forEach.call(ut.querySelectorAll('.tab'), function(b){ b.onclick=function(){curU=b.getAttribute('data-u'); renderRef();}; });
+  }
+  renderRef(); showResult();
+})();
+</script>
+<script src="../shared/back-button.js" defer></script>
+<script src="../shared/glossary-link.js" defer></script>
+</body>
+</html>

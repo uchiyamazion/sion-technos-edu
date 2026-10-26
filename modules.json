@@ -140,6 +140,15 @@
     "path": "chiller-systems/index.html"
   },
   {
+    "id": "model-number",
+    "title": "PACの型番の見方（パナソニック・三洋電機）",
+    "category": "空調システム",
+    "status": "published",
+    "levels": [],
+    "description": "パナソニック・三洋電機の業務用エアコンとGHPの型番を、入力するだけで記号ごとに読み解きます。早見表付き。",
+    "path": "model-number/index.html"
+  },
+  {
     "id": "construction-reference",
     "title": "工事早見表（電線・銅管・ダクト）",
     "category": "工事",
